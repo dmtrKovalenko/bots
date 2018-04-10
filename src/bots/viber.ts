@@ -1,6 +1,7 @@
 import * as http from 'http'
 import { Bot, Events, Message } from 'viber-bot'
 import NgrokService from '../services/NgrokService'
+import StandManager from '../managers/StandManager'
 
 const bot = new Bot({
   name: 'StandBot',
@@ -10,8 +11,9 @@ const bot = new Bot({
 
 const say = (response: any, message: string) => response.send(new Message.Text(message))
 
-bot.onTextMessage(/^Кто записан сегодня$/i, (message, response) => {
-  say(response, 'Сегодня записан Миронюк Александр')
+bot.onTextMessage(/^Кто записан сегодня$/i, (message: string, response: any) => {
+  StandManager.getTodayServices()
+    .then(servicesMsg => say(response, servicesMsg))
 })
 
 // Start the bot 🚀

@@ -7,7 +7,13 @@
     "outDir": "build",
     "rootDir": "src",
     "moduleResolution": "node",
-    "typeRoots": [ "./node_modules/@types", "typings.d.ts" ],
+    "typeRoots": [ "./node_modules/@types", "./typings.d.ts" ],
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
   },
   "include": [
     "src/**/*"
