@@ -1,6 +1,8 @@
 import * as http from 'http'
-import { Bot, Events, Message } from 'viber-bot'
+import { Bot, Message } from 'viber-bot'
 import NgrokService from '../services/NgrokService'
+import StandManager from '../managers/StandManager'
+import * as messages from '../constants/messages'
 
 const bot = new Bot({
   name: 'StandBot',
@@ -10,8 +12,14 @@ const bot = new Bot({
 
 const say = (response: any, message: string) => response.send(new Message.Text(message))
 
-bot.onTextMessage(/^Кто записан сегодня$/i, (message, response) => {
-  say(response, 'Сегодня записан Миронюк Александр')
+const handleError = (response: any) => say(response, messages.SOMETHING_BROKE)
+
+bot.onTextMessage(/^Кто записан/i, (message: any, response: any) => {
+  const when = message.text.replace('Кто записан', '').trim().toLowerCase()
+
+  StandManager.getServices(when)
+    .then(servicesMsg => say(response, servicesMsg))
+    .catch(e => handleError(response))
 })
 
 // Start the bot 🚀
