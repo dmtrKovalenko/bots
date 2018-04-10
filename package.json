@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start ./src/app.ts --watch --no-daemon",
+    "start": "pm2 start ./src/app.ts --node-args='--inspect=7000' --watch --no-daemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,11 +12,11 @@
   "dependencies": {
     "@types/node": "^9.6.2",
     "@types/node-fetch": "^1.6.8",
-    "date-fns": "^1.29.0",
+    "date-fns": "^2.0.0-alpha.7",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "node-fetch": "^2.1.2",
-    "ts-node": "^5.0.1",
+    "ts-node": "^4.1.0",
     "typescript": "^2.8.1",
     "viber-bot": "^1.0.13"
   },
