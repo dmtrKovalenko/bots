@@ -1,19 +1,21 @@
-import * as http from 'https'
+import * as http from 'http'
 import { Bot, Events, Message } from 'viber-bot'
-
-import NgrokService from '../ngrok'
+import NgrokService from '../services/NgrokService'
 
 const bot = new Bot({
-  authToken: '47aafb46bca7d095-98d0ffb21c6929ee-27a796facd83a86d',
   name: 'StandBot',
-  avatar: 'https://pbs.twimg.com/profile_images/2975873011/48c35aea2519cbe64176a4a94285ea12_400x400.png'
+  authToken: process.env.VIBER_BOT_TOKEN,
+  avatar: null
 })
 
-bot.on(Events.MESSAGE_RECEIVED, (message, response) => {
-  response.send(new Message.Text('Hello world'))
+const say = (response: any, message: string) => response.send(new Message.Text(message))
+
+bot.onTextMessage(/^Кто записан сегодня$/i, (message, response) => {
+  say(response, 'Сегодня записан Миронюк Александр')
 })
 
-NgrokService()
+// Start the bot 🚀
+NgrokService.getPublicUrl()
   .then(publicUrl => {
     console.log('Set the new webhook to', publicUrl);
 
