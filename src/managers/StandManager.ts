@@ -2,6 +2,8 @@ import { startOfDay, endOfDay, format } from 'date-fns'
 import TeamUpService from '../services/TeamUpService'
 import * as messages from '../constants/messages'
 import Parser from '../services/Parser';
+import TeamUpEvent from '../models/TeamUpEvent';
+import { localizedFormat } from '../utils/helpers';
 
 export default class StandManager {
   static getServices(when: string) {
@@ -13,8 +15,8 @@ export default class StandManager {
     }
   }
 
-  static addService(date: string, startTime: string, endTime: string) {
-    let start, end;
+  static addService(userName: string, date: string, startTime: string, endTime: string) {
+    let start: Date, end: Date;
     try {
       const baseDate = Parser.parseDate(date)
 
@@ -24,7 +26,17 @@ export default class StandManager {
       return Promise.resolve(e.message)
     }
 
-    return Promise.resolve(`${start}, ${end}`)
+    const event = new TeamUpEvent(userName, start, end)
+    return TeamUpService.createEvent(event)
+      .then(event => messages.ADDED_SUCCESSFULLY(localizedFormat(start, 'DD MMMM в HH:mm')))
+      .catch(e => {
+        if (e.error.id === 'event_overlapping') {
+          return this.getServicesOnDate(start)
+            .then(schedule => messages.CONFLICT + schedule)
+        }
+
+        return Promise.reject(e)
+      })
   }
 
   private static async getServicesOnDate(date: Date) {

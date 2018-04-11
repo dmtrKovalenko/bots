@@ -31,13 +31,14 @@ bot.onTextMessage(/^Кто (записан|стоит|служит)/i, (message:
 bot.onTextMessage(/^Запиши меня .{1,20} с \d{2}:\d{2} до \d{2}:\d{2}/im, (message: any, response: any) => {
   say(response, messages.PROCESSING)
 
+  const userName = response.userProfile.name;
   const [date, startTime, endTime] = message.text
     .toLowerCase()
     .replace(/^Запиши меня/i, '')
     .trim()
     .split(/\s*до\s*|\s*с\s*/)
 
-  StandManager.addService(date, startTime, endTime)
+  StandManager.addService(userName, date, startTime, endTime)
     .then(message => say(response, message))
     .catch(e => handleError(response))
 })
