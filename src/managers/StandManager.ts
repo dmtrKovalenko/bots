@@ -1,6 +1,8 @@
-import { addDays, startOfDay, endOfDay, format } from 'date-fns'
+import { addDays, startOfDay, endOfDay, format, isValid } from 'date-fns'
 import TeamUpService from '../services/TeamUpService'
 import * as messages from '../constants/messages'
+import config from '../constants/config';
+import { localizedParse } from '../utils/helpers';
 
 export default class StandManager {
   static getServices(when: string) {
@@ -16,22 +18,39 @@ export default class StandManager {
       case 'послезавтра':
         return this.getServicesOnDate(addDays(new Date(), 2))
       default:
-        return Promise.resolve(messages.DATE_CANNOT_BE_PARSED)
+        const date = this.parseDate(when)
+
+        return date
+          ? this.getServicesOnDate(date)
+          : Promise.resolve(messages.DATE_CANNOT_BE_PARSED)
     }
   }
 
-  static async getServicesOnDate(date: Date) {
-    let response = ''
+  private static parseDate(dateString: string) {
+    let parsedDate = null
+    config.availableDateFormats.find(format => {
+      parsedDate = localizedParse(dateString, format)
+      return isValid(parsedDate)
+    })
+
+    return isValid(parsedDate) ? parsedDate : null
+  }
+
+  private static async getServicesOnDate(date: Date) {
     const todayEvents = await TeamUpService.getEventsCollection(startOfDay(date), endOfDay(date))
 
-    todayEvents
-      .forEach(event => {
-        const start = format(event.start_dt, 'HH:mm')
-        const end = format(event.end_dt, 'HH:mm')
+    if (todayEvents.length === 0) {
+      return messages.DAY_IS_FREE
+    }
 
-        response += `${start}-${end} ${event.title} \n`
-      })
+    let response = ''
+    todayEvents.forEach(event => {
+      const start = format(event.start_dt, 'HH:mm')
+      const end = format(event.end_dt, 'HH:mm')
 
-    return response;
+      response += `${start}-${end} ${event.title} \n`
+    })
+
+    return response
   }
 }

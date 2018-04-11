@@ -14,8 +14,14 @@ const say = (response: any, message: string) => response.send(new Message.Text(m
 
 const handleError = (response: any) => say(response, messages.SOMETHING_BROKE)
 
-bot.onTextMessage(/^Кто записан/i, (message: any, response: any) => {
-  const when = message.text.replace('Кто записан', '').trim().toLowerCase()
+// Bot handlers
+bot.onTextMessage(/^Кто (записан|стоит|служит)/i, (message: any, response: any) => {
+  say(response, messages.PROCESSING)
+
+  const when = message.text
+    .toLowerCase()
+    .replace(/^Кто (записан|стоит|служит)/i, '')
+    .trim()
 
   StandManager.getServices(when)
     .then(servicesMsg => say(response, servicesMsg))
@@ -31,6 +37,6 @@ NgrokService.getPublicUrl()
       .listen(process.env.PORT || 8080, () => {
         bot.setWebhook(publicUrl)
           .then(() => console.log('Viber bot has been started'))
-          .catch(e => console.log('Viber bot triggered unhandled rejection', e))
+          .catch((e: any) => console.log('Viber bot triggered unhandled rejection', e))
       });
   })
