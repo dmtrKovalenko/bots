@@ -12,12 +12,16 @@ const options = {
 
 export default class NgrokService {
   static getPublicUrl() {
+    if (process.env.HEROKU_URL) {
+      return Promise.resolve(process.env.HEROKU_URL)
+    }
+
     return new Promise((resolve, reject) => {
       const req = http.request(options, (res) => {
         res.setEncoding('utf8');
         res.on('data', (config) => {
           const parsedConfig = JSON.parse(config as string);
-          const httpsTunnel = parsedConfig.tunnels.filter(t => t.proto === 'https').pop();
+          const httpsTunnel = parsedConfig.tunnels.filter((t: any) => t.proto === 'https').pop();
 
           resolve(httpsTunnel.public_url);
         });
