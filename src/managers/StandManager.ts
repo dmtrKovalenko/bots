@@ -5,6 +5,7 @@ import TeamUpEvent from '../models/TeamUpEvent';
 import Parser from '../services/Parser';
 import TeamUpService from '../services/TeamUpService';
 import { localizedFormat } from '../utils/helpers';
+import AuthManager from './AuthManager';
 
 export default class StandManager {
   teamUpService: TeamUpService;
@@ -13,23 +14,23 @@ export default class StandManager {
     this.teamUpService = new TeamUpService(meta)
   }
 
-   getServices(when: string) {
+  getServices(when: string) {
     try {
       const date = Parser.parseDate(when)
       return this.getServicesOnDate(date!)
-    } catch(e) {
+    } catch (e) {
       return Promise.resolve(e.message)
     }
   }
 
-   addService(userName: string, date: string, startTime: string, endTime: string) {
+  addService(userName: string, date: string, startTime: string, endTime: string) {
     let start: Date, end: Date;
     try {
       const baseDate = Parser.parseDate(date)
 
       start = Parser.parseTime(startTime, baseDate)
       end = Parser.parseTime(endTime, baseDate)
-    } catch(e) {
+    } catch (e) {
       return Promise.resolve(e.message)
     }
 
@@ -43,6 +44,18 @@ export default class StandManager {
         }
 
         return Promise.reject(e)
+      })
+  }
+
+  public authorizeKey(userId: string, key: string) {
+    return this.teamUpService.verifyKey(key)
+      .then(isAuthorized => {
+        if (isAuthorized) {
+          AuthManager.addCalendarKey(userId, key)
+          return messages.KEY_AUTHORIZED
+        }
+
+        return messages.KEY_INVALID
       })
   }
 

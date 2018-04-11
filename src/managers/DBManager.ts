@@ -12,6 +12,6 @@ export default class DBManager {
   }
 
   get(key: string) {
-    this.db.getData(`/${key}`)
+    return this.db.getData(`/${key}`)
   }
 }

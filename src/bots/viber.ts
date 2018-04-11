@@ -5,7 +5,6 @@ import StandManager from '../managers/StandManager';
 import { UnauthorizedError } from '../models/Errors';
 import ViberMeta from '../models/ViberMeta';
 import NgrokService from '../services/NgrokService';
-import AuthManager from '../managers/AuthManager';
 
 const bot = new Bot({
   name: 'StandBot',
@@ -26,17 +25,16 @@ const handleError = (e: any, response: any) => {
 
 // Bot handlers
 bot.onTextMessage(/^Мой ключ/i, (message: any, response: any) => {
+  const manager = new StandManager(new ViberMeta(message, response))
+
   const userId = response.userProfile.id
   const key = message.text
-    .replace(/^Moй ключ/i, '')
+    .replace(/^Мой ключ/i, '')
     .trim()
 
-  try {
-    AuthManager.addCalendarKey(userId, key)
-    say(response, messages.KEY_AUTHORIZED)
-  } catch(e) {
-    handleError(e, response)
-  }
+  manager.authorizeKey(userId, key)
+    .then(message => say(response, message))
+    .catch(e => handleError(e, response))
 })
 
 bot.onTextMessage(/^Кто (записан|стоит|служит)/i, (message: any, response: any) => {

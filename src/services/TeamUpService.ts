@@ -35,7 +35,7 @@ export default class TeamUpService {
           : await res.text()
 
         console.error(payload)
-        return Promise.reject(payload)
+        return Promise.reject(new Error(payload))
       })
   }
 
@@ -50,6 +50,13 @@ export default class TeamUpService {
   createEvent(event: TeamUpEvent) {
     return this.fetch('/events?', { method: 'POST', body: JSON.stringify(event) })
       .then(res => res.event as TeamUpEvent)
+  }
+
+  verifyKey(key: string) {
+    // use global fetch here to make request with passed key
+    return fetch(`${API_URL}/${key}/configuration?_teamup_token=${token}`)
+      .then(res => res.json())
+      .then(({ error }) => !Boolean(error))
   }
 }
 
