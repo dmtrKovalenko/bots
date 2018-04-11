@@ -1,4 +1,3 @@
-import { parse } from 'date-fns'
 
 export default class TeamUpEvent {
   id: string;
@@ -6,12 +5,20 @@ export default class TeamUpEvent {
   end_dt: string;
   title: string;
   who: string;
+  subcalendar_id: string;
 
-  get startDate() {
-    return parse(this.start_dt)
-  }
+  constructor(
+    title: string,
+    startDate: Date,
+    endDate: Date,
+    who: string = ''
+  ) {
+    this.who = who
+    this.title = title;
+    this.subcalendar_id = process.env.TEAMUP_SUBCALENDAR_ID!;
 
-  get endDate() {
-    return parse(this.end_dt)
+    // Teamup doesnt understand milliseconds 😭
+    this.start_dt = startDate.toISOString().split('.')[0]+"Z";
+    this.end_dt = endDate.toISOString().split('.')[0]+"Z";
   }
 }

@@ -21,6 +21,16 @@ export default class Parser  {
     }
   }
 
+  static parseTime(string: string, baseDate?: Date) {
+    const time = localizedParse(string, 'HH:mm', baseDate)
+
+    if (!isValid(time)) {
+      throw new Error(messages.DATE_CANNOT_BE_PARSED)
+    }
+
+    return time
+  }
+
   private static parseFormattedDate(dateString: string) {
     let parsedDate;
     config.availableDateFormats.find(format => {
