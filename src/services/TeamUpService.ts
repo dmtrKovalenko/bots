@@ -1,23 +1,32 @@
-import fetch, { RequestInit  }from 'node-fetch';
 import { format } from 'date-fns';
+import fetch, { RequestInit } from 'node-fetch';
+import * as messages from '../constants/messages';
+import AuthManager from '../managers/AuthManager';
+import { UnauthorizedError } from '../models/Errors';
+import Meta from '../models/Meta';
 import TeamUpEvent from '../models/TeamUpEvent';
 
 const token = process.env.TEAMUP_TOKEN
-const calendarKey = process.env.TEAMUP_CALENDAR_KEY
 
 const FORMAT_DATE = 'YYYY-MM-DD'
+const API_URL = 'https://api.teamup.com'
 
-class TeamUpService {
-  apiUrl = 'https://api.teamup.com'
+export default class TeamUpService {
+  constructor(private meta: Meta) { }
 
   private fetch(url: string, options?: RequestInit) {
+    const calendarKey = AuthManager.getCalendarKey(this.meta.userId)
+    if (!calendarKey) {
+      return Promise.reject(new UnauthorizedError(messages.UNAUTHORIZED))
+    }
+
     if (options) {
       options.headers = {
         'Content-Type': 'application/json'
       }
     }
 
-    return fetch(`${this.apiUrl}/${calendarKey}${url}_teamup_token=${token}`, options)
+    return fetch(`${API_URL}/${calendarKey}${url}_teamup_token=${token}`, options)
       .then(async res => {
         if (res.ok) { return res.json()  }
 
@@ -44,4 +53,3 @@ class TeamUpService {
   }
 }
 
-export default new TeamUpService()
