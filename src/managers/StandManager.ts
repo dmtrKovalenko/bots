@@ -13,6 +13,20 @@ export default class StandManager {
     }
   }
 
+  static addService(date: string, startTime: string, endTime: string) {
+    let start, end;
+    try {
+      const baseDate = Parser.parseDate(date)
+
+      start = Parser.parseTime(startTime, baseDate)
+      end = Parser.parseTime(endTime, baseDate)
+    } catch(e) {
+      return Promise.resolve(e.message)
+    }
+
+    return Promise.resolve(`${start}, ${end}`)
+  }
+
   private static async getServicesOnDate(date: Date) {
     const todayEvents = await TeamUpService.getEventsCollection(startOfDay(date), endOfDay(date))
 
