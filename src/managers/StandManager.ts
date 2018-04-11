@@ -1,39 +1,16 @@
-import { addDays, startOfDay, endOfDay, format, isValid } from 'date-fns'
+import { startOfDay, endOfDay, format } from 'date-fns'
 import TeamUpService from '../services/TeamUpService'
 import * as messages from '../constants/messages'
-import config from '../constants/config';
-import { localizedParse } from '../utils/helpers';
+import Parser from '../services/Parser';
 
 export default class StandManager {
   static getServices(when: string) {
-    switch (when) {
-      case 'позавчера':
-        return this.getServicesOnDate(addDays(new Date(), -2))
-      case 'вчера':
-        return this.getServicesOnDate(addDays(new Date(), -1))
-      case 'сегодня':
-        return this.getServicesOnDate(new Date())
-      case 'завтра':
-        return this.getServicesOnDate(addDays(new Date(), 1))
-      case 'послезавтра':
-        return this.getServicesOnDate(addDays(new Date(), 2))
-      default:
-        const date = this.parseDate(when)
-
-        return date
-          ? this.getServicesOnDate(date)
-          : Promise.resolve(messages.DATE_CANNOT_BE_PARSED)
+    try {
+      const date = Parser.parseDate(when)
+      return this.getServicesOnDate(date!)
+    } catch(e) {
+      return Promise.resolve(e.message)
     }
-  }
-
-  private static parseDate(dateString: string) {
-    let parsedDate = null
-    config.availableDateFormats.find(format => {
-      parsedDate = localizedParse(dateString, format)
-      return isValid(parsedDate)
-    })
-
-    return isValid(parsedDate) ? parsedDate : null
   }
 
   private static async getServicesOnDate(date: Date) {
