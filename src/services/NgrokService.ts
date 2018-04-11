@@ -12,6 +12,10 @@ const options = {
 
 export default class NgrokService {
   static getPublicUrl() {
+    if (process.env.HEROKU_URL) {
+      return Promise.resolve(process.env.HEROKU_URL)
+    }
+
     return new Promise((resolve, reject) => {
       const req = http.request(options, (res) => {
         res.setEncoding('utf8');
