@@ -1,4 +1,4 @@
-import fetch, { RequestInit, Headers }from 'node-fetch';
+import fetch, { RequestInit  }from 'node-fetch';
 import { format } from 'date-fns';
 import TeamUpEvent from '../models/TeamUpEvent';
 

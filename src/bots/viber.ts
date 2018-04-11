@@ -1,5 +1,5 @@
 import * as http from 'http'
-import { Bot, Message, Events } from 'viber-bot'
+import { Bot, Message } from 'viber-bot'
 import NgrokService from '../services/NgrokService'
 import StandManager from '../managers/StandManager'
 import * as messages from '../constants/messages'
