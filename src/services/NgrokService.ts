@@ -17,7 +17,7 @@ export default class NgrokService {
         res.setEncoding('utf8');
         res.on('data', (config) => {
           const parsedConfig = JSON.parse(config as string);
-          const httpsTunnel = parsedConfig.tunnels.filter(t => t.proto === 'https').pop();
+          const httpsTunnel = parsedConfig.tunnels.filter((t: any) => t.proto === 'https').pop();
 
           resolve(httpsTunnel.public_url);
         });

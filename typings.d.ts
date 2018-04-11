@@ -1,4 +1,4 @@
 declare module "viber-bot" {
-  const value: any;
-  export default value;
+  export const Bot: any;
+  export const Message: any;
 }
