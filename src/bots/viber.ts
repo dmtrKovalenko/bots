@@ -2,7 +2,7 @@ import * as http from 'http';
 import { Bot, Message } from 'viber-bot';
 import * as messages from '../constants/messages';
 import StandManager from '../managers/StandManager';
-import { UnauthorizedError } from '../models/Errors';
+import { CustomError } from '../models/Errors';
 import ViberMeta from '../models/ViberMeta';
 import NgrokService from '../services/NgrokService';
 
@@ -15,7 +15,7 @@ const bot = new Bot({
 const say = (response: any, message: string) => response.send(new Message.Text(message))
 
 const handleError = (e: any, response: any) => {
-  if (e instanceof UnauthorizedError) {
+  if (e instanceof CustomError) {
     say(response, e.message)
     return;
   }

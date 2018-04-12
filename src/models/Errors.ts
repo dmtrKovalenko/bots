@@ -1,3 +1,3 @@
-export class UnauthorizedError extends Error {
+export class CustomError extends Error {
 
 }

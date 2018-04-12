@@ -48,6 +48,10 @@ export default class StandManager {
   }
 
   public authorizeKey(userId: string, key: string) {
+    if (key.startsWith('https://teamup.com/')) {
+      key = key.replace('https://teamup.com/', '')
+    }
+
     return this.teamUpService.verifyKey(key)
       .then(isAuthorized => {
         if (isAuthorized) {
@@ -67,11 +71,14 @@ export default class StandManager {
     }
 
     let response = ''
-    todayEvents.forEach(event => {
+    todayEvents.forEach((event, index) => {
       const start = format(event.start_dt, 'HH:mm')
       const end = format(event.end_dt, 'HH:mm')
 
-      response += `${start}-${end} ${event.title} \n`
+      response += `${start}-${end} ${event.title}`
+      if (index !== todayEvents.length - 1) {
+        response += '\n' // add linebreak
+      }
     })
 
     return response
