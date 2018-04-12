@@ -31,19 +31,15 @@ const handleError = (e: any, response: any) => {
 }
 
 bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
-  onFinish(new Message.Text(messages.HELP(userProfile.name)))
-})
-
-bot.on(Events.SUBSCRIBED , (response: any) => {
   logger.track({
-    userId: response.userProfile.id,
-    event: 'Subscribed',
+    userId: userProfile.id,
+    event: 'Conversation started',
     properties: {
-      userProfile: response.userProfile
+      userProfile: userProfile
     }
   })
 
-  say(response, messages.HELP(response.userProfile.name))
+  onFinish(new Message.Text(messages.HELP(bot.name, userProfile.name)))
 })
 
 bot.on(Events.MESSAGE_RECEIVED, (message: any, response: any) => {
@@ -59,7 +55,7 @@ bot.on(Events.MESSAGE_RECEIVED, (message: any, response: any) => {
 
 // Bot handlers
 bot.onTextMessage(/^Помощь/i, (message: any, response: any) => {
-  say(response, messages.HELP(response.userProfile.name))
+  say(response, messages.HELP(bot.name, response.userProfile.name))
 })
 
 bot.onTextMessage(/^Контакты/i, (message: any, response: any) => {
