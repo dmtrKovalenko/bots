@@ -24,6 +24,10 @@ const handleError = (e: any, response: any) => {
 }
 
 // Bot handlers
+bot.onTextMessage(/^Помощь/i, (message: any, response: any) => {
+  say(response, messages.HELP)
+})
+
 bot.onTextMessage(/^Мой ключ/i, (message: any, response: any) => {
   const manager = new StandManager(new ViberMeta(message, response))
 
