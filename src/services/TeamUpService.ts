@@ -1,23 +1,32 @@
-import fetch, { RequestInit  }from 'node-fetch';
 import { format } from 'date-fns';
+import fetch, { RequestInit } from 'node-fetch';
+import * as messages from '../constants/messages';
+import AuthManager from '../managers/AuthManager';
+import { CustomError } from '../models/Errors';
+import Meta from '../models/Meta';
 import TeamUpEvent from '../models/TeamUpEvent';
 
 const token = process.env.TEAMUP_TOKEN
-const calendarKey = process.env.TEAMUP_CALENDAR_KEY
 
 const FORMAT_DATE = 'YYYY-MM-DD'
+const API_URL = 'https://api.teamup.com'
 
-class TeamUpService {
-  apiUrl = 'https://api.teamup.com'
+export default class TeamUpService {
+  constructor(private meta: Meta) { }
 
-  private fetch(url: string, options?: RequestInit) {
+  private teamUpFetch(url: string, options?: RequestInit) {
+    const calendarKey = AuthManager.getCalendarKey(this.meta.userId)
+    if (!calendarKey) {
+      return Promise.reject(new CustomError(messages.UNAUTHORIZED))
+    }
+
     if (options) {
       options.headers = {
         'Content-Type': 'application/json'
       }
     }
 
-    return fetch(`${this.apiUrl}/${calendarKey}${url}_teamup_token=${token}`, options)
+    return fetch(`${API_URL}/${calendarKey}${url}_teamup_token=${token}`, options)
       .then(async res => {
         if (res.ok) { return res.json()  }
 
@@ -25,8 +34,11 @@ class TeamUpService {
           ? await res.json()
           : await res.text()
 
-        console.error(payload)
-        return Promise.reject(payload)
+        if (payload.error && payload.error.id === 'calendar_not_found') {
+          return Promise.reject(new CustomError(messages.UNAUTHORIZED))
+        }
+
+        return Promise.reject(new Error(payload))
       })
   }
 
@@ -34,14 +46,20 @@ class TeamUpService {
     const endDate = format(end, FORMAT_DATE)
     const startDate = format(start, FORMAT_DATE)
 
-    return this.fetch(`/events?startDate=${startDate}&endDate=${endDate}&`)
+    return this.teamUpFetch(`/events?startDate=${startDate}&endDate=${endDate}&`)
       .then(res => res.events as TeamUpEvent[])
   }
 
   createEvent(event: TeamUpEvent) {
-    return this.fetch('/events?', { method: 'POST', body: JSON.stringify(event) })
+    return this.teamUpFetch('/events?', { method: 'POST', body: JSON.stringify(event) })
       .then(res => res.event as TeamUpEvent)
+  }
+
+  verifyKey(key: string) {
+    // use global fetch here to make request with passed key
+    return fetch(`${API_URL}/${key}/configuration?_teamup_token=${token}`)
+      .then(res => res.json())
+      .then(({ error }) => !Boolean(error))
   }
 }
 
-export default new TeamUpService()

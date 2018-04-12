@@ -1,8 +1,11 @@
-import * as http from 'http'
-import { Bot, Message } from 'viber-bot'
-import NgrokService from '../services/NgrokService'
-import StandManager from '../managers/StandManager'
-import * as messages from '../constants/messages'
+import * as http from 'http';
+import { Bot, Message, Events } from 'viber-bot';
+import * as messages from '../constants/messages';
+import StandManager from '../managers/StandManager';
+import { CustomError } from '../models/Errors';
+import ViberMeta from '../models/ViberMeta';
+import NgrokService from '../services/NgrokService';
+import logger from '../services/Logger';
 
 const bot = new Bot({
   name: 'StandBot',
@@ -12,24 +15,67 @@ const bot = new Bot({
 
 const say = (response: any, message: string) => response.send(new Message.Text(message))
 
-const handleError = (response: any) => say(response, messages.SOMETHING_BROKE)
+const handleError = (e: any, response: any) => {
+  if (e instanceof CustomError) {
+    say(response, e.message)
+    return;
+  }
+
+  logger.track({
+    userId: response.userProfile.id,
+    event: 'Unhandled error',
+    properties: e
+  })
+
+  say(response, messages.SOMETHING_BROKE)
+}
+
+bot.on(Events.MESSAGE_RECEIVED, (message: any, response: any) => {
+  logger.track({
+    userId: response.userProfile.id,
+    event: 'Message received',
+    properties: {
+      text: message.text,
+      userProfile: response.userProfile
+    }
+  })
+})
 
 // Bot handlers
+bot.onTextMessage(/^Помощь/i, (message: any, response: any) => {
+  say(response, messages.HELP)
+})
+
+bot.onTextMessage(/^Мой ключ/i, (message: any, response: any) => {
+  const manager = new StandManager(new ViberMeta(message, response))
+
+  const userId = response.userProfile.id
+  const key = message.text
+    .replace(/^Мой ключ/i, '')
+    .trim()
+
+  manager.authorizeKey(userId, key)
+    .then(message => say(response, message))
+    .catch(e => handleError(e, response))
+})
+
 bot.onTextMessage(/^Кто (записан|стоит|служит)/i, (message: any, response: any) => {
   say(response, messages.PROCESSING)
+  const manager = new StandManager(new ViberMeta(message, response))
 
   const when = message.text
     .toLowerCase()
     .replace(/^Кто (записан|стоит|служит)/i, '')
     .trim()
 
-  StandManager.getServices(when)
+  manager.getServices(when)
     .then(servicesMsg => say(response, servicesMsg))
-    .catch(e => handleError(response))
+    .catch(e => handleError(e, response))
 })
 
 bot.onTextMessage(/^Запиши меня .{1,20} с \d{2}:\d{2} до \d{2}:\d{2}/im, (message: any, response: any) => {
   say(response, messages.PROCESSING)
+  const manager = new StandManager(new ViberMeta(message, response))
 
   const userName = response.userProfile.name;
   const [date, startTime, endTime] = message.text
@@ -38,9 +84,9 @@ bot.onTextMessage(/^Запиши меня .{1,20} с \d{2}:\d{2} до \d{2}:\d{2
     .trim()
     .split(/\s*до\s*|\s*с\s*/)
 
-  StandManager.addService(userName, date, startTime, endTime)
+  manager.addService(userName, date, startTime, endTime)
     .then(message => say(response, message))
-    .catch(e => handleError(response))
+    .catch(e => handleError(e, response))
 })
 
 // Start the bot 🚀
