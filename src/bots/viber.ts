@@ -31,6 +31,13 @@ const handleError = (e: any, response: any) => {
 }
 
 bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
+  logger.identify({
+    userId: userProfile.id,
+    traits: {
+      name: userProfile.name,
+      avatar: userProfile.avatar
+    }})
+
   logger.track({
     userId: userProfile.id,
     event: 'Conversation started',
