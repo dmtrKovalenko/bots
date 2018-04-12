@@ -13,9 +13,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/analytics-node": "0.0.31",
     "@types/node": "^9.6.2",
     "@types/node-fetch": "^1.6.8",
     "@types/node-json-db": "0.0.1",
+    "analytics-node": "^3.2.0",
     "date-fns": "^2.0.0-alpha.7",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",

@@ -10,7 +10,7 @@ import AuthManager from './AuthManager';
 export default class StandManager {
   teamUpService: TeamUpService;
 
-  constructor(private meta: Meta) {
+  constructor(meta: Meta) {
     this.teamUpService = new TeamUpService(meta)
   }
 
