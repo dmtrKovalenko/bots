@@ -30,6 +30,22 @@ const handleError = (e: any, response: any) => {
   say(response, messages.SOMETHING_BROKE)
 }
 
+bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
+  onFinish(new Message.Text(messages.HELP(userProfile.name)))
+})
+
+bot.on(Events.SUBSCRIBED , (response: any) => {
+  logger.track({
+    userId: response.userProfile.id,
+    event: 'Subscribed',
+    properties: {
+      userProfile: response.userProfile
+    }
+  })
+
+  say(response, messages.HELP(response.userProfile.name))
+})
+
 bot.on(Events.MESSAGE_RECEIVED, (message: any, response: any) => {
   logger.track({
     userId: response.userProfile.id,
@@ -43,7 +59,11 @@ bot.on(Events.MESSAGE_RECEIVED, (message: any, response: any) => {
 
 // Bot handlers
 bot.onTextMessage(/^Помощь/i, (message: any, response: any) => {
-  say(response, messages.HELP)
+  say(response, messages.HELP(response.userProfile.name))
+})
+
+bot.onTextMessage(/^Контакты/i, (message: any, response: any) => {
+  say(response, messages.CONTACTS)
 })
 
 bot.onTextMessage(/^Мой ключ/i, (message: any, response: any) => {
