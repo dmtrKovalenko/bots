@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npm i -g pm2",
     "postinstall": "npm run build:typescript",
     "build:typescript": "tsc",
     "dev": "pm2 start ecosystem.dev.config.js --no-daemon --no-daemon",
