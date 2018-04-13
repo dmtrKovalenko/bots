@@ -6,7 +6,8 @@
   "scripts": {
     "postinstall": "npm run build:typescript",
     "build:typescript": "tsc",
-    "dev": "pm2 start ecosystem.dev.config.js --no-daemon --no-daemon",
+    "dev": "onchange \"src/**/*.ts\" -v -i -p -- ts-node src/app.ts",
+    "dev:pm2": "pm2 start ecosystem.dev.config.js --no-daemon",
     "start": "pm2 start ./build/app.js --no-daemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,10 +24,12 @@
     "mixpanel": "^0.9.1",
     "node-fetch": "^2.1.2",
     "node-json-db": "^0.7.5",
+    "ts-node": "^5.0.1",
     "typescript": "^2.8.1",
     "viber-bot": "^1.0.13"
   },
   "devDependencies": {
-    "tslint": "^5.9.1"
+    "tslint": "^5.9.1",
+    "onchange": "^3.3.0"
   }
 }
