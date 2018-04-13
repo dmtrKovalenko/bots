@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "npm run build:typescript",
+    "postinstall": "npm run build:typescript && sequelize db:migrate",
     "build:typescript": "tsc",
+    "db:migrate": "sequelize db:migrate",
     "dev": "onchange \"src/**/*.ts\" -v -i -p -- ts-node src/app.ts",
     "dev:pm2": "pm2 start ecosystem.dev.config.js --no-daemon",
     "start": "pm2 start ./build/app.js --no-daemon",
@@ -26,6 +27,7 @@
     "node-fetch": "^2.1.2",
     "pg": "^7.4.1",
     "sequelize": "^4.37.6",
+    "sequelize-cli": "^4.0.0",
     "ts-node": "^5.0.1",
     "typescript": "^2.8.1",
     "viber-bot": "^1.0.13"
