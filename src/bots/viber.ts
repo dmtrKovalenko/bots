@@ -21,43 +21,21 @@ const handleError = (e: any, response: any) => {
     return;
   }
 
-  logger.track({
-    userId: response.userProfile.id,
-    event: 'Unhandled error',
-    properties: e
-  })
+  logger.trackError(response.userProfile.id, e)
 
   say(response, messages.SOMETHING_BROKE)
 }
 
 bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
-  logger.identify({
-    userId: userProfile.id,
-    traits: {
-      name: userProfile.name,
-      avatar: userProfile.avatar
-    }})
+  logger.identify(userProfile.id, userProfile.name)
 
-  logger.track({
-    userId: userProfile.id,
-    event: 'Conversation started',
-    properties: {
-      userProfile: userProfile
-    }
-  })
+  logger.trackConversationStarted(userProfile)
 
   onFinish(new Message.Text(messages.HELP(bot.name, userProfile.name)))
 })
 
 bot.on(Events.MESSAGE_RECEIVED, (message: any, response: any) => {
-  logger.track({
-    userId: response.userProfile.id,
-    event: 'Message received',
-    properties: {
-      text: message.text,
-      userProfile: response.userProfile
-    }
-  })
+  logger.trackMessageReceived(message, response.userProfile)
 })
 
 // Bot handlers
