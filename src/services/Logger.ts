@@ -32,7 +32,7 @@ export default class Logger {
     Logger.track("Conversation started", userProfile.id)
   }
 
-  public static trackMessageReceived(text: string, userProfile: any) {
-    Logger.track("Message received", userProfile.id, {text: text})
+  public static trackMessageReceived(message: any, userProfile: any) {
+    Logger.track("Message received", userProfile.id, {text: message.text})
   }
 }
