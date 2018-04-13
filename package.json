@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "npm run build:typescript && sequelize db:migrate",
+    "postinstall": "npm run build:typescript && npm run db:migrate",
     "build:typescript": "tsc",
     "db:migrate": "sequelize db:migrate",
     "dev": "onchange \"src/**/*.ts\" -v -i -p -- ts-node src/app.ts",
