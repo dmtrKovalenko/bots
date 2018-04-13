@@ -46,3 +46,5 @@ export const CONTACTS = `
 +380 50 677 0324
 +380 63 047 6122
 Саша Гармаш`
+
+export const IM = (botName: string) => `Меня зовут ${botName} 😋`

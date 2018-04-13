@@ -75,7 +75,7 @@ bot.onTextMessage(/^Кто (записан|стоит|служит)/i, (message:
 })
 
 bot.onTextMessage(/^(Кто ты|Ты кто|Как тебя зовут|Привет)/i, (message: any, response: any) => {
-  say(response, `Меня зовут ${bot.name} 😋`)
+    say(response, messages.IM(bot.name))
 })
 
 bot.onTextMessage(/^Запиши меня .{1,20} с \d{2}:\d{2} до \d{2}:\d{2}/im, (message: any, response: any) => {

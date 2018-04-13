@@ -7,9 +7,9 @@ const dbConfig = {
     underscoredAll: true
   },
   dialectOptions: {
-    ssl: true
+    ssl: process.env.DATABASE_SSL_SUPPORT === 'true'
   },
-  dialect: 'postgres',
+  dialect: 'postgres'
 }
 
 module.exports = {
