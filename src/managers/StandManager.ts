@@ -47,20 +47,18 @@ export default class StandManager {
       })
   }
 
-  public authorizeKey(userId: string, key: string) {
+  public async authorizeKey(userId: string, key: string) {
     if (key.startsWith('https://teamup.com/')) {
       key = key.replace('https://teamup.com/', '')
     }
 
-    return this.teamUpService.verifyKey(key)
-      .then(isAuthorized => {
-        if (isAuthorized) {
-          AuthManager.addCalendarKey(userId, key)
-          return messages.KEY_AUTHORIZED
-        }
+    const isAuthorized = await this.teamUpService.verifyKey(key)
+    if (!isAuthorized) {
+      return messages.KEY_INVALID
+    }
 
-        return messages.KEY_INVALID
-      })
+    await AuthManager.addCalendarKey(userId, key)
+    return messages.KEY_AUTHORIZED
   }
 
   private async getServicesOnDate(date: Date) {

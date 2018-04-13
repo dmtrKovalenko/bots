@@ -14,8 +14,9 @@ const API_URL = 'https://api.teamup.com'
 export default class TeamUpService {
   constructor(private meta: Meta) { }
 
-  private teamUpFetch(url: string, options?: RequestInit) {
-    const calendarKey = AuthManager.getCalendarKey(this.meta.userId)
+  private async teamUpFetch(url: string, options?: RequestInit) {
+    const calendarKey = await AuthManager.getCalendarKey(this.meta.userId)
+
     if (!calendarKey) {
       return Promise.reject(new CustomError(messages.UNAUTHORIZED))
     }

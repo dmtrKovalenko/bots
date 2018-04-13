@@ -20,7 +20,7 @@ const handleError = (e: any, response: any) => {
     say(response, e.message)
     return;
   }
-
+  console.log(e)
   logger.trackError(response.userProfile.id, e)
 
   say(response, messages.SOMETHING_BROKE)
