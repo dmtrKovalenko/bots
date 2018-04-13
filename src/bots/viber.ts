@@ -38,6 +38,10 @@ bot.on(Events.MESSAGE_RECEIVED, (message: any, response: any) => {
   logger.trackMessageReceived(message, response.userProfile)
 })
 
+bot.onTextMessage(/^(Кто ты|Ты кто|Как тебя зовут|Привет)/i, (message: any, response: any) => {
+  say(response, messages.IM(bot.name))
+})
+
 // Bot handlers
 bot.onTextMessage(/^Помощь/i, (message: any, response: any) => {
   say(response, messages.HELP(bot.name, response.userProfile.name))
@@ -72,10 +76,6 @@ bot.onTextMessage(/^Кто (записан|стоит|служит)/i, (message:
   manager.getServices(when)
     .then(servicesMsg => say(response, servicesMsg))
     .catch(e => handleError(e, response))
-})
-
-bot.onTextMessage(/^(Кто ты|Ты кто|Как тебя зовут|Привет)/i, (message: any, response: any) => {
-    say(response, messages.IM(bot.name))
 })
 
 bot.onTextMessage(/^Запиши меня .{1,20} с \d{2}:\d{2} до \d{2}:\d{2}/im, (message: any, response: any) => {
