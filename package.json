@@ -8,7 +8,7 @@
     "heroku-postbuild": "npm run build:typescript && npm run db:migrate",
     "build:typescript": "tsc",
     "db:migrate": "sequelize db:migrate",
-    "dev": "onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=127.0.0.1:9229 src/app.ts",
+    "dev": "onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect-brk src/app.ts",
     "dev:pm2": "pm2 start ecosystem.dev.config.js --no-daemon",
     "start": "pm2 start ./build/app.js --no-daemon",
     "test": "echo \"Error: no test specified\" && exit 1"
