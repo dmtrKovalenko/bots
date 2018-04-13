@@ -1,14 +1,19 @@
-const dotenv = require('dotenv')
+require('dotenv').load()
 
-dotenv.load()
+const dbConfig = {
+  url: process.env.DATABASE_URL,
+  define: {
+    underscored: true,
+    underscoredAll: true
+  },
+  dialectOptions: {
+    ssl: true
+  },
+  dialect: 'postgres',
+}
 
 module.exports = {
-  development: {
-    url: process.env.DATABASE_URL,
-    define: {
-      underscored: true,
-      underscoredAll: true
-    },
-    dialect: 'postgres',
-  }
+  // config are same
+  development: dbConfig,
+  production: dbConfig
 }

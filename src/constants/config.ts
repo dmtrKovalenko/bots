@@ -1,15 +1,16 @@
+import sequelizeConfig from './sequelize.js'
 export const env = process.env.NODE_ENV || 'development'
+
+const dbConfig = sequelizeConfig[env]
 
 export default {
   availableDateFormats: ['DD MM', 'DD.MM', 'DDDo MM'],
   db: {
-    url: process.env.DATABASE_URL,
+    url: dbConfig.url,
     options: {
-      define: {
-        underscored: true,
-        underscoredAll: true
-      },
-      dialect: 'postgres'
+      define: dbConfig.define,
+      dialect: dbConfig.dialect,
+      dialectOptions: dbConfig.dialectOptions
     }
   }
 }

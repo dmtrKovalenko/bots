@@ -12,9 +12,9 @@ const sequelize = new Sequelize(config.db.url, config.db.options)
 
 fs
   .readdirSync(path.resolve(__dirname, 'models'))
-  .filter(file => file.indexOf('.') > 0 && file !== 'index.ts')
+  .filter(file => file.indexOf('.') > 0 && file !== path.basename(module.filename))
   .forEach(file => {
-    const model = sequelize.import(path.join(__dirname, 'models', file))
+    const model = sequelize.import(path.resolve(__dirname, 'models', file))
     db[model.name] = model;
   })
 

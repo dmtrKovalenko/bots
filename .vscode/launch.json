@@ -1,25 +1,23 @@
 {
   "version": "0.2.0",
   "configurations": [
-      {
-          "name": "Current TS Tests File",
-          "type": "node",
-          "request": "launch",
-          "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-          "args": ["-r", "ts-node/register", "${relativeFile}"],
-          "cwd": "${workspaceRoot}",
-          "protocol": "inspector",
-          "internalConsoleOptions": "openOnSessionStart"
-      },
-      {
-        "name": "Current TS File",
-        "type": "node",
-        "request": "launch",
-        "args": ["${relativeFile}"],
-        "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
-        "sourceMaps": true,
-        "cwd": "${workspaceRoot}",
-        "protocol": "inspector",
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register"
+      ],
+      "args": [
+        "${workspaceFolder}/src/app.ts"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to process",
+      "port": 9229
     }
   ]
 }
