@@ -3,4 +3,3 @@ build/
 logs/
 ngrok
 .env*
-db/
