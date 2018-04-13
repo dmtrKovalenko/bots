@@ -6,11 +6,13 @@ const dbConfig = {
     underscored: true,
     underscoredAll: true
   },
+  dialectOptions: {
+    ssl: true
+  },
   dialect: 'postgres',
 }
 
 module.exports = {
-  config: dbConfig,
   // config are same
   development: dbConfig,
   production: dbConfig
