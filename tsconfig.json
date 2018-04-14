@@ -17,6 +17,7 @@
     "allowJs": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "skipLibCheck": true
   },
   "paths": {
     "*": [
