@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="StandBot" type="NodeJSConfigurationType" factoryName="Node.js" node-parameters="-r ts-node/register src/app.ts" working-dir="$PROJECT_DIR$">
+    <method />
+  </configuration>
+</component>
