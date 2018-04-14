@@ -78,36 +78,6 @@ class ConversationStartedContextImpl extends ConversationStartedContext {
   }
 }
 
-bot.onTextMessage(/^Кто (записан|стоит|служит)/i, (message: any, response: any) => {
-  /*say(response, messages.PROCESSING)
-  const manager = new StandManager(new ViberMeta(message, response))
-
-  const when = message.text
-    .toLowerCase()
-    .replace(/^Кто (записан|стоит|служит)/i, '')
-    .trim()
-
-  manager.getServices(when)
-    .then(servicesMsg => say(response, servicesMsg))
-    .catch(e => handleError(e, response))*/
-});
-
-bot.onTextMessage(/^Запиши меня .{1,20} с \d{2}:\d{2} до \d{2}:\d{2}/im, (message: any, response: any) => {
-  //say(response, messages.PROCESSING)
-  //const manager = new StandManager(new ViberMeta(message, response))
-
-  //const userName = response.userProfile.name;
-  //const [date, startTime, endTime] = message.text
-    //.toLowerCase()
-    //.replace(/^Запиши меня/i, '')
-    //.trim()
-    //.split(/\s*до\s*|\s*с\s*/)
-
-  //manager.addService(userName, date, startTime, endTime)
-    //.then(message => say(response, message))
-    //.catch(e => handleError(e, response))
-});
-
 // Start the bot 🚀
 NgrokService.getPublicUrl()
   .then(publicUrl => {
