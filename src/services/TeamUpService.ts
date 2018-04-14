@@ -3,8 +3,8 @@ import fetch, { RequestInit } from 'node-fetch';
 import * as messages from '../constants/messages';
 import AuthManager from '../managers/AuthManager';
 import { CustomError } from '../models/Errors';
-import Meta from '../models/Meta';
 import TeamUpEvent from '../models/TeamUpEvent';
+import UserProfile from "../models/UserProfile";
 
 const token = process.env.TEAMUP_TOKEN
 
@@ -12,10 +12,10 @@ const FORMAT_DATE = 'YYYY-MM-DD'
 const API_URL = 'https://api.teamup.com'
 
 export default class TeamUpService {
-  constructor(private meta: Meta) { }
+  constructor(private userProfile: UserProfile) { }
 
   private async teamUpFetch(url: string, options?: RequestInit) {
-    const calendarKey = await AuthManager.getCalendarKey(this.meta.userId)
+    const calendarKey = await AuthManager.getCalendarKey(this.userProfile.id)
 
     if (!calendarKey) {
       return Promise.reject(new CustomError(messages.UNAUTHORIZED))

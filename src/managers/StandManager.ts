@@ -1,17 +1,17 @@
 import { endOfDay, format, startOfDay } from 'date-fns';
 import * as messages from '../constants/messages';
-import Meta from '../models/Meta';
 import TeamUpEvent from '../models/TeamUpEvent';
 import Parser from '../services/Parser';
 import TeamUpService from '../services/TeamUpService';
 import { localizedFormat } from '../utils/helpers';
 import AuthManager from './AuthManager';
+import UserProfile from "../models/UserProfile";
 
 export default class StandManager {
   teamUpService: TeamUpService;
 
-  constructor(meta: Meta) {
-    this.teamUpService = new TeamUpService(meta)
+  constructor(userProfile: UserProfile) {
+    this.teamUpService = new TeamUpService(userProfile)
   }
 
   getServices(when: string) {

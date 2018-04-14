@@ -1,4 +1,4 @@
-require('dotenv').load()
+require('dotenv').load();
 
 const dbConfig = {
   url: process.env.DATABASE_URL,
@@ -7,13 +7,13 @@ const dbConfig = {
     underscoredAll: true
   },
   dialectOptions: {
-    ssl: process.env.DISABLE_SSL ? false : true
+    ssl: !process.env.DISABLE_SSL
   },
   dialect: 'postgres'
-}
+};
 
 module.exports = {
   // config are same
   development: dbConfig,
   production: dbConfig
-}
+};
