@@ -25,13 +25,13 @@ export default class Logger {
     Logger.track("Error", userId, {error: error})
   }
 
-  public static identify(userId: string, name: string) {
-    mixpanel.people.set(userId, {
-      $first_name: name
+  public static identify(userProfile: UserProfile) {
+    mixpanel.people.set(userProfile.id, {
+      $first_name: userProfile.name
     })
   }
 
-  public static trackConversationStarted(userProfile: any) {
+  public static trackConversationStarted(userProfile: UserProfile) {
     Logger.track("Conversation started", userProfile.id)
   }
 

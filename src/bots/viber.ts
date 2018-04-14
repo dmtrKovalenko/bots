@@ -1,12 +1,10 @@
 import * as http from 'http';
 import { Bot as ViberBot, Message as ViberMessage, Events as ViberEvents } from 'viber-bot';
 import * as messages from '../constants/messages';
-import StandManager from '../managers/StandManager';
 import { CustomError } from '../models/Errors';
-import ViberMeta from '../models/ViberMeta';
 import NgrokService from '../services/NgrokService';
 import logger from '../services/Logger';
-import StandBot, {IProcessTextCommandContext} from './StandBot';
+import StandBot, {ConversationStartedContext, ProcessTextCommandContext} from './StandBot';
 import UserProfile from "../models/UserProfile";
 import Message from "../models/Message";
 
@@ -30,59 +28,58 @@ const handleError = (e: any, response: any) => {
 };
 
 bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
-  logger.identify(userProfile.id, userProfile.name);
-
-  logger.trackConversationStarted(userProfile);
-
-  onFinish(new ViberMessage.Text(messages.HELP(bot.name, userProfile.name)))
+  StandBot.conversationStarted(new ConversationStartedContextImpl(
+    bot.name,
+    new UserProfile(userProfile.id, userProfile.name),
+    onFinish)
+  );
 });
 
 bot.on(ViberEvents.MESSAGE_RECEIVED, (message: any, response: any) => {
-  StandBot.processMessage(
+  const userProfile = response.userProfile;
+
+  StandBot.processMessage(new ProcessTextCommandContextImpl(
+    bot.name,
     new Message(message.text),
-    new UserProfile(response.userProfile.id),
-    new ProcessTextCommandContext(bot.name, response)
-  )
+    new UserProfile(userProfile.id, userProfile.name),
+    response)
+  );
 });
 
-class ProcessTextCommandContext extends IProcessTextCommandContext {
+class ProcessTextCommandContextImpl extends ProcessTextCommandContext {
   private readonly response: any;
 
-  public constructor(botName: string, response: any) {
-    super(botName);
+  public constructor(botName: string, message: Message, userProfile: UserProfile, response: any) {
+    super(botName, message, userProfile);
 
     this.response = response;
   }
 
   sendMessage(message: Message): void {
-    say(this.response, message.text)
+    say(this.response, message.text);
+  }
+
+  handleError(e: any): void {
+    handleError(e, this.response);
   }
 }
 
-// Bot handlers
-bot.onTextMessage(/^Помощь/i, (message: any, response: any) => {
-  say(response, messages.HELP(bot.name, response.userProfile.name))
-});
+class ConversationStartedContextImpl extends ConversationStartedContext {
+  private readonly onFinish: any;
 
-bot.onTextMessage(/^Контакты/i, (message: any, response: any) => {
-  say(response, messages.CONTACTS)
-});
+  public constructor(botName: string, userProfile: UserProfile, onFinish: any) {
+    super(botName, userProfile);
 
-bot.onTextMessage(/^Мой ключ/i, (message: any, response: any) => {
-  const manager = new StandManager(new ViberMeta(message, response));
+    this.onFinish = onFinish;
+  }
 
-  const userId = response.userProfile.id;
-  const key = message.text
-    .replace(/^Мой ключ/i, '')
-    .trim();
-
-  manager.authorizeKey(userId, key)
-    .then(message => say(response, message))
-    .catch(e => handleError(e, response))
-});
+  sendMessage(message: Message): void {
+    this.onFinish(new ViberMessage.Text(message.text));
+  }
+}
 
 bot.onTextMessage(/^Кто (записан|стоит|служит)/i, (message: any, response: any) => {
-  say(response, messages.PROCESSING)
+  /*say(response, messages.PROCESSING)
   const manager = new StandManager(new ViberMeta(message, response))
 
   const when = message.text
@@ -92,23 +89,23 @@ bot.onTextMessage(/^Кто (записан|стоит|служит)/i, (message:
 
   manager.getServices(when)
     .then(servicesMsg => say(response, servicesMsg))
-    .catch(e => handleError(e, response))
+    .catch(e => handleError(e, response))*/
 });
 
 bot.onTextMessage(/^Запиши меня .{1,20} с \d{2}:\d{2} до \d{2}:\d{2}/im, (message: any, response: any) => {
-  say(response, messages.PROCESSING)
-  const manager = new StandManager(new ViberMeta(message, response))
+  //say(response, messages.PROCESSING)
+  //const manager = new StandManager(new ViberMeta(message, response))
 
-  const userName = response.userProfile.name;
-  const [date, startTime, endTime] = message.text
-    .toLowerCase()
-    .replace(/^Запиши меня/i, '')
-    .trim()
-    .split(/\s*до\s*|\s*с\s*/)
+  //const userName = response.userProfile.name;
+  //const [date, startTime, endTime] = message.text
+    //.toLowerCase()
+    //.replace(/^Запиши меня/i, '')
+    //.trim()
+    //.split(/\s*до\s*|\s*с\s*/)
 
-  manager.addService(userName, date, startTime, endTime)
-    .then(message => say(response, message))
-    .catch(e => handleError(e, response))
+  //manager.addService(userName, date, startTime, endTime)
+    //.then(message => say(response, message))
+    //.catch(e => handleError(e, response))
 });
 
 // Start the bot 🚀

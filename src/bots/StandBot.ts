@@ -4,8 +4,21 @@ import UserProfile from "../models/UserProfile";
 import Actions from "./Actions";
 
 export default class StandBot {
-  static processMessage(message: Message, userProfile: UserProfile, context: IProcessTextCommandContext) {
-    Logger.trackMessageReceived(message, userProfile);
+  static conversationStarted(context: ConversationStartedContext) {
+    const userProfile = context.userProfile;
+
+    Logger.identify(userProfile);
+    Logger.trackConversationStarted(userProfile);
+
+    const session = new ConversationStartedSession(context);
+
+    return Actions.ConversationStarted.execute(session);
+  }
+
+  static processMessage(context: ProcessTextCommandContext) {
+    let message = context.message;
+
+    Logger.trackMessageReceived(message, context.userProfile);
 
     const session = new ProcessMessageSession(context);
     const actions = Actions.All;
@@ -20,24 +33,64 @@ export default class StandBot {
   }
 }
 
-export class ProcessMessageSession {
-  readonly context: IProcessTextCommandContext;
+export abstract class IBaseContext {
+  public readonly botName: string;
 
-  constructor(context: IProcessTextCommandContext) {
+  protected constructor(botName: string) {
+    this.botName = botName;
+  }
+}
+
+export abstract class ProcessTextCommandContext extends IBaseContext {
+  readonly message: Message;
+  readonly userProfile: UserProfile;
+
+  protected constructor(botName: string, message: Message, userProfile: UserProfile) {
+    super(botName);
+
+    this.message = message;
+    this.userProfile = userProfile;
+  }
+
+  abstract sendMessage(message: Message): void;
+  abstract handleError(e: any): void;
+}
+
+export class ProcessMessageSession {
+  readonly context: ProcessTextCommandContext;
+
+  constructor(context: ProcessTextCommandContext) {
     this.context = context;
   }
 
   sendTextMessage(text: string) {
     this.context.sendMessage(new Message(text));
   }
+
+  handleError(e: any) {
+    this.context.handleError(e);
+  }
 }
 
-export abstract class IProcessTextCommandContext {
-  public readonly botName: string;
+export abstract class ConversationStartedContext extends IBaseContext {
+  public readonly userProfile: UserProfile;
 
-  protected constructor(botName: string) {
-    this.botName = botName;
+  protected constructor(botName: string, userProfile: UserProfile) {
+    super(botName);
+    this.userProfile = userProfile;
   }
 
   abstract sendMessage(message: Message): void
+}
+
+export class ConversationStartedSession {
+  readonly context: ConversationStartedContext;
+
+  constructor(context: ConversationStartedContext) {
+    this.context = context;
+  }
+
+  sendTextMessage(text: string) {
+    this.context.sendMessage(new Message(text));
+  }
 }
