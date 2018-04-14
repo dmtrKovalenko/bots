@@ -1,96 +1,30 @@
 import Logger from "../services/Logger";
-import Message from "../models/Message";
-import UserProfile from "../models/UserProfile";
-import Actions from "./actions/Actions";
+import allActions, { Unknown, ConversationStarted } from './actions'
+import { ConversationStartedSession, ConversationStartedContext } from "./events/ConversationStarted";
+import { ProcessMessageSession, ProcessMessageContext} from "./events/ProcessMessage";
 
 export default class StandBot {
   static conversationStarted(context: ConversationStartedContext) {
-    const userProfile = context.userProfile;
+    const { userProfile } = context;
+    const session = new ConversationStartedSession(context);
 
     Logger.identify(userProfile);
     Logger.trackConversationStarted(userProfile);
 
-    const session = new ConversationStartedSession(context);
-
-    return Actions.ConversationStarted.execute(session);
+    return ConversationStarted.execute(session);
   }
 
-  static processMessage(context: ProcessTextCommandContext) {
-    let message = context.message;
-
-    Logger.trackMessageReceived(message, context.userProfile);
-
+  static processMessage(context: ProcessMessageContext) {
+    const { message, userProfile } = context;
     const session = new ProcessMessageSession(context);
-    const actions = Actions.All;
-    const unknown = Actions.Unknown;
 
-    for (const action of actions) {
+    Logger.trackMessageReceived(message, userProfile);
+
+    for (const action of allActions) {
       if (action.testAndExecute(session))
           return true;
     }
 
-    return unknown.execute(session, null);
-  }
-}
-
-export abstract class IBaseContext {
-  public readonly botName: string;
-
-  protected constructor(botName: string) {
-    this.botName = botName;
-  }
-}
-
-export abstract class ProcessTextCommandContext extends IBaseContext {
-  readonly message: Message;
-  readonly userProfile: UserProfile;
-
-  protected constructor(botName: string, message: Message, userProfile: UserProfile) {
-    super(botName);
-
-    this.message = message;
-    this.userProfile = userProfile;
-  }
-
-  abstract sendMessage(message: Message): void;
-  abstract handleError(e: any): void;
-}
-
-export class ProcessMessageSession {
-  readonly context: ProcessTextCommandContext;
-
-  constructor(context: ProcessTextCommandContext) {
-    this.context = context;
-  }
-
-  sendTextMessage(text: string) {
-    this.context.sendMessage(new Message(text));
-  }
-
-  handleError(e: any) {
-    this.context.handleError(e);
-  }
-}
-
-export abstract class ConversationStartedContext extends IBaseContext {
-  public readonly userProfile: UserProfile;
-
-  protected constructor(botName: string, userProfile: UserProfile) {
-    super(botName);
-    this.userProfile = userProfile;
-  }
-
-  abstract sendMessage(message: Message): void
-}
-
-export class ConversationStartedSession {
-  readonly context: ConversationStartedContext;
-
-  constructor(context: ConversationStartedContext) {
-    this.context = context;
-  }
-
-  sendTextMessage(text: string) {
-    this.context.sendMessage(new Message(text));
+    return Unknown.execute(session, null);
   }
 }

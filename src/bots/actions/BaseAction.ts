@@ -1,6 +1,6 @@
-import {ProcessMessageSession} from "../StandBot";
+import { ProcessMessageSession } from "../events/ProcessMessage";
 
-export default abstract class Action {
+export default abstract class BaseAction {
   private readonly regexp: RegExp | null;
 
   protected constructor(regexp: RegExp | null) {
@@ -28,18 +28,4 @@ export default abstract class Action {
   }
 
   protected abstract action(session: ProcessMessageSession, args: string[] | null): boolean;
-}
-
-export class SimpleAction extends Action {
-  private readonly _action: (session: ProcessMessageSession) => boolean;
-
-  public constructor(regexp: RegExp, action: (session: ProcessMessageSession) => boolean) {
-    super(regexp);
-
-    this._action = action;
-  }
-
-  protected action(session: ProcessMessageSession): boolean {
-    return this._action(session);
-  }
 }

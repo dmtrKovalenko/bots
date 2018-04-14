@@ -2,16 +2,37 @@ import * as http from 'http';
 import { Bot as ViberBot, Message as ViberMessage, Events as ViberEvents } from 'viber-bot';
 import * as messages from '../constants/messages';
 import { CustomError } from '../models/Errors';
-import NgrokService from '../services/NgrokService';
-import logger from '../services/Logger';
-import StandBot, {ConversationStartedContext, ProcessTextCommandContext} from './StandBot';
-import UserProfile from "../models/UserProfile";
 import Message from "../models/Message";
+import UserProfile from "../models/UserProfile";
+import logger from '../services/Logger';
+import NgrokService from '../services/NgrokService';
+import StandBot from './StandBot';
+import { ConversationStartedContext } from './events/ConversationStarted';
+import { ProcessMessageContext } from './events/ProcessMessage';
 
 const bot = new ViberBot({
   name: 'StandBot',
   authToken: process.env.VIBER_BOT_TOKEN,
   avatar: null
+});
+
+bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
+  StandBot.conversationStarted(new ViberConversationStartedContext(
+    bot.name,
+    new UserProfile(userProfile.id, userProfile.name),
+    onFinish
+  ));
+});
+
+bot.on(ViberEvents.MESSAGE_RECEIVED, (message: any, response: any) => {
+  const userProfile = response.userProfile;
+
+  StandBot.processMessage(new ViberProcessMessageContext(
+    bot.name,
+    new Message(message.text),
+    new UserProfile(userProfile.id, userProfile.name),
+    response
+  ));
 });
 
 const say = (response: any, message: string) => response.send(new ViberMessage.Text(message));
@@ -27,26 +48,7 @@ const handleError = (e: any, response: any) => {
   say(response, messages.SOMETHING_BROKE)
 };
 
-bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
-  StandBot.conversationStarted(new ConversationStartedContextImpl(
-    bot.name,
-    new UserProfile(userProfile.id, userProfile.name),
-    onFinish)
-  );
-});
-
-bot.on(ViberEvents.MESSAGE_RECEIVED, (message: any, response: any) => {
-  const userProfile = response.userProfile;
-
-  StandBot.processMessage(new ProcessTextCommandContextImpl(
-    bot.name,
-    new Message(message.text),
-    new UserProfile(userProfile.id, userProfile.name),
-    response)
-  );
-});
-
-class ProcessTextCommandContextImpl extends ProcessTextCommandContext {
+class ViberProcessMessageContext extends ProcessMessageContext {
   private readonly response: any;
 
   public constructor(botName: string, message: Message, userProfile: UserProfile, response: any) {
@@ -64,7 +66,7 @@ class ProcessTextCommandContextImpl extends ProcessTextCommandContext {
   }
 }
 
-class ConversationStartedContextImpl extends ConversationStartedContext {
+class ViberConversationStartedContext extends ConversationStartedContext {
   private readonly onFinish: any;
 
   public constructor(botName: string, userProfile: UserProfile, onFinish: any) {
