@@ -1,6 +1,5 @@
-import fs from 'fs'
 import path from 'path'
-import { Sequelize, Model } from 'sequelize-typescript';
+import { Sequelize } from 'sequelize-typescript';
 import config from '../constants/config'
 
 if (!config.db.url) {
@@ -13,6 +12,5 @@ const sequelize = new Sequelize({
   ...config.db.options
 })
 
-export default sequelize._
-export { sequelize, Sequelize }
+export default sequelize 
 

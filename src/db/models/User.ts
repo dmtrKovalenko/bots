@@ -1,7 +1,7 @@
-import { Table, Column, Model, CreatedAt, UpdatedAt, PrimaryKey, AllowNull } from 'sequelize-typescript';
+import { Table, Column, Model, CreatedAt, UpdatedAt, PrimaryKey, AllowNull, DataType } from 'sequelize-typescript';
 
 @Table({ tableName: 'users' })
-export default class User extends Model<User> {
+export default class UserModel extends Model<UserModel> {
   @CreatedAt
   created_at: Date;
 
@@ -10,22 +10,10 @@ export default class User extends Model<User> {
 
   @PrimaryKey
   @AllowNull(false)
-  @Column
+  @Column(DataType.STRING(64))
   id: string;
 
   @AllowNull(false)
-  @Column
+  @Column(DataType.STRING(64))
   teamup_key: string;
-
-  constructor(
-    id: string,
-    teamup_key: string
-  ) {
-    super()
-    this.id = id;
-    this.teamup_key = teamup_key;
-
-    this.created_at = new Date();
-    this.updated_at = new Date()
-  }
 }
