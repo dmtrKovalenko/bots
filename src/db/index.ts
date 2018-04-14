@@ -1,22 +1,18 @@
 import fs from 'fs'
 import path from 'path'
-import Sequelize from 'sequelize'
+import { Sequelize, Model } from 'sequelize-typescript';
 import config from '../constants/config'
 
 if (!config.db.url) {
   throw new Error('Database url must be provided with DATABASE_URL env var')
 }
 
-const db: { [key: string]: Sequelize.Model<{}, {}> } = {}
-const sequelize = new Sequelize(config.db.url, config.db.options)
+const sequelize = new Sequelize({
+  url: config.db.url,
+  modelPaths: [path.resolve(__dirname, 'models')],
+  ...config.db.options
+})
 
-fs
-  .readdirSync(path.resolve(__dirname, 'models'))
-  .filter(file => file.indexOf('.') > 0 && file !== path.basename(module.filename))
-  .forEach(file => {
-    const model = sequelize.import(path.resolve(__dirname, 'models', file))
-    db[model.name] = model;
-  })
-
+export default sequelize._
 export { sequelize, Sequelize }
-export default db
+

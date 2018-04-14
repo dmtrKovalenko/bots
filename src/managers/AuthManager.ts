@@ -4,6 +4,7 @@ import User from "../models/User";
 export default class AuthManager {
   static getCalendarKey(userId: string) {
     return UserRepository.getById(userId)
+      .then(console.log)
       .then((user: User) => user ? user.teamup_key : null)
   }
 

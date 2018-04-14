@@ -27,8 +27,10 @@
     "mixpanel": "^0.9.1",
     "node-fetch": "^2.1.2",
     "pg": "^7.4.1",
+    "reflect-metadata": "^0.1.12",
     "sequelize": "^4.37.6",
     "sequelize-cli": "^4.0.0",
+    "sequelize-typescript": "^0.6.3",
     "ts-node": "^5.0.1",
     "typescript": "^2.8.1",
     "viber-bot": "^1.0.13"
