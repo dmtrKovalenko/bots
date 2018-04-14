@@ -43,23 +43,25 @@ class ContactsAction extends Action {
 }
 
 class SetKeyAction extends Action {
-  public static readonly PATTERN = /^Мой ключ/i;
+  public static readonly PATTERN = /^Мой ключ (.+)$/i;
 
   constructor() {
     super(SetKeyAction.PATTERN);
   }
 
-  protected action(session: ProcessMessageSession): boolean {
+  protected action(session: ProcessMessageSession, args: string[] | null): boolean {
     const userProfile = session.context.userProfile;
-    const message = session.context.message;
 
     const manager = new StandManager(userProfile);
 
     const userId = userProfile.id;
 
-    const key = message.text
-      .replace(SetKeyAction.PATTERN, '')
-      .trim();
+    if (args == null || args.length < 1) {
+      session.handleError("Похоже вы ввели ключ в неверном формате, поробуйте еще раз, пожалуйста.");
+      return true;
+    }
+
+    const key = args[0].trim();
 
     manager.authorizeKey(userId, key)
       .then(message => session.sendTextMessage(message))
@@ -97,13 +99,13 @@ class GetServicesAction extends Action {
 }
 
 class AddServiceAction extends Action {
-  public static readonly PATTERN = /^Запиши меня .{1,20} с \d{2}:\d{2} до \d{2}:\d{2}/im;
+  public static readonly PATTERN = /^Запиши меня(?: на)? (.{1,20}) с (\d{1,2}(?::\d{2})?) до (\d{1,2}(?::\d{2})?)/im;
 
   constructor() {
     super(AddServiceAction.PATTERN);
   }
 
-  protected action(session: ProcessMessageSession): boolean {
+  protected action(session: ProcessMessageSession, args: string[] | null): boolean {
     session.sendTextMessage(R.PROCESSING);
 
     const context = session.context;
@@ -112,11 +114,15 @@ class AddServiceAction extends Action {
     const manager = new StandManager(userProfile);
 
     const userName = userProfile.name;
-    const [date, startTime, endTime] = context.message.text
-      .toLowerCase()
-      .replace(/^Запиши меня/i, '')
-      .trim()
-      .split(/\s*до\s*|\s*с\s*/);
+
+    if (args == null || args.length < 3) {
+      session.handleError("Похоже вы ввели данныее в неверном формате, поробуйте еще раз, пожалуйста.");
+      return true;
+    }
+
+    const date = args[0].trim();
+    const startTime = args[1].trim();
+    const endTime = args[2].trim();
 
     manager.addService(userName, date, startTime, endTime)
       .then(message => session.sendTextMessage(message))
@@ -127,10 +133,8 @@ class AddServiceAction extends Action {
 }
 
 class UnknownAction extends Action {
-  public static readonly PATTERN = /^\*/;
-
   constructor() {
-    super(UnknownAction.PATTERN);
+    super(null);
   }
 
   protected action(session: ProcessMessageSession): boolean {

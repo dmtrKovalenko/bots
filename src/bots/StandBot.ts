@@ -25,11 +25,11 @@ export default class StandBot {
     const unknown = Actions.Unknown;
 
     for (const action of actions) {
-      if (action.test(message) && action.execute(session))
+      if (action.testAndExecute(session))
           return true;
     }
 
-    return unknown.execute(session);
+    return unknown.execute(session, null);
   }
 }
 

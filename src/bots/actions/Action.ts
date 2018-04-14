@@ -1,22 +1,33 @@
 import {ProcessMessageSession} from "../StandBot";
-import Message from "../../models/Message";
 
 export default abstract class Action {
-  private readonly regexp: RegExp;
+  private readonly regexp: RegExp | null;
 
-  protected constructor(regexp: RegExp) {
+  protected constructor(regexp: RegExp | null) {
     this.regexp = regexp;
   }
 
-  test(message: Message) {
-    return this.regexp.test(message.text);
+  testAndExecute(session: ProcessMessageSession) {
+    const message = session.context.message;
+
+    if (this.regexp == null)
+      throw new Error("Regexp cannot be null");
+
+    const regexpResults = this.regexp.exec(message.text);
+
+    if (regexpResults == null)
+      return false;
+
+    regexpResults.shift();
+
+    return this.execute(session, regexpResults);
   }
 
-  execute(session: ProcessMessageSession) {
-    return this.action(session);
+  execute(session: ProcessMessageSession, args: string[] | null) {
+    return this.action(session, args);
   }
 
-  protected abstract action(session: ProcessMessageSession): boolean;
+  protected abstract action(session: ProcessMessageSession, args: string[] | null): boolean;
 }
 
 export class SimpleAction extends Action {
