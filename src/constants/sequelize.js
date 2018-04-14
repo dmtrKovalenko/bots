@@ -7,7 +7,7 @@ const dbConfig = {
     underscoredAll: true
   },
   dialectOptions: {
-    ssl: process.env.DATABASE_SSL_SUPPORT === 'true'
+    ssl: process.env.DISABLE_SSL ? false : true
   },
   dialect: 'postgres'
 }
