@@ -1,7 +1,7 @@
 import Logger from "../services/Logger";
 import Message from "../models/Message";
 import UserProfile from "../models/UserProfile";
-import Actions from "./Actions";
+import Actions from "./actions/Actions";
 
 export default class StandBot {
   static conversationStarted(context: ConversationStartedContext) {
