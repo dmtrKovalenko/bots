@@ -1,3 +1,6 @@
+import Message from "../models/Message";
+import UserProfile from "../models/UserProfile";
+
 const mixpanelKey = process.env.MIXPANEL_KEY;
 
 if (!mixpanelKey) {
@@ -6,7 +9,7 @@ if (!mixpanelKey) {
 
 const Mixpanel = require("mixpanel");
 
-const mixpanel = Mixpanel.init(mixpanelKey)
+const mixpanel = Mixpanel.init(mixpanelKey);
 
 export default class Logger {
   public static track(eventName: string, userId: string, traits?: any) {
@@ -32,7 +35,7 @@ export default class Logger {
     Logger.track("Conversation started", userProfile.id)
   }
 
-  public static trackMessageReceived(message: any, userProfile: any) {
+  public static trackMessageReceived(message: Message, userProfile: UserProfile) {
     Logger.track("Message received", userProfile.id, {text: message.text})
   }
 }

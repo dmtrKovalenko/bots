@@ -17,7 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/mixpanel": "^2.14.0",
-    "@types/node": "^9.6.4",
+    "@types/node": "^9.6.5",
     "@types/node-fetch": "^1.6.8",
     "@types/node-json-db": "0.0.1",
     "@types/sequelize": "^4.27.14",
