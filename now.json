@@ -1,0 +1,7 @@
+{
+  "files": [
+    ".env",
+    ".env.stage",
+    "NgrokService.ts"
+  ]
+}
