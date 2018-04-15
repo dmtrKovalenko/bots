@@ -1,37 +1,27 @@
-import BaseAction from "../BaseAction";
-import * as R from "../../../constants/messages";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
 import StandManager from "../../../managers/StandManager";
+import BaseTeamupAction from "./BaseTeamupAction";
 
-export default class AddServiceAction extends BaseAction {
+export default class AddServiceAction extends BaseTeamupAction {
   public static readonly PATTERN = /^Запиши меня(?: на)? (.{1,20}) с (\d{1,2}(?::\d{2})?) до (\d{1,2}(?::\d{2})?)/im;
 
   constructor() {
     super(AddServiceAction.PATTERN);
   }
 
-  protected action(session: ProcessMessageSession, args: string[] | null): boolean {
-    session.sendTextMessage(R.PROCESSING);
-
+  protected async action(session: ProcessMessageSession) {
     const context = session.context;
-    const userProfile = context.userProfile;
 
-    const manager = new StandManager(userProfile);
-
-    const userName = userProfile.name;
-
-    if (args == null || args.length < 3) {
-      session.handleError("Похоже вы ввели данныее в неверном формате, поробуйте еще раз, пожалуйста.");
+    if (await this.checkTeamupKey(session))
       return true;
-    }
 
-    const date = args[0].trim();
-    const startTime = args[1].trim();
-    const endTime = args[2].trim();
+    const manager = new StandManager(context.userProfile);
 
-    manager.addService(userName, date, startTime, endTime)
-      .then(message => session.sendTextMessage(message))
-      .catch(e => session.handleError(e));
+    const date = this.arg(0).trim();
+    const startTime = this.arg(1).trim();
+    const endTime = this.arg(2).trim();
+
+    session.sendTextMessage(await manager.addService(date, startTime, endTime));
 
     return true;
   }

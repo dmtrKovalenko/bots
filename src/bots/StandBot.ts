@@ -14,14 +14,14 @@ export default class StandBot {
     return ConversationStarted.execute(session);
   }
 
-  static processMessage(context: ProcessMessageContext) {
+  static async processMessage(context: ProcessMessageContext) {
     const { message, userProfile } = context;
     const session = new ProcessMessageSession(context);
 
     Logger.trackMessageReceived(message, userProfile);
 
     for (const action of allActions) {
-      if (action.testAndExecute(session))
+      if (await action.testAndExecute(session))
           return true;
     }
 

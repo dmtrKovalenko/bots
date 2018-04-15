@@ -7,6 +7,7 @@ import SetKeyAction from './teamup/SetKeyAction';
 import GetServicesAction from './teamup/GetServicesAction';
 import AddServiceAction from './teamup/AddServiceAction';
 import UnknownAction from './UnknownAction';
+import HelloAction from "./help/HelloAction";
 
 export default [
   new WhoAreYouAction(),
@@ -14,7 +15,8 @@ export default [
   new ContactsAction(),
   new SetKeyAction(),
   new GetServicesAction(),
-  new AddServiceAction()
+  new AddServiceAction(),
+  new HelloAction()
 ];
 
 export const Unknown = new UnknownAction()

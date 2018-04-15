@@ -9,8 +9,8 @@ export default class ContactsAction extends BaseAction {
     super(ContactsAction.PATTERN);
   }
 
-  protected action(session: ProcessMessageSession): boolean {
+  protected action(session: ProcessMessageSession) {
     session.sendTextMessage(R.CONTACTS);
-    return true;
+    return Promise.resolve(true);
   }
 }

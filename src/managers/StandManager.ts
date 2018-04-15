@@ -10,7 +10,7 @@ import UserProfile from "../models/UserProfile";
 export default class StandManager {
   teamUpService: TeamUpService;
 
-  constructor(userProfile: UserProfile) {
+  constructor(private userProfile: UserProfile) {
     this.teamUpService = new TeamUpService(userProfile)
   }
 
@@ -23,7 +23,7 @@ export default class StandManager {
     }
   }
 
-  addService(userName: string, date: string, startTime: string, endTime: string) {
+  addService(date: string, startTime: string, endTime: string) {
     let start: Date, end: Date;
     try {
       const baseDate = Parser.parseDate(date)
@@ -34,7 +34,7 @@ export default class StandManager {
       return Promise.resolve(e.message)
     }
 
-    const event = new TeamUpEvent(userName, start, end)
+    const event = new TeamUpEvent(this.userProfile.name, start, end)
     return this.teamUpService.createEvent(event)
       .then(event => messages.ADDED_SUCCESSFULLY(localizedFormat(start, 'DD MMMM в HH:mm')))
       .catch(e => {
@@ -47,7 +47,7 @@ export default class StandManager {
       })
   }
 
-  public async authorizeKey(userId: string, key: string) {
+  public async authorizeKey(key: string) {
     if (key.startsWith('https://teamup.com/')) {
       key = key.replace('https://teamup.com/', '')
     }
@@ -57,7 +57,7 @@ export default class StandManager {
       return messages.KEY_INVALID
     }
 
-    await AuthManager.addCalendarKey(userId, key)
+    await AuthManager.addCalendarKey(this.userProfile.id, key)
     return messages.KEY_AUTHORIZED
   }
 

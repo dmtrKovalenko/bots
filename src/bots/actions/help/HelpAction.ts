@@ -9,8 +9,8 @@ export default class HelpAction extends BaseAction {
     super(HelpAction.PATTERN);
   }
 
-  protected action(session: ProcessMessageSession): boolean {
+  protected action(session: ProcessMessageSession) {
     session.sendTextMessage(R.HELP(session.context.botName, session.context.userProfile.name));
-    return true;
+    return Promise.resolve(true);
   }
 }

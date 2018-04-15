@@ -1,34 +1,21 @@
-import BaseAction from "../BaseAction";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
 import StandManager from "../../../managers/StandManager";
+import BaseTeamupAction from "./BaseTeamupAction";
 
-export default class SetKeyAction extends BaseAction {
+export default class SetKeyAction extends BaseTeamupAction {
   public static readonly PATTERN = /^Мой ключ (.+)$/i;
 
   constructor() {
     super(SetKeyAction.PATTERN);
   }
 
-  protected action(session: ProcessMessageSession, args: string[] | null): boolean {
-    const userProfile = session.context.userProfile;
+  protected async action(session: ProcessMessageSession) {
+    const manager = new StandManager(session.context.userProfile);
 
-    const manager = new StandManager(userProfile);
+    const key = this.arg(0).trim();
 
-    const userId = userProfile.id;
-
-    if (args == null || args.length < 1) {
-      // TODO move to the messages
-      session.handleError("Похоже вы ввели ключ в неверном формате, поробуйте еще раз, пожалуйста.");
-      return true;
-    }
-
-    const key = args[0].trim();
-
-    manager.authorizeKey(userId, key)
-      .then(message => session.sendTextMessage(message))
-      .catch(e => session.handleError(e));
+    session.sendTextMessage(await manager.authorizeKey(key));
 
     return true;
   }
 }
-

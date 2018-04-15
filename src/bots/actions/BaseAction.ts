@@ -7,6 +7,8 @@ export default abstract class BaseAction {
     this.regexp = regexp;
   }
 
+  private args: string[] | null;
+
   testAndExecute(session: ProcessMessageSession) {
     const message = session.context.message;
 
@@ -24,8 +26,16 @@ export default abstract class BaseAction {
   }
 
   execute(session: ProcessMessageSession, args: string[] | null) {
-    return this.action(session, args);
+    this.args = args;
+    return this.action(session);
   }
 
-  protected abstract action(session: ProcessMessageSession, args: string[] | null): boolean;
+  protected abstract action(session: ProcessMessageSession): Promise<boolean>;
+
+  protected arg(index: number) {
+    if (this.args == null)
+      throw new Error("Args is null");
+
+    return this.args[index];
+  }
 }

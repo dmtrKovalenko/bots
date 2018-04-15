@@ -7,8 +7,8 @@ export default class UnknownAction extends BaseAction {
     super(null);
   }
 
-  protected action(session: ProcessMessageSession): boolean {
+  protected action(session: ProcessMessageSession) {
     session.sendTextMessage(R.UNKNOWN);
-    return true;
+    return Promise.resolve(true);
   }
 }
