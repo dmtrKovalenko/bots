@@ -11,6 +11,6 @@ export default class ContactsAction extends BaseAction {
 
   protected action(session: ProcessMessageSession) {
     session.sendTextMessage(R.CONTACTS);
-    return Promise.resolve(true);
+    return true;
   }
 }

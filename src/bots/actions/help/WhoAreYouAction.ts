@@ -11,6 +11,6 @@ export default class WhoAreYouAction extends BaseAction {
 
   protected action(session: ProcessMessageSession) {
     session.sendTextMessage(R.ImBot(session.context.botName));
-    return Promise.resolve(true);
+    return true;
   }
 }

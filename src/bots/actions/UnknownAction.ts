@@ -9,6 +9,6 @@ export default class UnknownAction extends BaseAction {
 
   protected action(session: ProcessMessageSession) {
     session.sendTextMessage(R.UNKNOWN);
-    return Promise.resolve(true);
+    return true;
   }
 }

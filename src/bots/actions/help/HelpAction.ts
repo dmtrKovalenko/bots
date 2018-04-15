@@ -11,6 +11,6 @@ export default class HelpAction extends BaseAction {
 
   protected action(session: ProcessMessageSession) {
     session.sendTextMessage(R.HELP(session.context.botName, session.context.userProfile.name));
-    return Promise.resolve(true);
+    return true;
   }
 }

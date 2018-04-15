@@ -7,7 +7,7 @@ export default class HelloAction extends BaseAction {
   }
 
   protected action(session: ProcessMessageSession) {
-    session.sendTextMessage(`Привет, ${session.context.userProfile.name} 😉`)
-    return Promise.resolve(true);
+    session.sendTextMessage(`Привет, ${session.context.userProfile.name} 😉`);
+    return true;
   }
 }

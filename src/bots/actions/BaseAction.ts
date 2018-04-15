@@ -25,12 +25,16 @@ export default abstract class BaseAction {
     return this.execute(session, regexpResults);
   }
 
-  execute(session: ProcessMessageSession, args: string[] | null) {
+  execute(session: ProcessMessageSession, args: string[] | null): Promise<boolean> {
     this.args = args;
-    return this.action(session);
+    let result = this.action(session);
+    if (typeof result == typeof true)
+      return Promise.resolve(result);
+    else
+      return result as Promise<boolean>;
   }
 
-  protected abstract action(session: ProcessMessageSession): Promise<boolean>;
+  protected abstract action(session: ProcessMessageSession): boolean | Promise<boolean>;
 
   protected arg(index: number) {
     if (this.args == null)
