@@ -4,5 +4,6 @@
     "teamup",
     "viber",
     "webhook"
-  ]
+  ],
+  "typescript.tsdk": "/dmitrij/lib/node_modules/typescript/lib"
 }

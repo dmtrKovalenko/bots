@@ -1,5 +1,4 @@
 import BaseAction from "../BaseAction";
-import * as R from "../../../constants/messages";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
 import StandManager from "../../../managers/StandManager";
 

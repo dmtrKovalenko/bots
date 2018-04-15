@@ -1,21 +1,19 @@
-import { Sequelize, DataTypes } from "sequelize";
+import { Table, Column, Model, CreatedAt, UpdatedAt, PrimaryKey, AllowNull, DataType } from 'sequelize-typescript';
 
-export default (sequelize: Sequelize, DataTypes: DataTypes) => {
-  const UserModel = sequelize.define('User', {
-    id: {
-      type: DataTypes.STRING(64),
-      allowNull: false,
-      primaryKey: true,
-    },
-    teamup_key: {
-      type: DataTypes.STRING(64),
-      allowNull: false,
-    },
-  }, {
-    indexes: [
-      { unique: true, fields: ['teamup_key'] }
-    ],
-  })
+@Table({ tableName: 'users' })
+export default class UserModel extends Model<UserModel> {
+  @CreatedAt
+  created_at: Date;
 
-  return UserModel
+  @UpdatedAt
+  updated_at: Date;
+
+  @PrimaryKey
+  @AllowNull(false)
+  @Column(DataType.STRING(64))
+  id: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING(64))
+  teamup_key: string;
 }

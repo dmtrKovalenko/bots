@@ -1,21 +1,22 @@
-import db, { sequelize } from '../index'
-import UserModel from '../../models/User';
+
+import sequelize from 'sequelize'
+import UserModel from '../models/User'
+import User from '../../models/User';
 
 const { Op } = sequelize
-const { User } = db
 
 export default class UserRepository {
   static getById(id: string) {
-    return User.findOne({
+    return UserModel.findOne({
       where: {
         id: { [Op.eq]: id  }
       }
     })
-      .then((user: any) => user ? user.get({ plain: true}) : null)
+      .then(user => user ? user.get({ plain: true}) : null)
   }
 
-  static create(user: UserModel) {
-    return User.create(user);
+  static create(user: User) {
+    return UserModel.create(user);
   }
 }
 
