@@ -27,7 +27,7 @@ bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, on
 bot.on(ViberEvents.MESSAGE_RECEIVED, (message: any, response: any) => {
   const { userProfile } = response;
 
-  const profile = new UserProfile(userProfile.id, userProfile.name)
+  const profile = new UserProfile(userProfile.name, undefined, userProfile.id,)
   const context = new ViberProcessMessageContext(bot.name, new Message(message.text), profile, response)
 
   StandBot.processMessage(context)
@@ -55,7 +55,7 @@ class ViberProcessMessageContext extends ProcessMessageContext {
     }
 
     console.log(e);
-    logger.trackError(this.response.userProfile.id, e);
+    logger.trackError(this.userProfile.viber_id!, e);
 
     this.sendMessage(messages.SOMETHING_BROKE)
   }

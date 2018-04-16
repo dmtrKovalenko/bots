@@ -15,7 +15,7 @@ export default class TeamUpService {
   constructor(private userProfile: UserProfile) { }
 
   private async teamUpFetch(url: string, options?: RequestInit) {
-    const calendarKey = await AuthManager.getCalendarKey(this.userProfile.id)
+    const calendarKey = await AuthManager.getCalendarKey(this.userProfile)
 
     if (!calendarKey) {
       return Promise.reject(new CustomError(messages.UNAUTHORIZED))

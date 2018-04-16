@@ -15,7 +15,7 @@ if (!token) {
 const bot = new TelegramBot(token, { polling: true })
 
 bot.on('message', ({ chat, from, text }) => {
-  const userProfile = new UserProfile(from.id.toString(), `${from.first_name} ${from.last_name}`)
+  const userProfile = new UserProfile(`${from.first_name} ${from.last_name}`, from.id, undefined)
   const context = new TelegramProcessMessageContext('StandBot', new Message(text), userProfile, chat)
 
   StandBot.processMessage(context)
@@ -42,7 +42,7 @@ class TelegramProcessMessageContext extends ProcessMessageContext {
     }
 
     console.log(e);
-    Logger.trackError(this.userProfile.id, e);
+    Logger.trackError(this.userProfile.telegram_id!.toString(), e);
 
     this.sendMessage(messages.SOMETHING_BROKE)
   }
