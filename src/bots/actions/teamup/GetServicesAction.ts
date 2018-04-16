@@ -8,7 +8,7 @@ export default class GetServicesAction extends BaseTeamupAction {
   }
 
   protected async action(session: ProcessMessageSession) {
-    let userProfile = session.context.userProfile;
+    const userProfile = session.context.userProfile;
 
     if (!await this.checkTeamupKey(session))
       return true;
