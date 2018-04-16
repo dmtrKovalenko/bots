@@ -26,7 +26,7 @@ export class ProcessMessageSession {
 
   sendTextMessage(text: string) {
     this.context.sendMessage(text);
-  }
+   }
 
   handleError(e: any) {
     this.context.handleError(e);

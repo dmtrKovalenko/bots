@@ -4,7 +4,7 @@ import { ProcessMessageSession } from "../../events/ProcessMessage";
 
 export default class HelpAction extends BaseAction {
   constructor() {
-    super(/^Помощь/i);
+    super(/^(Помощь|\/start|\/help)/i);
   }
 
   protected async action(session: ProcessMessageSession) {

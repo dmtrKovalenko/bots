@@ -19,6 +19,7 @@ bot.on('message', ({ chat, from, text }) => {
   const context = new TelegramProcessMessageContext('StandBot', new Message(text), userProfile, chat)
 
   StandBot.processMessage(context)
+    .catch(context.handleError)
 });
 
 class TelegramProcessMessageContext extends ProcessMessageContext {

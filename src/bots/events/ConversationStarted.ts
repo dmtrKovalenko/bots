@@ -1,6 +1,5 @@
 import IBaseContext from "./IBaseContext";
 import UserProfile from "../../models/UserProfile";
-import Message from "../../models/Message";
 
 export abstract class ConversationStartedContext extends IBaseContext {
   public readonly userProfile: UserProfile;
