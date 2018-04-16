@@ -36,6 +36,6 @@ export default class UserRepository {
   }
 
   private static toUser(userModel: UserModel): User {
-    return userModel ? userModel.get({ plain: true}) : null;
+    return userModel.get({ plain: true});
   }
 }
