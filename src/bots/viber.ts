@@ -32,7 +32,7 @@ bot.on(ViberEvents.MESSAGE_RECEIVED, (message: any, response: any) => {
     new Message(message.text),
     new UserProfile(userProfile.id, userProfile.name),
     response
-  ));
+  )).catch(e => handleError(e, response));
 });
 
 const say = (response: any, message: string) => response.send(new ViberMessage.Text(message));

@@ -1,31 +1,23 @@
-import BaseAction from "../BaseAction";
-import * as R from "../../../constants/messages";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
 import StandManager from "../../../managers/StandManager";
+import BaseTeamupAction from "./BaseTeamupAction";
 
-
-export default class GetServicesAction extends BaseAction {
-  public static readonly PATTERN = /^Кто (записан|стоит|служит)/i;
-
+export default class GetServicesAction extends BaseTeamupAction {
   constructor() {
-    super(GetServicesAction.PATTERN);
+    super(/^Кто (?:записан|стоит|служит) (.+)$/i);
   }
 
-  protected action(session: ProcessMessageSession): boolean {
-    const context = session.context;
+  protected async action(session: ProcessMessageSession) {
+    const userProfile = session.context.userProfile;
 
-    session.sendTextMessage(R.PROCESSING);
+    if (!await this.checkTeamupKey(session))
+      return true;
 
-    const manager = new StandManager(context.userProfile);
+    const when = this.arg(0).trim();
 
-    const when = context.message.text
-      .toLowerCase()
-      .replace(GetServicesAction.PATTERN, '')
-      .trim();
+    const manager = new StandManager(userProfile);
 
-    manager.getServices(when)
-      .then(servicesMsg => session.sendTextMessage(servicesMsg))
-      .catch(e => session.handleError(e));
+    session.sendTextMessage(await manager.getServices(when));
 
     return true;
   }
