@@ -6,7 +6,7 @@ export default class HelloAction extends BaseAction {
     super(/^Привет/i);
   }
 
-  protected action(session: ProcessMessageSession) {
+  protected async action(session: ProcessMessageSession) {
     session.sendTextMessage(`Привет, ${session.context.userProfile.name} 😉`);
     return true;
   }

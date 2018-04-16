@@ -19,7 +19,7 @@ export default class GetServicesAction extends BaseTeamupAction {
 
     const manager = new StandManager(userProfile);
 
-    session.sendTextMessage(await manager.getServices(when))
+    session.sendTextMessage(await manager.getServices(when));
 
     return true;
   }

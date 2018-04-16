@@ -9,7 +9,7 @@ export default class WhoAreYouAction extends BaseAction {
     super(WhoAreYouAction.PATTERN);
   }
 
-  protected action(session: ProcessMessageSession) {
+  protected async action(session: ProcessMessageSession) {
     session.sendTextMessage(R.ImBot(session.context.botName));
     return true;
   }

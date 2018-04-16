@@ -9,7 +9,7 @@ export default class ContactsAction extends BaseAction {
     super(ContactsAction.PATTERN);
   }
 
-  protected action(session: ProcessMessageSession) {
+  protected async action(session: ProcessMessageSession) {
     session.sendTextMessage(R.CONTACTS);
     return true;
   }
