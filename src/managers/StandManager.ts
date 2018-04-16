@@ -57,7 +57,7 @@ export default class StandManager {
       return messages.KEY_INVALID
     }
 
-    await AuthManager.addCalendarKey(this.userProfile.id, key)
+    await AuthManager.addCalendarKey(this.userProfile, key)
     return messages.KEY_AUTHORIZED
   }
 

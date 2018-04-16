@@ -25,28 +25,15 @@ bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, on
 });
 
 bot.on(ViberEvents.MESSAGE_RECEIVED, (message: any, response: any) => {
-  const userProfile = response.userProfile;
+  const { userProfile } = response;
 
-  StandBot.processMessage(new ViberProcessMessageContext(
-    bot.name,
-    new Message(message.text),
-    new UserProfile(userProfile.id, userProfile.name),
-    response
-  )).catch(e => handleError(e, response));
+  const profile = new UserProfile(userProfile.name, undefined, userProfile.id,)
+  const context = new ViberProcessMessageContext(bot.name, new Message(message.text), profile, response)
+
+  StandBot.processMessage(context)
+    .catch(context.handleError);
 });
 
-const say = (response: any, message: string) => response.send(new ViberMessage.Text(message));
-
-const handleError = (e: any, response: any) => {
-  if (e instanceof CustomError) {
-    say(response, e.message);
-    return;
-  }
-  console.log(e);
-  logger.trackError(response.userProfile.id, e);
-
-  say(response, messages.SOMETHING_BROKE)
-};
 
 class ViberProcessMessageContext extends ProcessMessageContext {
   private readonly response: any;
@@ -57,12 +44,20 @@ class ViberProcessMessageContext extends ProcessMessageContext {
     this.response = response;
   }
 
-  sendMessage(message: Message): void {
-    say(this.response, message.text);
+  sendMessage(message: string): void {
+    this.response.send(new ViberMessage.Text(message));
   }
 
   handleError(e: any): void {
-    handleError(e, this.response);
+    if (e instanceof CustomError) {
+      this.sendMessage(e.message)
+      return;
+    }
+
+    console.log(e);
+    logger.trackError(this.userProfile.viber_id!, e);
+
+    this.sendMessage(messages.SOMETHING_BROKE)
   }
 }
 
@@ -75,8 +70,8 @@ class ViberConversationStartedContext extends ConversationStartedContext {
     this.onFinish = onFinish;
   }
 
-  sendMessage(message: Message): void {
-    this.onFinish(new ViberMessage.Text(message.text));
+  sendMessage(message: string): void {
+    this.onFinish(new ViberMessage.Text(message));
   }
 }
 

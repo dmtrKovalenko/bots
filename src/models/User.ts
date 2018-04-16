@@ -3,8 +3,9 @@ export default class User {
   updated_at: Date;
 
   constructor(
-    public id: string,
-    public teamup_key: string
+    public teamup_key: string,
+    public telegram_id?: number,
+    public viber_id?: string,
   ) {
     this.created_at = new Date();
     this.updated_at = new Date()

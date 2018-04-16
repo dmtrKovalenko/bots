@@ -13,7 +13,7 @@ export abstract class ProcessMessageContext extends IBaseContext {
     this.userProfile = userProfile;
   }
 
-  abstract sendMessage(message: Message): void;
+  abstract sendMessage(message: string): void;
   abstract handleError(e: any): void;
 }
 
@@ -25,8 +25,8 @@ export class ProcessMessageSession {
   }
 
   sendTextMessage(text: string) {
-    this.context.sendMessage(new Message(text));
-  }
+    this.context.sendMessage(text);
+   }
 
   handleError(e: any) {
     this.context.handleError(e);
