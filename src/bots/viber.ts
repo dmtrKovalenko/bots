@@ -42,6 +42,7 @@ const handleError = (e: any, response: any) => {
     say(response, e.message);
     return;
   }
+
   console.log(e);
   logger.trackError(response.userProfile.id, e);
 
@@ -57,8 +58,8 @@ class ViberProcessMessageContext extends ProcessMessageContext {
     this.response = response;
   }
 
-  sendMessage(message: Message): void {
-    say(this.response, message.text);
+  sendMessage(message: string): void {
+    say(this.response, message);
   }
 
   handleError(e: any): void {
@@ -75,8 +76,8 @@ class ViberConversationStartedContext extends ConversationStartedContext {
     this.onFinish = onFinish;
   }
 
-  sendMessage(message: Message): void {
-    this.onFinish(new ViberMessage.Text(message.text));
+  sendMessage(message: string): void {
+    this.onFinish(new ViberMessage.Text(message));
   }
 }
 

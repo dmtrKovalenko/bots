@@ -10,7 +10,7 @@ export abstract class ConversationStartedContext extends IBaseContext {
     this.userProfile = userProfile;
   }
 
-  abstract sendMessage(message: Message): void
+  abstract sendMessage(message: string): void
 }
 
 export class ConversationStartedSession {
@@ -21,6 +21,6 @@ export class ConversationStartedSession {
   }
 
   sendTextMessage(text: string) {
-    this.context.sendMessage(new Message(text));
+    this.context.sendMessage(text);
   }
 }

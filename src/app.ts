@@ -1,4 +1,6 @@
 require('dotenv').config()
 
-import './bots/viber'
 import './db'
+import './bots/viber'
+import './bots/telegram'
+
