@@ -12,5 +12,4 @@ const sequelize = new Sequelize({
   ...config.db.options
 })
 
-export default sequelize 
-
+export default sequelize

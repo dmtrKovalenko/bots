@@ -19,7 +19,7 @@ export default [
   new HelloAction()
 ];
 
-export const Unknown = new UnknownAction()
+export const Unknown = new UnknownAction();
 
 export const ConversationStarted = {
   execute: (session: ConversationStartedSession) => {

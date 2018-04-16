@@ -3,5 +3,4 @@ build/
 logs/
 ngrok*
 .env*
-db/
 .idea
