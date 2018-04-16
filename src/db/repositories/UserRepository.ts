@@ -1,4 +1,3 @@
-
 import sequelize from 'sequelize'
 import UserModel from '../models/UserModel'
 import User from '../../models/User';
