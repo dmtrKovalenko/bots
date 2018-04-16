@@ -1,22 +1,32 @@
 
 import sequelize from 'sequelize'
-import UserModel from '../models/User'
+import UserModel from '../models/UserModel'
 import User from '../../models/User';
 
-const { Op } = sequelize
+const { Op } = sequelize;
 
 export default class UserRepository {
-  static getById(id: string) {
-    return UserModel.findOne({
-      where: {
-        id: { [Op.eq]: id  }
-      }
-    })
-      .then(user => user ? user.get({ plain: true}) : null)
+  static async findById(id: string): Promise<User | null> {
+    const userModel = await UserModel.findOne({
+      where: this.where(id)
+    });
+
+    return userModel ? userModel.toUser() : null;
   }
 
-  static create(user: User) {
-    return UserModel.create(user);
+  static async create(user: User): Promise<User> {
+    return (await UserModel.create(user)).toUser();
+  }
+
+  public static async update(user: User): Promise<void> {
+    await UserModel.update(user, {
+      where: this.where(user.id)
+    })
+  }
+
+  private static where(id: string) {
+    return {
+      id: { [Op.eq]: id  }
+    }
   }
 }
-
