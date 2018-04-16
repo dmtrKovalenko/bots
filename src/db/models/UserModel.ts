@@ -1,4 +1,5 @@
 import { Table, Column, Model, CreatedAt, UpdatedAt, PrimaryKey, AllowNull, DataType } from 'sequelize-typescript';
+import User from "../../models/User";
 
 @Table({ tableName: 'users' })
 export default class UserModel extends Model<UserModel> {
@@ -16,4 +17,8 @@ export default class UserModel extends Model<UserModel> {
   @AllowNull(false)
   @Column(DataType.STRING(64))
   teamup_key: string;
+
+  public toUser(): User {
+    return this.get({ plain: true});
+  }
 }

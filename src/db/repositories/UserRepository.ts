@@ -11,16 +11,11 @@ export default class UserRepository {
       where: this.where(id)
     });
 
-    if (userModel == null)
-      return null;
-
-    return this.toUser(userModel);
+    return userModel ? userModel.toUser() : null;
   }
 
   static async create(user: User): Promise<User> {
-    const userModel = await UserModel.create(user);
-
-    return this.toUser(userModel);
+    return (await UserModel.create(user)).toUser();
   }
 
   public static async update(user: User): Promise<void> {
@@ -33,9 +28,5 @@ export default class UserRepository {
     return {
       id: { [Op.eq]: id  }
     }
-  }
-
-  private static toUser(userModel: UserModel): User {
-    return userModel.get({ plain: true});
   }
 }
