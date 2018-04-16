@@ -3,10 +3,8 @@ import StandManager from "../../../managers/StandManager";
 import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class AddServiceAction extends BaseTeamupAction {
-  public static readonly PATTERN = /^Запиши меня(?: на)? (.{1,20}) с (\d{1,2}(?::\d{2})?) до (\d{1,2}(?::\d{2})?)/im;
-
   constructor() {
-    super(AddServiceAction.PATTERN);
+    super(/^Запиши меня(?: на)? (.{1,20}) с (\d{1,2}(?::\d{2})?) до (\d{1,2}(?::\d{2})?)/im);
   }
 
   protected async action(session: ProcessMessageSession) {

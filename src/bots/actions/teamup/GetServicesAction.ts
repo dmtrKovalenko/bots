@@ -3,10 +3,8 @@ import StandManager from "../../../managers/StandManager";
 import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class GetServicesAction extends BaseTeamupAction {
-  public static readonly PATTERN = /^Кто (?:записан|стоит|служит) (.+)$/i;
-
   constructor() {
-    super(GetServicesAction.PATTERN);
+    super(/^Кто (?:записан|стоит|служит) (.+)$/i);
   }
 
   protected async action(session: ProcessMessageSession) {

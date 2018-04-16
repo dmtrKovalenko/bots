@@ -3,10 +3,8 @@ import StandManager from "../../../managers/StandManager";
 import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class SetKeyAction extends BaseTeamupAction {
-  public static readonly PATTERN = /^Мой ключ (.+)$/i;
-
   constructor() {
-    super(SetKeyAction.PATTERN);
+    super(/^Мой ключ (.+)$/i);
   }
 
   protected async action(session: ProcessMessageSession) {

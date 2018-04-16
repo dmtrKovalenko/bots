@@ -3,10 +3,8 @@ import * as R from "../../../constants/messages";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
 
 export default class HelpAction extends BaseAction {
-  public static readonly PATTERN = /^Помощь/i;
-
   constructor() {
-    super(HelpAction.PATTERN);
+    super(/^Помощь/i);
   }
 
   protected async action(session: ProcessMessageSession) {

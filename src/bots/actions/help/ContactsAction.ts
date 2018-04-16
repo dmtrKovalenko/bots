@@ -3,10 +3,8 @@ import * as R from "../../../constants/messages";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
 
 export default class ContactsAction extends BaseAction {
-  public static readonly PATTERN = /^Контакты/i;
-
   constructor() {
-    super(ContactsAction.PATTERN);
+    super(/^Контакты/i);
   }
 
   protected async action(session: ProcessMessageSession) {

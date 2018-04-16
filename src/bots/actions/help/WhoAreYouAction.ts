@@ -3,10 +3,8 @@ import * as R from "../../../constants/messages";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
 
 export default class WhoAreYouAction extends BaseAction {
-  public static readonly PATTERN = /^(Кто ты|Ты кто|Как тебя зовут)/i;
-
   constructor() {
-    super(WhoAreYouAction.PATTERN);
+    super(/^(Кто ты|Ты кто|Как тебя зовут)/i);
   }
 
   protected async action(session: ProcessMessageSession) {
