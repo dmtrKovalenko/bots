@@ -17,10 +17,10 @@ if (!token) {
 }
 
 const options = {
-  polling: env !== 'production',
+  polling: env === 'development',
   // telegram typings :(
   webHook: env === 'production'
-    ? { port: process.env.TELEGRAM_PORT, key: '', cert: '',  pfx: ''  }
+    ? { port: process.env.TELEGRAM_PORT || 8443, key: '', cert: '',  pfx: ''  }
     : false
 }
 
