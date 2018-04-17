@@ -7,22 +7,17 @@ export default class GetServicesAction extends BaseTeamupAction {
 
   protected async action(session: ProcessMessageSession) {
     const { userProfile } = session.context;
-
     const manager = new StandManager(userProfile);
-
-    const processingMessageDelay = this.processingMessageDelay(session);
 
     if (!await this.checkTeamupKey(session))
       return true;
 
-    const when = this.arg(0).trim();
+    const processingMessageDelay = this.processingMessageDelay(session);
 
-    const text = await manager.getServices(when);
+    const when = this.arg(0).trim();
+    session.sendTextMessage(await manager.getServices(when));
 
     processingMessageDelay.cancel();
-
-    session.sendTextMessage(text);
-
     return true;
   }
 }

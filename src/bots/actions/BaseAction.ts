@@ -1,6 +1,6 @@
 import { ProcessMessageSession } from "../events/ProcessMessage";
 import * as R from "../../constants/messages";
-import delay = require("delay");
+import delay from 'delay';
 
 export default abstract class BaseAction {
   private args: string[] | null;
@@ -18,7 +18,6 @@ export default abstract class BaseAction {
       return false;
 
     regexpResults.shift();
-
     return this.execute(session, regexpResults);
   }
 
