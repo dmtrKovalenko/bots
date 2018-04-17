@@ -20,7 +20,7 @@ const options = {
   polling: env === 'development',
   // telegram typings :(
   webHook: env === 'production'
-    ? { port: process.env.TELEGRAM_PORT || 8443, key: '', cert: '',  pfx: ''  }
+    ? { port: process.env.PORT || 8443, key: '', cert: '',  pfx: ''  }
     : false
 }
 
