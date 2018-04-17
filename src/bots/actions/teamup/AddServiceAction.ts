@@ -3,9 +3,7 @@ import StandManager from "../../../managers/StandManager";
 import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class AddServiceAction extends BaseTeamupAction {
-  constructor() {
-    super(/^Запиши меня(?: на)? (.{1,20}) с (\d{1,2}(?::\d{2})?) до (\d{1,2}(?::\d{2})?)/im);
-  }
+  regexp = /^Запиши меня(?: на)? (.{1,20}) с (\d{1,2}(?::\d{2})?) до (\d{1,2}(?::\d{2})?)/i
 
   protected async action(session: ProcessMessageSession) {
     const context = session.context;
