@@ -27,6 +27,7 @@
     "@types/node-json-db": "0.0.1",
     "@types/node-telegram-bot-api": "^0.28.2",
     "@types/sequelize": "^4.27.14",
+    "@types/delay": "^2.0.1",
     "date-fns": "^2.0.0-alpha.7",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
@@ -41,7 +42,8 @@
     "sequelize-typescript": "^0.6.3",
     "ts-node": "^5.0.1",
     "typescript": "^2.8.1",
-    "viber-bot": "^1.0.13"
+    "viber-bot": "^1.0.13",
+    "delay": "^2.0.0"
   },
   "devDependencies": {
     "tslint": "^5.9.1",

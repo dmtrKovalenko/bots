@@ -1,4 +1,6 @@
 import { ProcessMessageSession } from "../events/ProcessMessage";
+import * as R from "../../constants/messages";
+import delay = require("delay");
 
 export default abstract class BaseAction {
   private args: string[] | null;
@@ -32,5 +34,11 @@ export default abstract class BaseAction {
       throw new Error("Args is null");
 
     return this.args[index];
+  }
+
+  protected processingMessageDelay(session: ProcessMessageSession) {
+    const _delay = delay(600);
+    _delay.then(() => session.sendTextMessage(R.PROCESSING));
+    return _delay;
   }
 }
