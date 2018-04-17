@@ -1,3 +1,5 @@
+require('../app')
+
 import * as http from 'http';
 import { Bot as ViberBot, Message as ViberMessage, Events as ViberEvents } from 'viber-bot';
 import * as messages from '../constants/messages';

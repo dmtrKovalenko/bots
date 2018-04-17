@@ -1,3 +1,5 @@
+require('../app')
+
 import TelegramBot from 'node-telegram-bot-api';
 import * as messages from '../constants/messages';
 import { CustomError } from '../models/Errors';
