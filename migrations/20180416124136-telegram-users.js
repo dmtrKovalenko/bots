@@ -3,7 +3,7 @@ module.exports = {
     await db.query(`
       ALTER TABLE users RENAME id to viber_id;
       ADD COLUMN telegram_id int NULL;
-      ALTER COLUMN viber_id DROP NOT NULL;
+      MODIFY COLUMN viber_id DROP NOT NULL;
     `, { transaction })
 
     await db.query('ALTER TABLE users DROP CONSTRAINT IF EXISTS users_pk, ADD CONSTRAINT users_pk PRIMARY KEY (teamup_key),', { transaction })
