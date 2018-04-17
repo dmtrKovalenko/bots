@@ -83,7 +83,7 @@ publicUrl()
     console.log('Set the new webhook to', publicUrl);
 
     http.createServer(bot.middleware())
-      .listen(process.env.VIBER_PORT || 8080, () => {
+      .listen(process.env.PORT || 8080, () => {
         bot.setWebhook(publicUrl)
           .then(() => console.log('Viber bot has been started'))
           .catch((e: any) => console.log('Viber bot triggered unhandled rejection', e))
