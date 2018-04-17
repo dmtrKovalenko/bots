@@ -7,7 +7,7 @@ import { CustomError } from '../models/Errors';
 import Message from '../models/Message';
 import UserProfile from '../models/UserProfile';
 import Logger from '../services/Logger';
-import PublicUrlService from '../services/PublicUrlService';
+import publicUrl from '../services/PublicUrl';
 import StandBot from './StandBot';
 import { ProcessMessageContext } from './events/ProcessMessage';
 
@@ -61,7 +61,7 @@ class TelegramProcessMessageContext extends ProcessMessageContext {
 
 if (env === 'production') {
   // Start the bot 🚀
-  PublicUrlService.getPublicUrl()
+  publicUrl()
     .then(publicUrl => {
       console.log('Set telegram webhook to', publicUrl);
       bot.setWebHook(`${publicUrl}/bot${token}`)

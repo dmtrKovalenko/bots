@@ -7,7 +7,7 @@ import { CustomError } from '../models/Errors';
 import Message from "../models/Message";
 import UserProfile from "../models/UserProfile";
 import logger from '../services/Logger';
-import PublicUrlService from '../services/PublicUrlService';
+import publicUrl from '../services/PublicUrl';
 import StandBot from './StandBot';
 import { ConversationStartedContext } from './events/ConversationStarted';
 import { ProcessMessageContext } from './events/ProcessMessage';
@@ -78,7 +78,7 @@ class ViberConversationStartedContext extends ConversationStartedContext {
 }
 
 // Start the bot 🚀
-PublicUrlService.getPublicUrl()
+publicUrl()
   .then(publicUrl => {
     console.log('Set the new webhook to', publicUrl);
 
