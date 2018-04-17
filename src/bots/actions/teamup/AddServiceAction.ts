@@ -18,9 +18,9 @@ export default class AddServiceAction extends BaseTeamupAction {
     const startTime = this.arg(1).trim();
     const endTime = this.arg(2).trim();
 
-    processingMessageDelay.cancel();
     session.sendTextMessage(await manager.addService(date, startTime, endTime));
 
+    processingMessageDelay.cancel();
     return true;
   }
 }
