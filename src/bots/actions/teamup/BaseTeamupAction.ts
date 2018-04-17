@@ -1,6 +1,6 @@
 import BaseAction from "../BaseAction";
 import AuthManager from "../../../managers/AuthManager";
-import {ProcessMessageSession} from "../../events/ProcessMessage";
+import { ProcessMessageSession } from "../../events/ProcessMessage";
 import * as R from "../../../constants/messages";
 
 export default abstract class BaseTeamupAction extends BaseAction {

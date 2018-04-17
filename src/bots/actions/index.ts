@@ -1,13 +1,13 @@
 import * as R from '../../constants/messages';
 import { ConversationStartedSession } from "../events/ConversationStarted";
-import WhoAreYouAction from './help/WhoAreYouAction';
-import HelpAction from './help/HelpAction';
-import ContactsAction from './help/ContactsAction';
-import SetKeyAction from './teamup/SetKeyAction';
-import GetServicesAction from './teamup/GetServicesAction';
-import AddServiceAction from './teamup/AddServiceAction';
 import UnknownAction from './UnknownAction';
+import ContactsAction from './help/ContactsAction';
 import HelloAction from "./help/HelloAction";
+import HelpAction from './help/HelpAction';
+import WhoAreYouAction from './help/WhoAreYouAction';
+import AddServiceAction from './teamup/AddServiceAction';
+import GetServicesAction from './teamup/GetServicesAction';
+import SetKeyAction from './teamup/SetKeyAction';
 
 export default [
   new WhoAreYouAction(),

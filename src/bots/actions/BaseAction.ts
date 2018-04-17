@@ -1,13 +1,8 @@
 import { ProcessMessageSession } from "../events/ProcessMessage";
 
 export default abstract class BaseAction {
-  private readonly regexp: RegExp | null;
-
-  protected constructor(regexp: RegExp | null) {
-    this.regexp = regexp;
-  }
-
   private args: string[] | null;
+  protected abstract regexp: RegExp | null;
 
   testAndExecute(session: ProcessMessageSession) {
     const message = session.context.message;

@@ -1,11 +1,11 @@
-import TelegramBot from 'node-telegram-bot-api'
+import TelegramBot from 'node-telegram-bot-api';
+import * as messages from '../constants/messages';
+import { CustomError } from '../models/Errors';
+import Message from '../models/Message';
+import UserProfile from '../models/UserProfile';
+import Logger from '../services/Logger';
 import StandBot from './StandBot';
 import { ProcessMessageContext } from './events/ProcessMessage';
-import UserProfile from '../models/UserProfile';
-import Message from '../models/Message';
-import Logger from '../services/Logger';
-import { CustomError } from '../models/Errors';
-import * as messages from '../constants/messages';
 
 const token = process.env.TELEGRAM_BOT_TOKEN
 if (!token) {
@@ -43,7 +43,6 @@ class TelegramProcessMessageContext extends ProcessMessageContext {
 
     console.log(e);
     Logger.trackError(this.userProfile.telegram_id!.toString(), e);
-
     this.sendMessage(messages.SOMETHING_BROKE)
   }
 }

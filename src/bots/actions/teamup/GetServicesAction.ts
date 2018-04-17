@@ -3,9 +3,7 @@ import StandManager from "../../../managers/StandManager";
 import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class GetServicesAction extends BaseTeamupAction {
-  constructor() {
-    super(/^Кто (?:записан|стоит|служит) (.+)$/i);
-  }
+  regexp = /^Кто (?:записан|стоит|служит) (.+)$/i;
 
   protected async action(session: ProcessMessageSession) {
     const userProfile = session.context.userProfile;
