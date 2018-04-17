@@ -3,9 +3,7 @@ import StandManager from "../../../managers/StandManager";
 import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class SetKeyAction extends BaseTeamupAction {
-  constructor() {
-    super(/^Мой ключ (.+)$/i);
-  }
+  regexp = /^Мой ключ (.+)$/i
 
   protected async action(session: ProcessMessageSession) {
     const manager = new StandManager(session.context.userProfile);

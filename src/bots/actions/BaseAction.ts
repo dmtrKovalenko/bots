@@ -3,13 +3,8 @@ import * as R from "../../constants/messages";
 import delay = require("delay");
 
 export default abstract class BaseAction {
-  private readonly regexp: RegExp | null;
-
-  protected constructor(regexp: RegExp | null) {
-    this.regexp = regexp;
-  }
-
   private args: string[] | null;
+  protected abstract regexp: RegExp | null;
 
   testAndExecute(session: ProcessMessageSession) {
     const message = session.context.message;

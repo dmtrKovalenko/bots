@@ -1,18 +1,30 @@
-import TelegramBot from 'node-telegram-bot-api'
+require('../app')
+
+import * as messages from '../constants/messages';
+import TelegramBot from 'node-telegram-bot-api';
+import { env } from '../constants/config';
+import { CustomError } from '../models/Errors';
+import Message from '../models/Message';
+import UserProfile from '../models/UserProfile';
+import Logger from '../services/Logger';
+import publicUrl from '../services/PublicUrl';
 import StandBot from './StandBot';
 import { ProcessMessageContext } from './events/ProcessMessage';
-import UserProfile from '../models/UserProfile';
-import Message from '../models/Message';
-import Logger from '../services/Logger';
-import { CustomError } from '../models/Errors';
-import * as messages from '../constants/messages';
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 if (!token) {
   throw new Error('Telegram token should be provided')
 }
 
-const bot = new TelegramBot(token, { polling: true });
+const options = {
+  polling: env !== 'production',
+  // telegram typings :(
+  webHook: env === 'production'
+    ? { port: process.env.TELEGRAM_PORT, key: '', cert: '',  pfx: ''  }
+    : false
+}
+
+const bot = new TelegramBot(token, options)
 
 bot.on('message', ({ chat, from, text }) => {
   const userProfile = new UserProfile(`${from.first_name} ${from.last_name}`, from.id, undefined);
@@ -42,7 +54,15 @@ class TelegramProcessMessageContext extends ProcessMessageContext {
 
     console.log(e);
     Logger.trackError(this.userProfile.telegram_id!.toString(), e);
-
     this.sendMessage(messages.SOMETHING_BROKE)
   }
+}
+
+if (env === 'production') {
+  // Start the bot 🚀
+  publicUrl()
+    .then(publicUrl => {
+      console.log('Set telegram webhook to', publicUrl);
+      bot.setWebHook(`${publicUrl}/bot${token}`)
+    });
 }
