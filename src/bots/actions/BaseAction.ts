@@ -1,4 +1,6 @@
 import { ProcessMessageSession } from "../events/ProcessMessage";
+import Delay from "../../utils/Delay";
+import * as R from "../../constants/messages";
 
 export default abstract class BaseAction {
   private readonly regexp: RegExp | null;
@@ -37,5 +39,11 @@ export default abstract class BaseAction {
       throw new Error("Args is null");
 
     return this.args[index];
+  }
+
+  protected processingMessageDelay(session: ProcessMessageSession) {
+    const delay = new Delay(600);
+    delay.then(() => session.sendTextMessage(R.PROCESSING));
+    return delay;
   }
 }

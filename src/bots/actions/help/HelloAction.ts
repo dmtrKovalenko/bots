@@ -3,11 +3,12 @@ import {ProcessMessageSession} from "../../events/ProcessMessage";
 
 export default class HelloAction extends BaseAction {
   constructor() {
-    super(/^Привет/i);
+    super(/^(Привет|hello|hi)/i);
   }
 
   protected async action(session: ProcessMessageSession) {
     session.sendTextMessage(`Привет, ${session.context.userProfile.name} 😉`);
+
     return true;
   }
 }

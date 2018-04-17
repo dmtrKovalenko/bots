@@ -12,7 +12,13 @@ export default class SetKeyAction extends BaseTeamupAction {
 
     const key = this.arg(0).trim();
 
-    session.sendTextMessage(await manager.authorizeKey(key));
+    const processingMessageDelay = this.processingMessageDelay(session);
+
+    const text = await manager.authorizeKey(key);
+
+    processingMessageDelay.cancel();
+
+    session.sendTextMessage(text);
 
     return true;
   }

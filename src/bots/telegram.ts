@@ -7,19 +7,18 @@ import Logger from '../services/Logger';
 import { CustomError } from '../models/Errors';
 import * as messages from '../constants/messages';
 
-const token = process.env.TELEGRAM_BOT_TOKEN
+const token = process.env.TELEGRAM_BOT_TOKEN;
 if (!token) {
   throw new Error('Telegram token should be provided')
 }
 
-const bot = new TelegramBot(token, { polling: true })
+const bot = new TelegramBot(token, { polling: true });
 
 bot.on('message', ({ chat, from, text }) => {
-  const userProfile = new UserProfile(`${from.first_name} ${from.last_name}`, from.id, undefined)
-  const context = new TelegramProcessMessageContext('StandBot', new Message(text), userProfile, chat)
+  const userProfile = new UserProfile(`${from.first_name} ${from.last_name}`, from.id, undefined);
+  const context = new TelegramProcessMessageContext('StandBot', new Message(text), userProfile, chat);
 
-  StandBot.processMessage(context)
-    .catch(context.handleError)
+  StandBot.processMessage(context).catch(context.handleError);
 });
 
 class TelegramProcessMessageContext extends ProcessMessageContext {
