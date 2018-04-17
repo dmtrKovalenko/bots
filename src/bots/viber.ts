@@ -7,7 +7,7 @@ import { CustomError } from '../models/Errors';
 import Message from "../models/Message";
 import UserProfile from "../models/UserProfile";
 import logger from '../services/Logger';
-import NgrokService from '../services/NgrokService';
+import PublicUrlService from '../services/PublicUrlService';
 import StandBot from './StandBot';
 import { ConversationStartedContext } from './events/ConversationStarted';
 import { ProcessMessageContext } from './events/ProcessMessage';
@@ -78,12 +78,12 @@ class ViberConversationStartedContext extends ConversationStartedContext {
 }
 
 // Start the bot 🚀
-NgrokService.getPublicUrl()
+PublicUrlService.getPublicUrl()
   .then(publicUrl => {
     console.log('Set the new webhook to', publicUrl);
 
     http.createServer(bot.middleware())
-      .listen(process.env.PORT || 8080, () => {
+      .listen(process.env.VIBER_PORT || 8080, () => {
         bot.setWebhook(publicUrl)
           .then(() => console.log('Viber bot has been started'))
           .catch((e: any) => console.log('Viber bot triggered unhandled rejection', e))

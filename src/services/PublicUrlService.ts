@@ -10,8 +10,8 @@ const options = {
   }
 };
 
-export default class NgrokService {
-  static getPublicUrl() {
+export default class PublicUrlService {
+  static getPublicUrl(): Promise<string> {
     if (process.env.HEROKU_URL) {
       return Promise.resolve(process.env.HEROKU_URL)
     }
