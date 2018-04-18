@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "npm run build:ci",
+    "heroku-postbuild": "npm run predeploy",
     "now-build": "echo \"Building\"",
-    "build:ci": "npm run build:typescript && npm run db:migrate",
+    "predeploy": "npm run build:typescript && npm run db:migrate",
     "build:typescript": "tsc",
+    "tslint": "tslint src/**/*.ts",
     "db:migrate": "sequelize db:migrate",
     "dev:telegram": "onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=127.0.0.1:9229 src/bots/telegram.ts",
     "dev:viber": "onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=127.0.0.1:9229 src/bots/viber.ts",
