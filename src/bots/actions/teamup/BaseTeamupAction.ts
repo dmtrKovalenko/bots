@@ -1,7 +1,7 @@
-import BaseAction from "../BaseAction";
+import * as R from "../../../constants/messages";
 import AuthManager from "../../../managers/AuthManager";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
-import * as R from "../../../constants/messages";
+import BaseAction from "../BaseAction";
 
 export default abstract class BaseTeamupAction extends BaseAction {
   protected async checkTeamupKey(session: ProcessMessageSession) {

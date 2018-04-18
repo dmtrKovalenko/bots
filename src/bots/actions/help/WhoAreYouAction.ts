@@ -1,9 +1,9 @@
-import BaseAction from "../BaseAction";
 import * as R from "../../../constants/messages";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
+import BaseAction from "../BaseAction";
 
 export default class WhoAreYouAction extends BaseAction {
-  regexp = /^(Кто ты|Ты кто|Как тебя зовут)/i
+  public regexp = /^(Кто ты|Ты кто|Как тебя зовут)/i;
 
   protected async action(session: ProcessMessageSession) {
     session.sendTextMessage(R.ImBot(session.context.botName));

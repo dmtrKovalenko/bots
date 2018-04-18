@@ -1,16 +1,17 @@
-import { ProcessMessageSession } from "../../events/ProcessMessage";
 import StandManager from "../../../managers/StandManager";
+import { ProcessMessageSession } from "../../events/ProcessMessage";
 import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class GetServicesAction extends BaseTeamupAction {
-  regexp = /^Кто (?:записан|стоит|служит) (.+)$/i;
+  public regexp = /^Кто (?:записан|стоит|служит) (.+)$/i;
 
   protected async action(session: ProcessMessageSession) {
     const { userProfile } = session.context;
     const manager = new StandManager(userProfile);
 
-    if (!await this.checkTeamupKey(session))
+    if (!await this.checkTeamupKey(session)) {
       return true;
+    }
 
     const processingMessageDelay = this.processingMessageDelay(session);
 

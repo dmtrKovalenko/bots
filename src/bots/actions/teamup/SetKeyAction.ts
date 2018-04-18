@@ -1,9 +1,9 @@
-import { ProcessMessageSession } from "../../events/ProcessMessage";
 import StandManager from "../../../managers/StandManager";
+import { ProcessMessageSession } from "../../events/ProcessMessage";
 import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class SetKeyAction extends BaseTeamupAction {
-  regexp = /^Мой ключ (.+)$/i
+  public regexp = /^Мой ключ (.+)$/i;
 
   protected async action(session: ProcessMessageSession) {
     const processingMessageDelay = this.processingMessageDelay(session);
