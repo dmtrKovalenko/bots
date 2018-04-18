@@ -2,6 +2,11 @@
   "files": [
     ".env",
     ".env.stage",
-    "NgrokService.ts"
+    "build",
+    "src",
+    ".sequelizerc",
+    "tsconfig.json",
+    "migrations",
+    "ecosystem.config.js"
   ]
 }

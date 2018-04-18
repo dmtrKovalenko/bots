@@ -1,5 +1,4 @@
-require('dotenv').config()
+// tslint:disable no-var-requires
+require("dotenv").config();
 
-import './db'
-
-
+import "./db";

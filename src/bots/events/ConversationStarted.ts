@@ -1,5 +1,5 @@
-import IBaseContext from "./IBaseContext";
 import UserProfile from "../../models/UserProfile";
+import IBaseContext from "./IBaseContext";
 
 export abstract class ConversationStartedContext extends IBaseContext {
   public readonly userProfile: UserProfile;
@@ -9,17 +9,17 @@ export abstract class ConversationStartedContext extends IBaseContext {
     this.userProfile = userProfile;
   }
 
-  abstract sendMessage(message: string): void
+  public abstract sendMessage(message: string): void;
 }
 
 export class ConversationStartedSession {
-  readonly context: ConversationStartedContext;
+  public readonly context: ConversationStartedContext;
 
   constructor(context: ConversationStartedContext) {
     this.context = context;
   }
 
-  sendTextMessage(text: string) {
+  public sendTextMessage(text: string) {
     this.context.sendMessage(text);
   }
 }
