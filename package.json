@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "npm run predeploy",
-    "now-build": "echo \"Building\"",
-    "predeploy": "npm run build:typescript && npm run db:migrate",
+    "heroku-postbuild": "npm run now-build",
+    "now-build": "npm run build:typescript",
+    "deploy:stage": "now --local-config=now-stage.json",
     "build:typescript": "tsc",
     "tslint": "tslint src/**/*.ts",
     "db:migrate": "sequelize db:migrate",

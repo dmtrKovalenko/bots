@@ -1,7 +1,7 @@
 // tslint:disable-next-line
 require("../app");
 
-import TelegramBot from "node-telegram-bot-api";
+import TelegramBot, { ConstructorOptions } from "node-telegram-bot-api";
 import { env } from "../constants/config";
 import * as messages from "../constants/messages";
 import { CustomError } from "../models/Errors";
@@ -13,15 +13,16 @@ import { ProcessMessageContext } from "./events/ProcessMessage";
 import StandBot from "./StandBot";
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
+
 if (!token) {
   throw new Error("Telegram token should be provided");
 }
 
-const options = {
+const options: ConstructorOptions = {
   polling: env === "development",
-  // telegram typings :(
   webHook: env === "production"
-    ? { port: process.env.PORT || 8443, key: "", cert: "",  pfx: ""  }
+    // @ts-ignore telegram typings :(
+    ? { port: process.env.TELEGRAM_PORT || 8443 }
     : false,
 };
 

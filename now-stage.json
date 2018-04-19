@@ -1,12 +1,15 @@
 {
+  "name": "stand-bots-stage",
+  "dotenv": ".env.stage",
+  "public": true,
   "files": [
     ".env",
     ".env.stage",
-    "build",
     "src",
     ".sequelizerc",
     "tsconfig.json",
     "migrations",
-    "ecosystem.config.js"
+    "ecosystem.config.js",
+    "typings.d.ts"
   ]
 }
