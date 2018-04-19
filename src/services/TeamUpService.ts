@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { DateTime } from "luxon";
 import fetch, { RequestInit } from "node-fetch";
 import * as messages from "../constants/messages";
 import AuthManager from "../managers/AuthManager";
@@ -8,15 +8,15 @@ import UserProfile from "../models/UserProfile";
 
 const token = process.env.TEAMUP_TOKEN;
 
-const FORMAT_DATE = "YYYY-MM-DD";
+const FORMAT_DATE = "yyyy-MM-dd";
 const API_URL = "https://api.teamup.com";
 
 export default class TeamUpService {
   constructor(private userProfile: UserProfile) { }
 
-  public getEventsCollection(start: Date, end: Date): Promise<TeamUpEvent[]> {
-    const endDate = format(end, FORMAT_DATE);
-    const startDate = format(start, FORMAT_DATE);
+  public getEventsCollection(start: DateTime, end: DateTime): Promise<TeamUpEvent[]> {
+    const endDate = end.toFormat(FORMAT_DATE);
+    const startDate = start.toFormat(FORMAT_DATE);
 
     return this.teamUpFetch(`/events?startDate=${startDate}&endDate=${endDate}&`)
       .then((res) => res.events as TeamUpEvent[]);
@@ -35,10 +35,15 @@ export default class TeamUpService {
   }
 
   private async teamUpFetch(url: string, options?: RequestInit) {
-    const calendarKey = await AuthManager.getCalendarKey(this.userProfile);
+    let calendarKey = this.userProfile.teamup_key;
 
-    if (!calendarKey) {
-      return Promise.reject(new CustomError(messages.UNAUTHORIZED));
+    if (!calendarKey) { // if we get there without key for some reason
+      const key = await AuthManager.getCalendarKey(this.userProfile);
+      if (!key) {
+        return Promise.reject(new CustomError(messages.UNAUTHORIZED));
+      }
+
+      calendarKey = key;
     }
 
     if (options) {
@@ -59,7 +64,7 @@ export default class TeamUpService {
           return Promise.reject(new CustomError(messages.UNAUTHORIZED));
         }
 
-        return Promise.reject(new Error(payload));
+        return Promise.reject(payload);
       });
   }
 }

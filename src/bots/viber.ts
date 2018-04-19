@@ -46,11 +46,11 @@ class ViberProcessMessageContext extends ProcessMessageContext {
     this.response = response;
   }
 
-  public sendMessage(message: string): void {
+  public sendMessage = (message: string) => {
     this.response.send(new ViberMessage.Text(message));
   }
 
-  public handleError(e: any): void {
+  public handleError = (e: any) => {
     if (e instanceof CustomError) {
       this.sendMessage(e.message);
       return;

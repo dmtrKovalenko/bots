@@ -1,48 +1,58 @@
-import { addDays, isValid } from "date-fns";
+import { DateTime } from "luxon";
 import config from "../constants/config";
 import * as messages from "../constants/messages";
 import { localizedParse } from "../utils/helpers";
 
 export default class Parser  {
   public static parseDate(string: string) {
+    const now = DateTime.local();
+
     switch (string) {
       case "позавчера":
-        return addDays(new Date(), -2);
+        return now.minus({ days: 2 });
       case "вчера":
-        return addDays(new Date(), -1);
+        return now.minus({ days: 1 });
       case "сегодня":
-        return new Date();
+        return now;
       case "завтра":
-        return addDays(new Date(), 1);
+        return now.plus({ days: 1 });
       case "послезавтра":
-        return addDays(new Date(), 2);
+        return now.plus({ days: 2 });
       default:
         return this.parseFormattedDate(string);
     }
   }
 
-  public static parseTime(string: string, baseDate?: Date) {
-    const time = localizedParse(string, "HH:mm", baseDate);
+  public static parseTime(string: string, baseDate?: DateTime) {
+    const time = localizedParse(string, "HH:mm");
 
-    if (!isValid(time)) {
+    if (!time.isValid) {
       throw new Error(messages.DATE_CANNOT_BE_PARSED);
+    }
+
+    if (baseDate) {
+      return baseDate.set({
+        hour: time.get("hour"),
+        minute: time.get("minute"),
+      });
     }
 
     return time;
   }
 
   private static parseFormattedDate(dateString: string) {
-    let parsedDate;
+    let parsedDate: DateTime;
+
     config.availableDateFormats.find((format) => {
       parsedDate = localizedParse(dateString, format);
-      return isValid(parsedDate);
+      return parsedDate.isValid;
     });
 
-    // if we not found any format that parsing string as date properly
-    if (!isValid(parsedDate)) {
+    // @ts-ignore if we not found any format that parsing string as date properly
+    if (!parsedDate.isValid) {
       throw new Error(messages.DATE_CANNOT_BE_PARSED);
     }
 
-    return parsedDate;
+    return parsedDate!;
   }
 }
