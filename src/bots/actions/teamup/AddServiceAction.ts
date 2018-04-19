@@ -11,7 +11,7 @@ export default class AddServiceAction extends BaseTeamupAction {
 
     const processingMessageDelay = this.processingMessageDelay(session);
 
-    if (await this.checkTeamupKey(session)) {
+    if (!await this.checkTeamupKey(session)) {
       return true;
     }
 

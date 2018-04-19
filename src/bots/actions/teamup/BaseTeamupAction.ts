@@ -11,6 +11,8 @@ export default abstract class BaseTeamupAction extends BaseAction {
       return false;
     }
 
+    // set teamup key to use after
+    session.context.userProfile.teamup_key = key;
     return true;
   }
 }
