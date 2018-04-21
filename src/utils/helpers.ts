@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 export const localizedFormat = (date: DateTime, formatString: string) => {
-  return date.setLocale("ru").toFormat(formatString);
+  return date.setLocale("ru").setZone("Europe/Kiev").toFormat(formatString);
 };
 
 export const localizedParse = (value: string, formatString: string) => {

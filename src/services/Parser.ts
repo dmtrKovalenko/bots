@@ -5,7 +5,7 @@ import { localizedParse } from "../utils/helpers";
 
 export default class Parser  {
   public static parseDate(string: string) {
-    const now = DateTime.local();
+    const now = DateTime.local().setZone("Europe/Kiev");
 
     switch (string) {
       case "позавчера":

@@ -72,8 +72,8 @@ export default class StandManager {
 
     let response = "";
     todayEvents.forEach((event, index) => {
-      const end = DateTime.fromISO(event.end_dt).toFormat("HH:mm");
-      const start = DateTime.fromISO(event.start_dt).toFormat("HH:mm");
+      const end = localizedFormat(DateTime.fromISO(event.end_dt), "HH:mm");
+      const start = localizedFormat(DateTime.fromISO(event.start_dt), "HH:mm");
 
       response += `${start}-${end} ${event.title}`;
       if (index !== todayEvents.length - 1) {
