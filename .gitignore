@@ -4,3 +4,4 @@ logs/
 ngrok*
 .env*
 .idea
+now.json

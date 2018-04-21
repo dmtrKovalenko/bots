@@ -1,1 +1,0 @@
-{"public":true,"dotenv":".env.stage","name":"stand-bots-stage-viber","env":{"START_VIBER":"true","START_TELEGRAM":"false"},"files":[".env",".env.stage","src",".sequelizerc","tsconfig.json","migrations","ecosystem.config.js","typings.d.ts","now.json"]}
