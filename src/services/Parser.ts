@@ -48,7 +48,6 @@ export default class Parser  {
       return parsedDate.isValid;
     });
 
-    // @ts-ignore if we not found any format that parsing string as date properly
     if (!parsedDate.isValid) {
       throw new Error(messages.DATE_CANNOT_BE_PARSED);
     }

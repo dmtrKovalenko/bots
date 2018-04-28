@@ -5,5 +5,5 @@ export const localizedFormat = (date: DateTime, formatString: string) => {
 };
 
 export const localizedParse = (value: string, formatString: string) => {
-  return DateTime.fromFormat(value, formatString, { zone: "Europe/Kiev" });
+  return DateTime.fromFormat(value, formatString, { locale: "ru", zone: "Europe/Kiev" });
 };

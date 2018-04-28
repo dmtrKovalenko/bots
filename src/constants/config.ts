@@ -4,7 +4,7 @@ export const env = process.env.NODE_ENV || "development";
 const dbConfig = sequelizeConfig[env];
 
 export default {
-  availableDateFormats: ["DD MM", "DD.MM", "DDDo MM"],
+  availableDateFormats: ["DD LL", "DD.LL", "DDDo MM"],
   db: {
     options: {
       define: dbConfig.define,
