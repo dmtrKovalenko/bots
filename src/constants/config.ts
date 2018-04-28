@@ -5,6 +5,7 @@ const dbConfig = sequelizeConfig[env];
 
 export default {
   availableDateFormats: ["dd MM", "dd.mm"],
+  availableTimeFormats: ["HH:mm", "H:mm", "H"],
   db: {
     options: {
       define: dbConfig.define,

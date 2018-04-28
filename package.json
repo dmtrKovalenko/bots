@@ -12,17 +12,17 @@
     "build:typescript": "tsc",
     "tslint": "tslint src/**/*.ts",
     "db:migrate": "sequelize db:migrate",
-    "dev:telegram": "onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=127.0.0.1:9229 src/bots/telegram.ts",
-    "dev:viber": "onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=127.0.0.1:9229 src/bots/viber.ts",
-    "dev": "onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=127.0.0.1:9229 src/app-dev.ts",
+    "dev:telegram": "onchange \"src/**/*.ts\" -v -i -p -- node --icu-data-dir=./node_modules/full-icu -r ts-node/register --inspect=9229 src/bots/telegram.ts",
+    "dev:viber": "onchange \"src/**/*.ts\" -v -i -p -- node --icu-data-dir=./node_modules/full-icu -r ts-node/register --inspect=9229 src/bots/viber.ts",
+    "dev": "onchange \"src/**/*.ts\" -v -i -p -- node --icu-data-dir=./node_modules/full-icu -r ts-node/register --inspect=9229 src/app-dev.ts",
     "build": "npm run build:typescript",
-    "start": "node build/app.js",
+    "start": "node --icu-data-dir=./node_modules/full-icu build/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": "8.9.0"
+    "node": "10.0.0"
   },
   "dependencies": {
     "@types/delay": "^2.0.1",
