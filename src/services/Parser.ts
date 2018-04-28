@@ -48,7 +48,7 @@ export default class Parser  {
       return parsedDate.isValid;
     });
 
-    if (!parsedDate.isValid) {
+    if (!parsedDate!.isValid) {
       throw new Error(messages.DATE_CANNOT_BE_PARSED);
     }
 
