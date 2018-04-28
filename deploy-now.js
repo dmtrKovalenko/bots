@@ -34,14 +34,12 @@ const config = {
   ]
 }
 
-cmd.get(`now rm ${name} --yes`, () => {
-  console.log('Previous deployment have been removed')
-})
+cmd.get(`now rm ${name} --yes`, () => console.log(`> All previous deployments for ${name} have been removed`))
 
 fs.writeFile('now.json', JSON.stringify(config), (error) => {
   if (error) {
     throw error
   }
 
-  console.log('Successfully created config file')
+  console.log('> Successfully created config file')
 })
