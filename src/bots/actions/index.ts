@@ -1,6 +1,6 @@
-import * as R from "../../constants/messages";
-import { ConversationStartedSession } from "../events/ConversationStarted";
+
 import ContactsAction from "./help/ContactsAction";
+import ConversationStatedAction from "./help/ConversationStartedAction";
 import HelloAction from "./help/HelloAction";
 import HelpAction from "./help/HelpAction";
 import WhoAreYouAction from "./help/WhoAreYouAction";
@@ -17,13 +17,7 @@ export default [
   new GetServicesAction(),
   new AddServiceAction(),
   new HelloAction(),
+  new ConversationStatedAction(),
 ];
 
 export const Unknown = new UnknownAction();
-
-export const ConversationStarted = {
-  execute: (session: ConversationStartedSession) => {
-    session.sendTextMessage(R.HELP(session.context.botName, session.context.userProfile.name));
-    return true;
-  },
-};

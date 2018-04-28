@@ -27,7 +27,6 @@
   "dependencies": {
     "@types/delay": "^2.0.1",
     "@types/luxon": "^0.5.2",
-    "@types/mixpanel": "^2.14.0",
     "@types/node": "^9.6.7",
     "@types/node-fetch": "^1.6.9",
     "@types/node-json-db": "0.0.1",
