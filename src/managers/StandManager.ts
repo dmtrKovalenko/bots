@@ -15,26 +15,16 @@ export default class StandManager {
   }
 
   public getServices(when: string) {
-    try {
-      const date = Parser.parseDate(when);
-      return this.getServicesOnDate(date!);
-    } catch (e) {
-      return Promise.resolve(e.message);
-    }
+    const date = Parser.parseDate(when);
+
+    return this.getServicesOnDate(date!);
   }
 
   public addService(date: string, startTime: string, endTime: string) {
-    let start: DateTime;
-    let end: DateTime;
+    const baseDate = Parser.parseDate(date);
 
-    try {
-      const baseDate = Parser.parseDate(date);
-
-      start = Parser.parseTime(startTime, baseDate);
-      end = Parser.parseTime(endTime, baseDate);
-    } catch (e) {
-      return Promise.resolve(e.message);
-    }
+    const start = Parser.parseTime(startTime, baseDate);
+    const end = Parser.parseTime(endTime, baseDate);
 
     const event = new TeamUpEvent(this.userProfile.name, start, end);
     return this.teamUpService.createEvent(event)

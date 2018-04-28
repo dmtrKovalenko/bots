@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 import config from "../constants/config";
 import * as messages from "../constants/messages";
+import { CustomError } from "../models/Errors";
 import { localizedParse } from "../utils/helpers";
 
 export default class Parser  {
@@ -23,12 +24,8 @@ export default class Parser  {
     }
   }
 
-  public static parseTime(string: string, baseDate?: DateTime) {
-    const time = localizedParse(string, "HH:mm");
-
-    if (!time.isValid) {
-      throw new Error(messages.DATE_CANNOT_BE_PARSED);
-    }
+  public static parseTime(dateString: string, baseDate?: DateTime) {
+    const time = this.parseMultipleFormats(dateString, config.availableTimeFormats);
 
     if (baseDate) {
       return baseDate.set({
@@ -40,16 +37,20 @@ export default class Parser  {
     return time;
   }
 
-  private static parseFormattedDate(dateString: string) {
+  public static parseFormattedDate(dateString: string) {
+    return this.parseMultipleFormats(dateString, config.availableDateFormats);
+  }
+
+  private static parseMultipleFormats(value: string, formats: string[]) {
     let parsedDate: DateTime;
 
-    config.availableDateFormats.find((format) => {
-      parsedDate = localizedParse(dateString, format);
+    formats.find((format) => {
+      parsedDate = localizedParse(value, format);
       return parsedDate.isValid;
     });
 
     if (!parsedDate!.isValid) {
-      throw new Error(messages.DATE_CANNOT_BE_PARSED);
+      throw new CustomError(messages.DATE_CANNOT_BE_PARSED);
     }
 
     return parsedDate!;
