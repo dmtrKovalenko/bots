@@ -1,3 +1,4 @@
+import { User } from "node-telegram-bot-api";
 import Message from "../models/Message";
 import UserProfile from "../models/UserProfile";
 
@@ -23,6 +24,11 @@ export default class Logger {
 
   public static trackError(userId: string | number, error: any) {
     Logger.track("Error", userId, { error });
+  }
+
+  public static logConversationStarted(userProfile: UserProfile) {
+    this.identify(userProfile);
+    this.trackConversationStarted(userProfile);
   }
 
   public static identify({ name, telegram_id, viber_id }: UserProfile) {
