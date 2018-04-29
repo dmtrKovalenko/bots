@@ -8,3 +8,8 @@ declare module "mixpanel" {
   export const Mixpanel: any;
   export default Mixpanel;
 }
+
+declare module "require-all" {
+  export const value: any;
+  export default Mixpanel;
+}

@@ -10,3 +10,5 @@ if (process.env.START_TELEGRAM === "true") {
 if (process.env.START_VIBER === "true") {
   require("./bots/viber");
 }
+
+require("./cronjobs/index");
