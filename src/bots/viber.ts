@@ -19,8 +19,8 @@ const bot = new ViberBot({
 });
 
 bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
-  Logger.logConversationStarted(new UserProfile(userProfile.id, userProfile.name));
-  onFinish(R.HELP);
+  Logger.logConversationStarted(new UserProfile(userProfile.name, undefined, userProfile.id));
+  onFinish(new ViberMessage.Text(R.HELP(bot.name, userProfile.name)));
 });
 
 bot.on(ViberEvents.MESSAGE_RECEIVED, (message: any, response: any) => {
@@ -54,7 +54,7 @@ class ViberProcessMessageContext extends ProcessMessageContext {
     }
 
     console.log(e);
-    logger.trackError(this.userProfile.viber_id!, e);
+    logger.trackError(this.userProfile, e);
 
     this.sendMessage(R.SOMETHING_BROKE);
   }

@@ -57,7 +57,7 @@ class TelegramProcessMessageContext extends ProcessMessageContext {
     }
 
     console.log(e);
-    Logger.trackError(this.userProfile.telegram_id!.toString(), e);
+    Logger.trackError(this.userProfile, e);
     this.sendMessage(messages.SOMETHING_BROKE);
   }
 }

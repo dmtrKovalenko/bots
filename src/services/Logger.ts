@@ -10,10 +10,6 @@ if (!mixpanelKey) {
 const mixpanel = Mixpanel.init(mixpanelKey);
 
 export default class Logger {
-  public static trackError(userId: string | number, error: any) {
-    Logger.track("Error", userId, { error });
-  }
-
   public static logConversationStarted(userProfile: UserProfile) {
     this.identify(userProfile);
     this.trackConversationStarted(userProfile);
@@ -25,16 +21,24 @@ export default class Logger {
     });
   }
 
-  public static trackConversationStarted({ telegram_id, viber_id }: UserProfile) {
-    Logger.track("Conversation started", telegram_id! || viber_id!);
+  public static trackConversationStarted(profile: UserProfile) {
+    this.track("Conversation started", profile);
   }
 
-  public static trackMessageReceived(message: Message, { telegram_id, viber_id }: UserProfile) {
-    Logger.track("Message received", telegram_id! || viber_id!, { text: message.text });
+  public static trackMessageReceived(message: Message, profile: UserProfile) {
+    this.track("Message received", profile, { text: message.text, browser: "viber" });
   }
 
-  private static track(eventName: string, userId: string | number, traits?: any) {
-    const data = { distinct_id: userId, ...traits };
+  public static trackError(profile: UserProfile, error: any) {
+    this.track("Error", profile, { error });
+  }
+
+  private static track(eventName: string, userProfile: UserProfile, traits?: any) {
+    const data = {
+      $browser: userProfile.telegram_id ? "telegram" : "viber",
+      distinct_id: userProfile.telegram_id || userProfile.viber_id,
+      ...traits,
+    };
 
     mixpanel.track(eventName, data);
   }
