@@ -21,6 +21,9 @@ export default class UserModel extends Model<UserModel> {
   @Column
   public telegram_id: number;
 
+  @Column
+  public is_manager: boolean;
+
   public toUser(): User {
     return this.get({ plain: true});
   }

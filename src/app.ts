@@ -1,6 +1,6 @@
 // tslint:disable no-var-requires
 require("dotenv").config();
-import "./db";
+require("./db");
 
 // make sure that env variables can only be strings
 if (process.env.START_TELEGRAM === "true") {
@@ -9,4 +9,8 @@ if (process.env.START_TELEGRAM === "true") {
 
 if (process.env.START_VIBER === "true") {
   require("./bots/viber");
+}
+
+if (process.env.START_CRON === "true") {
+  require("./cronjobs");
 }

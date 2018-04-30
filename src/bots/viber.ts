@@ -1,6 +1,3 @@
-// tslint:disable-next-line
-require("../app");
-
 import * as http from "http";
 import { Bot as ViberBot, Events as ViberEvents, Message as ViberMessage } from "viber-bot";
 import * as R from "../constants/messages";
@@ -12,7 +9,7 @@ import publicUrl from "../services/PublicUrl";
 import { ProcessMessageContext } from "./events/ProcessMessage";
 import StandBot from "./StandBot";
 
-const bot = new ViberBot({
+export const bot = new ViberBot({
   authToken: process.env.VIBER_BOT_TOKEN,
   avatar: null,
   name: "StandBot",
@@ -61,14 +58,16 @@ class ViberProcessMessageContext extends ProcessMessageContext {
 }
 
 // Start the bot 🚀
-publicUrl()
-  .then((url) => {
-    console.log("Set the new webhook to", url);
+if (process.env.START_VIBER === "true") {
+  publicUrl()
+    .then((url) => {
+      console.log("Set the new webhook to", url);
 
-    http.createServer(bot.middleware())
-      .listen(process.env.VIBER_PORT || 8080, () => {
-        bot.setWebhook(url)
-          .then(() => console.log("Viber bot has been started"))
-          .catch((e: any) => console.log("Viber bot triggered unhandled rejection", e));
-      });
-  });
+      http.createServer(bot.middleware())
+        .listen(process.env.VIBER_PORT || 8080, () => {
+          bot.setWebhook(url)
+            .then(() => console.log("Viber bot has been started"))
+            .catch((e: any) => console.log("Viber bot triggered unhandled rejection", e));
+        });
+    });
+}
