@@ -9,7 +9,7 @@ export abstract class BaseCronTask {
   public toCronJob(): CronJob {
     return new CronJob({
       cronTime: this.cronTime,
-      onTick: this.onTick,
+      onTick: () => this.onTick().catch(console.log), // mock async calls
       timeZone: this.timeZone,
     });
   }
