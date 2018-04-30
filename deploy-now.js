@@ -21,6 +21,10 @@ const config = {
     "START_VIBER": Boolean(bot === 'viber').toString(),
     "START_TELEGRAM": Boolean(bot === 'telegram').toString(),
   },
+  bru: {
+    min: 1,
+    max: 1
+  },
   files: [
     ".env",
     ".env.stage",
