@@ -1,4 +1,5 @@
 import { CronJob } from "cron";
+import * as http from "http";
 import requireAll from "require-all";
 
 requireAll({
@@ -15,3 +16,8 @@ requireAll({
     job.start();
   },
 });
+
+if (process.env.NOW_URL) {
+  // Mock web server for cloud provider
+  http.createServer(() => { /* fake */ }).listen(8080);
+}

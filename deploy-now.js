@@ -5,12 +5,12 @@ const program = require('commander')
 
 process.env.CLI = true;
 program
-  .option('--bot [bot]', 'Bot to deploy')
+  .option('--app [app]', 'Bot to deploy')
   .option('--env [env]', 'Environment to deploy')
   .parse(process.argv)
 
-const { env, bot } = program
-const name = `stand-bots-${env}-${bot}`
+const { env, app } = program
+const name = `stand-bots-${env}-${app}`
 
 const config = {
   name,
@@ -18,8 +18,9 @@ const config = {
   dotenv: `.env.${env}`,
   env: {
     // env variables can only be strings or numbers
-    "START_VIBER": Boolean(bot === 'viber').toString(),
-    "START_TELEGRAM": Boolean(bot === 'telegram').toString(),
+    "START_VIBER": Boolean(app === 'viber').toString(),
+    "START_TELEGRAM": Boolean(app === 'telegram').toString(),
+    "START_CRON": Boolean(app === 'cron').toString()
   },
   bru: {
     min: 1,
