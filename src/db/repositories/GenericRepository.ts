@@ -2,21 +2,23 @@ import Bluebird from "bluebird";
 import { UpdateOptions } from "sequelize";
 import UserModel from "../models/UserModel";
 
+type BaseModel = typeof UserModel;
+
 export default abstract class GenericRepository<T> {
-  protected abstract relation: typeof UserModel;
+  protected abstract relation: BaseModel;
 
   public findAll(options?: object): Bluebird<T[]> {
     return this.relation.findAll(options)
-      .then((res) => res.map((userModel) => userModel.get({ plain: true })));
+      .then((res) => res.map((model) => model.get({ plain: true })));
   }
 
-  public async create(user: T): Promise<T> {
-    return this.relation.create(user)
+  public async create(entity: T): Promise<T> {
+    return this.relation.create(entity)
       .then((model) => model.get({ plain: true }));
   }
 
-  public updateWhere(user: T, options: UpdateOptions) {
-    return this.relation.update(user, options);
+  public updateWhere(entity: T, options: UpdateOptions) {
+    return this.relation.update(entity, options);
   }
 
   public find(options: object): Bluebird<T | null> {

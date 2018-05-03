@@ -22,9 +22,11 @@ const config = {
     "START_TELEGRAM": Boolean(app === 'telegram').toString(),
     "START_CRON": Boolean(app === 'cron').toString()
   },
-  bru: {
-    min: 1,
-    max: 1
+  scale: {
+    bru1: {
+      min: 1,
+      max: 1
+    },
   },
   files: [
     ".env",
@@ -35,7 +37,9 @@ const config = {
     "migrations",
     "ecosystem.config.js",
     "typings.d.ts",
-    "now.json"
+    "now.json",
+    "package.json",
+    "package-lock.json"
   ]
 }
 

@@ -1,4 +1,4 @@
-import TelegramBot, { ConstructorOptions } from "node-telegram-bot-api";
+import TelegramBot, { ConstructorOptions, WebHookOptions } from "node-telegram-bot-api";
 import { env } from "../constants/config";
 import * as messages from "../constants/messages";
 import { CustomError } from "../models/Errors";
@@ -18,8 +18,7 @@ if (!token) {
 const options: ConstructorOptions = {
   polling: env === "development" && process.env.START_TELEGRAM === "true",
   webHook: env === "production"
-    // @ts-ignore telegram typings :(
-    ? { port: process.env.TELEGRAM_PORT || 8443 }
+    ? { port: process.env.TELEGRAM_PORT || 8443 } as WebHookOptions
     : false,
 };
 
