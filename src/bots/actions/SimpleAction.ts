@@ -1,26 +1,24 @@
 import BaseAction from "./BaseAction";
-import {ProcessMessageSession} from "../events/ProcessMessage";
+import {ProcessMessageContext} from "../events/ProcessMessage";
 
 export default abstract class SimpleAction extends BaseAction {
   protected abstract regexp: RegExp | null;
   private args: string[] | null;
 
-  test(session: ProcessMessageSession): boolean {
-    return this.getRegexpResults(session) != null;
+  test(context: ProcessMessageContext): boolean {
+    return this.getRegexpResults(context) != null;
   }
 
-  public async execute(session: ProcessMessageSession): Promise<boolean> {
-    const regexpResults = this.getRegexpResults(session);
+  public async execute(context: ProcessMessageContext): Promise<boolean> {
+    const regexpResults = this.getRegexpResults(context);
 
     if (regexpResults == null) {
       return false;
     }
 
     regexpResults.shift();
-    return this.action(session);
+    return super.execute(context);
   }
-
-  protected abstract action(session: ProcessMessageSession): Promise<boolean>;
 
   protected arg(index: number) {
     if (this.args == null) {
@@ -30,8 +28,8 @@ export default abstract class SimpleAction extends BaseAction {
     return this.args[index];
   }
 
-  private getRegexpResults(session: ProcessMessageSession): RegExpExecArray | null {
-    const message = session.context.message;
+  private getRegexpResults(context: ProcessMessageContext): RegExpExecArray | null {
+    const message = context.message;
 
     if (this.regexp == null) {
       throw new Error("Regexp cannot be null");
