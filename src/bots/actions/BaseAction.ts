@@ -9,6 +9,8 @@ export default abstract class BaseAction {
   private finished: boolean = false;
 
   public async testAndExecute(context: ProcessMessageContext): Promise<boolean> {
+    this.notHandled = false;
+    this.finished = false;
     this._context = context;
 
     if (this.test() === false) {
@@ -17,6 +19,7 @@ export default abstract class BaseAction {
 
     await this.preExecute();
     await this.execute();
+    await this.postExecute();
 
     return !this.notHandled;
   }
@@ -25,14 +28,27 @@ export default abstract class BaseAction {
     return this.finished;
   }
 
+  public sendMessage(message: string) {
+    this.context.sendMessage(message);
+  }
+
+  public markNotHandled() {
+    this.notHandled = true;
+  }
+
+  public markFinished() {
+    this.finished = true;
+  }
+
   protected test(): boolean | undefined {
     return undefined;
   }
 
   protected async preExecute(): Promise<void> { /* nothing yet */ }
   protected abstract execute(): Promise<void>;
+  protected async postExecute(): Promise<void> { /* nothing yet */ }
 
-  protected get context() {
+  get context() {
     return this._context;
   }
 
@@ -51,18 +67,6 @@ export default abstract class BaseAction {
     } catch (e) {
       e.toString();
     }
-  }
-
-  protected sendMessage(message: string) {
-    this.context.sendMessage(message);
-  }
-
-  protected markNotHandled() {
-    this.notHandled = true;
-  }
-
-  protected markFinished() {
-    this.finished = true;
   }
 }
 

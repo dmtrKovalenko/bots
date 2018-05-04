@@ -17,13 +17,14 @@ export default class StandBot {
       }
     } else {
       for (const action of allActions) {
-        if (await this.executeAction(context, action)) {
+        const inst = new action();
+        if (await this.executeAction(context, inst)) {
           return true;
         }
       }
     }
 
-    return Unknown.testAndExecute(context);
+    return (new Unknown()).testAndExecute(context);
   }
 
   private static async executeAction(context: ProcessMessageContext, action: BaseAction): Promise<boolean> {

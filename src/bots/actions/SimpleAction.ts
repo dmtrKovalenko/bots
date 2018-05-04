@@ -14,6 +14,10 @@ export default abstract class SimpleAction extends BaseAction {
     this.regexpResults = regexp != null ? regexp.execute(this.context.message) : null;
   }
 
+  protected async postExecute(): Promise<void> {
+    this.markFinished();
+  }
+
   protected arg(index: number) {
     const regexpResults = this.regexpResults;
     if (regexpResults == null) {
