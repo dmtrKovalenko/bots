@@ -1,6 +1,6 @@
 import StandManager from "../../../managers/StandManager";
-import BaseTeamupAction from "./BaseTeamupAction";
 import {MessageRegexp} from "../BaseAction";
+import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class SetKeyAction extends BaseTeamupAction {
   public regexp = new MessageRegexp(/^Мой ключ (.+)$/i);

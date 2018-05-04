@@ -1,10 +1,10 @@
-import BaseAction, {MessageRegexp, MessageRegexpResults} from "./BaseAction";
+import BaseAction, { MessageRegexp } from "./BaseAction";
 
 export default abstract class SimpleAction extends BaseAction {
   protected abstract regexp: MessageRegexp | null;
-  private regexpResults: MessageRegexpResults | null;
+  private regexpResults: RegExpExecArray | null;
 
-  test() {
+  public test() {
     const regexp = this.regexp;
     return regexp != null ? regexp.test(this.context.message) : undefined;
   }
@@ -20,6 +20,6 @@ export default abstract class SimpleAction extends BaseAction {
       throw new Error("Args is null");
     }
 
-    return regexpResults.arg(index);
+    return regexpResults[index];
   }
 }

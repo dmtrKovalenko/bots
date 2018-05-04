@@ -1,6 +1,6 @@
 import StandManager from "../../../managers/StandManager";
-import BaseTeamupAction from "./BaseTeamupAction";
 import {MessageRegexp} from "../BaseAction";
+import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class GetServicesAction extends BaseTeamupAction {
   public regexp = new MessageRegexp(/^Кто (?:записан|стоит|служит) (.+)$/i);

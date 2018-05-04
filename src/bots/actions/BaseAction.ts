@@ -1,7 +1,7 @@
 import delay from "delay";
 import * as R from "../../constants/messages";
 import Message from "../../models/Message";
-import {ProcessMessageContext} from "../events/ProcessMessage";
+import { ProcessMessageContext } from "../events/ProcessMessage";
 
 export default abstract class BaseAction {
   private _context: ProcessMessageContext;
@@ -29,7 +29,7 @@ export default abstract class BaseAction {
     return undefined;
   }
 
-  protected async preExecute(): Promise<void> {}
+  protected async preExecute(): Promise<void> { /* nothing yet */ }
   protected abstract execute(): Promise<void>;
 
   protected get context() {
@@ -67,20 +67,20 @@ export default abstract class BaseAction {
 }
 
 export class MessageRegexp {
-  public constructor(private regexp: RegExp) {}
+  public constructor(private regexp: RegExp) { }
 
   public test(message: Message): boolean {
     return this.getRegexpResults(message.text) != null;
   }
 
-  public execute(message: Message): MessageRegexpResults {
+  public execute(message: Message): RegExpExecArray {
     const regexpResults = this.getRegexpResults(message.text);
 
     if (regexpResults == null) {
       throw new Error("Regexp expression does not match the message!");
     }
 
-    return new MessageRegexpResults(message, regexpResults);
+    return regexpResults;
   }
 
   private getRegexpResults(message: string): RegExpExecArray | null {
@@ -94,16 +94,5 @@ export class MessageRegexp {
     }
 
     return results;
-  }
-}
-
-export class MessageRegexpResults {
-  public constructor(
-    public message: Message,
-    private args: string[]) {
-  }
-
-  public arg(index: number) {
-    return this.args[index];
   }
 }

@@ -1,6 +1,6 @@
 import * as R from "../../../constants/messages";
-import SimpleAction from "../SimpleAction";
 import {MessageRegexp} from "../BaseAction";
+import SimpleAction from "../SimpleAction";
 
 export default class ContactsAction extends SimpleAction {
   public regexp = new MessageRegexp(/^Контакты/i);

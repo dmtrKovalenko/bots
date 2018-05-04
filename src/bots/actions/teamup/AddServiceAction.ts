@@ -1,6 +1,6 @@
 import StandManager from "../../../managers/StandManager";
-import BaseTeamupAction from "./BaseTeamupAction";
 import {MessageRegexp} from "../BaseAction";
+import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class AddServiceAction extends BaseTeamupAction {
   public regexp = new MessageRegexp(/^Запиши меня(?: на)? (.{1,20}) с (\d{1,2}(?::\d{2})?) до (\d{1,2}(?::\d{2})?)/i);

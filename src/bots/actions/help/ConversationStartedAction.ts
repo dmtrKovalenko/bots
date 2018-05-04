@@ -1,8 +1,8 @@
 import * as R from "../../../constants/messages";
 
 import Logger from "../../../services/Logger";
-import SimpleAction from "../SimpleAction";
 import {MessageRegexp} from "../BaseAction";
+import SimpleAction from "../SimpleAction";
 
 export default class ConversationStatedAction extends SimpleAction {
   public regexp = new MessageRegexp(/^(\/start)/i);
