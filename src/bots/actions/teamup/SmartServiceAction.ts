@@ -15,5 +15,5 @@ export default class SmartServiceAction extends CompositeAction<State> {
 }
 
 enum State {
-  None
+  None,
 }
