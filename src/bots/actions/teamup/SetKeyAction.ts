@@ -1,19 +1,16 @@
 import StandManager from "../../../managers/StandManager";
-import { ProcessMessageSession } from "../../events/ProcessMessage";
+import {MessageRegexp} from "../BaseAction";
 import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class SetKeyAction extends BaseTeamupAction {
-  public regexp = /^Мой ключ (.+)$/i;
+  public regexp = new MessageRegexp(/^Мой ключ (.+)$/i);
 
-  protected async action(session: ProcessMessageSession) {
-    const processingMessageDelay = this.processingMessageDelay(session);
-
-    const manager = new StandManager(session.context.userProfile);
+  protected async execute() {
+    const manager = new StandManager(this.userProfile);
     const key = this.arg(0).trim();
 
-    session.sendTextMessage(await manager.authorizeKey(key));
-
-    processingMessageDelay.cancel();
-    return true;
+    return this.longRunningOperation(async () => {
+      this.sendMessage(await manager.authorizeKey(key));
+    });
   }
 }

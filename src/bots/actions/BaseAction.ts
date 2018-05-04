@@ -1,46 +1,90 @@
 import delay from "delay";
 import * as R from "../../constants/messages";
-import { ProcessMessageSession } from "../events/ProcessMessage";
+import Message from "../../models/Message";
+import { ProcessMessageContext } from "../events/ProcessMessage";
 
 export default abstract class BaseAction {
-  protected abstract regexp: RegExp | null;
-  private args: string[] | null;
+  private _context: ProcessMessageContext;
+  private notHandled: boolean;
 
-  public testAndExecute(session: ProcessMessageSession) {
-    const message = session.context.message;
+  public async testAndExecute(context: ProcessMessageContext): Promise<boolean> {
+    this._context = context;
 
-    if (this.regexp == null) {
-      throw new Error("Regexp cannot be null");
-    }
-
-    const regexpResults = this.regexp.exec(message.text);
-
-    if (regexpResults == null) {
+    if (this.test() === false) {
       return false;
     }
 
-    regexpResults.shift();
-    return this.execute(session, regexpResults);
+    await this.preExecute();
+    await this.execute();
+
+    return !this.notHandled;
   }
 
-  public execute(session: ProcessMessageSession, args: string[] | null) {
-    this.args = args;
-    return this.action(session);
+  protected test(): boolean | undefined {
+    return undefined;
   }
 
-  protected abstract action(session: ProcessMessageSession): Promise<boolean>;
+  protected async preExecute(): Promise<void> { /* nothing yet */ }
+  protected abstract execute(): Promise<void>;
 
-  protected arg(index: number) {
-    if (this.args == null) {
-      throw new Error("Args is null");
+  protected get context() {
+    return this._context;
+  }
+
+  protected get userProfile() {
+    return this.context.userProfile;
+  }
+
+  protected async longRunningOperation(action: () => Promise<void>) {
+    try {
+      const _delay = delay(600);
+      _delay.then(() => this.sendMessage(R.PROCESSING)).catch();
+
+      await action();
+
+      _delay.cancel();
+    } catch (e) {
+      e.toString();
+    }
+  }
+
+  protected sendMessage(message: string) {
+    this.context.sendMessage(message);
+  }
+
+  // noinspection JSUnusedGlobalSymbols
+  protected markNotHandled() {
+    this.notHandled = true;
+  }
+}
+
+export class MessageRegexp {
+  public constructor(private regexp: RegExp) { }
+
+  public test(message: Message): boolean {
+    return this.getRegexpResults(message.text) != null;
+  }
+
+  public execute(message: Message): RegExpExecArray {
+    const regexpResults = this.getRegexpResults(message.text);
+
+    if (regexpResults == null) {
+      throw new Error("Regexp expression does not match the message!");
     }
 
-    return this.args[index];
+    return regexpResults;
   }
 
-  protected processingMessageDelay(session: ProcessMessageSession) {
-    const delayInstance = delay(600);
-    delayInstance.then(() => session.sendTextMessage(R.PROCESSING));
-    return delayInstance;
+  private getRegexpResults(message: string): RegExpExecArray | null {
+    const results = this.regexp.exec(message);
+    if (results == null) {
+      return null;
+    }
+
+    if (results != null) {
+      results.shift();
+    }
+
+    return results;
   }
 }

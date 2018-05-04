@@ -16,19 +16,3 @@ export abstract class ProcessMessageContext extends IBaseContext {
     this.userProfile = userProfile;
   }
 }
-
-export class ProcessMessageSession {
-  public readonly context: ProcessMessageContext;
-
-  constructor(context: ProcessMessageContext) {
-    this.context = context;
-  }
-
-  public sendTextMessage(text: string) {
-    this.context.sendMessage(text);
-   }
-
-  public handleError(e: any) {
-    this.context.handleError(e);
-  }
-}

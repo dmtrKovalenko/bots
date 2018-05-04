@@ -1,12 +1,11 @@
 import * as R from "../../../constants/messages";
-import { ProcessMessageSession } from "../../events/ProcessMessage";
-import BaseAction from "../BaseAction";
+import {MessageRegexp} from "../BaseAction";
+import SimpleAction from "../SimpleAction";
 
-export default class ContactsAction extends BaseAction {
-  public regexp = /^Контакты/i;
+export default class ContactsAction extends SimpleAction {
+  public regexp = new MessageRegexp(/^Контакты/i);
 
-  protected async action(session: ProcessMessageSession) {
-    session.sendTextMessage(R.CONTACTS);
-    return true;
+  protected async execute() {
+    this.sendMessage(R.CONTACTS);
   }
 }

@@ -1,16 +1,14 @@
 import * as R from "../../../constants/messages";
-import { ProcessMessageSession } from "../../events/ProcessMessage";
 
 import Logger from "../../../services/Logger";
-import BaseAction from "../BaseAction";
+import {MessageRegexp} from "../BaseAction";
+import SimpleAction from "../SimpleAction";
 
-export default class ConversationStatedAction extends BaseAction {
-  public regexp = /^(\/start)/i;
+export default class ConversationStatedAction extends SimpleAction {
+  public regexp = new MessageRegexp(/^(\/start)/i);
 
-  protected async action(session: ProcessMessageSession) {
-    Logger.logConversationStarted(session.context.userProfile);
-    session.sendTextMessage(R.HELP(session.context.botName, session.context.userProfile.name));
-
-    return true;
+  protected async execute() {
+    Logger.logConversationStarted(this.userProfile);
+    this.sendMessage(R.HELP(this.context.botName, this.userProfile.name));
   }
 }
