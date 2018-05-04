@@ -7,8 +7,9 @@ export default abstract class BaseAction {
   private notHandled: boolean;
 
   public async testAndExecute(context: ProcessMessageContext): Promise<boolean> {
-    if (!this.test(context))
+    if (!this.test(context)) {
       return false;
+    }
 
     return this.execute(context);
   }
@@ -18,7 +19,7 @@ export default abstract class BaseAction {
     this._context = context;
     await this.action();
     return !this.notHandled;
-  };
+  }
 
   protected abstract action(): Promise<void>;
 
