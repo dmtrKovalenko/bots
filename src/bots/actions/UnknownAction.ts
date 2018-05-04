@@ -1,8 +1,8 @@
 import * as R from "../../constants/messages";
 import { ProcessMessageSession } from "../events/ProcessMessage";
-import BaseAction from "./BaseAction";
+import SimpleAction from "./SimpleAction";
 
-export default class UnknownAction extends BaseAction {
+export default class UnknownAction extends SimpleAction {
   public regexp = null;
 
   protected async action(session: ProcessMessageSession) {

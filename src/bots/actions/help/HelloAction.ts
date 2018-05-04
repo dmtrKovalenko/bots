@@ -1,7 +1,7 @@
 import { ProcessMessageSession } from "../../events/ProcessMessage";
-import BaseAction from "../BaseAction";
+import SimpleAction from "../SimpleAction";
 
-export default class HelloAction extends BaseAction {
+export default class HelloAction extends SimpleAction {
   public regexp = /^Привет/i;
 
   protected async action(session: ProcessMessageSession) {

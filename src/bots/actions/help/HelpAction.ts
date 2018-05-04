@@ -1,8 +1,8 @@
 import * as R from "../../../constants/messages";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
-import BaseAction from "../BaseAction";
+import SimpleAction from "../SimpleAction";
 
-export default class HelpAction extends BaseAction {
+export default class HelpAction extends SimpleAction {
   public regexp = /^(Помощь|\/help)/i;
 
   protected async action(session: ProcessMessageSession) {

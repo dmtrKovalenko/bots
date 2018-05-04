@@ -2,9 +2,9 @@ import * as R from "../../../constants/messages";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
 
 import Logger from "../../../services/Logger";
-import BaseAction from "../BaseAction";
+import SimpleAction from "../SimpleAction";
 
-export default class ConversationStatedAction extends BaseAction {
+export default class ConversationStatedAction extends SimpleAction {
   public regexp = /^(\/start)/i;
 
   protected async action(session: ProcessMessageSession) {

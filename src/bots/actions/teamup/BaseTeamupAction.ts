@@ -1,9 +1,9 @@
 import * as R from "../../../constants/messages";
 import AuthManager from "../../../managers/AuthManager";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
-import BaseAction from "../BaseAction";
+import SimpleAction from "../SimpleAction";
 
-export default abstract class BaseTeamupAction extends BaseAction {
+export default abstract class BaseTeamupAction extends SimpleAction {
   protected async checkTeamupKey(session: ProcessMessageSession) {
     const key = await AuthManager.getCalendarKey(session.context.userProfile);
     if (key == null) {

@@ -1,8 +1,8 @@
 import * as R from "../../../constants/messages";
 import { ProcessMessageSession } from "../../events/ProcessMessage";
-import BaseAction from "../BaseAction";
+import SimpleAction from "../SimpleAction";
 
-export default class WhoAreYouAction extends BaseAction {
+export default class WhoAreYouAction extends SimpleAction {
   public regexp = /^(Кто ты|Ты кто|Как тебя зовут)/i;
 
   protected async action(session: ProcessMessageSession) {
