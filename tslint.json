@@ -2,7 +2,7 @@
   "extends": "tslint:recommended",
   "rules": {
     "no-console": false,
-    "max-classes-per-file": [true, 2],
+    "max-classes-per-file": [true, 3],
     "variable-name": false
   }
 }

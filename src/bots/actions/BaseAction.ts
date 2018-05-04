@@ -1,16 +1,17 @@
 import delay from "delay";
 import * as R from "../../constants/messages";
-import {ProcessMessageContext} from "../events/ProcessMessage";
 import Message from "../../models/Message";
+import {ProcessMessageContext} from "../events/ProcessMessage";
 
 export default abstract class BaseAction {
   private _context: ProcessMessageContext;
-  private notHandled: boolean;
+  private notHandled: boolean = false;
+  private finished: boolean = false;
 
   public async testAndExecute(context: ProcessMessageContext): Promise<boolean> {
     this._context = context;
 
-    if (this.test() == false) {
+    if (this.test() === false) {
       return false;
     }
 
@@ -20,9 +21,13 @@ export default abstract class BaseAction {
     return !this.notHandled;
   }
 
+  public isFinished() {
+    return this.finished;
+  }
+
   protected test(): boolean | undefined {
     return undefined;
-  };
+  }
 
   protected async preExecute(): Promise<void> {}
   protected abstract execute(): Promise<void>;
@@ -52,9 +57,12 @@ export default abstract class BaseAction {
     this.context.sendMessage(message);
   }
 
-  // noinspection JSUnusedGlobalSymbols
   protected markNotHandled() {
     this.notHandled = true;
+  }
+
+  protected markFinished() {
+    this.finished = true;
   }
 }
 

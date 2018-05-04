@@ -1,12 +1,15 @@
 import CompositeAction from "../CompositeAction";
+import {MessageRegexp} from "../BaseAction";
 
 export default class SmartServiceAction extends CompositeAction<State> {
-  public test(): boolean {
-    return false;
-  }
+  private readonly initialMessage = new MessageRegexp(/^Записаться/i);
 
   protected async execute() {
-    this.sendMessage("it's works!");
+    if (!this.initialMessage.test(this.context.message)) {
+      this.markNotHandled();
+      return;
+    }
+    this.sendMessage("hahaha");
   }
 
   protected getDefaultState(): State {
@@ -15,5 +18,5 @@ export default class SmartServiceAction extends CompositeAction<State> {
 }
 
 enum State {
-  None
+  None,
 }
