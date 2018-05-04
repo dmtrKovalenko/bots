@@ -14,6 +14,6 @@ export default class StandBot {
       }
     }
 
-    return Unknown.execute(context);
+    return Unknown.testAndExecute(context);
   }
 }

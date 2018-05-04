@@ -8,6 +8,7 @@ import AddServiceAction from "./teamup/AddServiceAction";
 import GetServicesAction from "./teamup/GetServicesAction";
 import SetKeyAction from "./teamup/SetKeyAction";
 import UnknownAction from "./UnknownAction";
+import SmartServiceAction from "./teamup/SmartServiceAction";
 
 export default [
   new WhoAreYouAction(),
@@ -18,6 +19,7 @@ export default [
   new AddServiceAction(),
   new HelloAction(),
   new ConversationStatedAction(),
+  new SmartServiceAction()
 ];
 
 export const Unknown = new UnknownAction();

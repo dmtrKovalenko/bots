@@ -1,40 +1,25 @@
-import BaseAction from "./BaseAction";
-import {ProcessMessageContext} from "../events/ProcessMessage";
+import BaseAction, {MessageRegexp, MessageRegexpResults} from "./BaseAction";
 
 export default abstract class SimpleAction extends BaseAction {
-  protected abstract regexp: RegExp | null;
-  private args: string[] | null;
+  protected abstract regexp: MessageRegexp | null;
+  private regexpResults: MessageRegexpResults | null;
 
-  test(context: ProcessMessageContext): boolean {
-    return this.getRegexpResults(context) != null;
+  test() {
+    const regexp = this.regexp;
+    return regexp != null ? regexp.test(this.context.message) : undefined;
   }
 
-  public async execute(context: ProcessMessageContext): Promise<boolean> {
-    const regexpResults = this.getRegexpResults(context);
-
-    if (regexpResults == null) {
-      return false;
-    }
-
-    regexpResults.shift();
-    return super.execute(context);
+  protected async preExecute(): Promise<void> {
+    const regexp = this.regexp;
+    this.regexpResults = regexp != null ? regexp.execute(this.context.message) : null;
   }
 
   protected arg(index: number) {
-    if (this.args == null) {
+    const regexpResults = this.regexpResults;
+    if (regexpResults == null) {
       throw new Error("Args is null");
     }
 
-    return this.args[index];
-  }
-
-  private getRegexpResults(context: ProcessMessageContext): RegExpExecArray | null {
-    const message = context.message;
-
-    if (this.regexp == null) {
-      throw new Error("Regexp cannot be null");
-    }
-
-    return this.regexp.exec(message.text);
+    return regexpResults.arg(index);
   }
 }

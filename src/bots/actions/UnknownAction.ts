@@ -4,7 +4,7 @@ import SimpleAction from "./SimpleAction";
 export default class UnknownAction extends SimpleAction {
   public regexp = null;
 
-  protected async action() {
+  protected async execute() {
     this.sendMessage(R.UNKNOWN);
   }
 }

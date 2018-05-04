@@ -1,11 +1,12 @@
 import StandManager from "../../../managers/StandManager";
 import BaseTeamupAction from "./BaseTeamupAction";
+import {MessageRegexp} from "../BaseAction";
 
 export default class GetServicesAction extends BaseTeamupAction {
-  public regexp = /^Кто (?:записан|стоит|служит) (.+)$/i;
+  public regexp = new MessageRegexp(/^Кто (?:записан|стоит|служит) (.+)$/i);
 
-  protected async action() {
-    const manager = new StandManager(this.userProfile());
+  protected async execute() {
+    const manager = new StandManager(this.userProfile);
 
     return this.longRunningOperation(async () => {
       if (!await this.checkTeamupKey()) {

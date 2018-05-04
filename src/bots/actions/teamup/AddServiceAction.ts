@@ -1,11 +1,12 @@
 import StandManager from "../../../managers/StandManager";
 import BaseTeamupAction from "./BaseTeamupAction";
+import {MessageRegexp} from "../BaseAction";
 
 export default class AddServiceAction extends BaseTeamupAction {
-  public regexp = /^Запиши меня(?: на)? (.{1,20}) с (\d{1,2}(?::\d{2})?) до (\d{1,2}(?::\d{2})?)/i;
+  public regexp = new MessageRegexp(/^Запиши меня(?: на)? (.{1,20}) с (\d{1,2}(?::\d{2})?) до (\d{1,2}(?::\d{2})?)/i);
 
-  protected async action() {
-    const manager = new StandManager(this.userProfile());
+  protected async execute() {
+    const manager = new StandManager(this.userProfile);
 
     return this.longRunningOperation(async () => {
       if (!await this.checkTeamupKey()) {
