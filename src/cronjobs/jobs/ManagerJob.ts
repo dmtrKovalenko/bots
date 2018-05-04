@@ -1,12 +1,12 @@
 import { Message } from "viber-bot";
-import { bot as TelegramBot } from "../bots/telegram";
-import { bot as ViberBot } from "../bots/viber";
+import { bot as TelegramBot } from "../../bots/telegram";
+import { bot as ViberBot } from "../../bots/viber";
 
-import config from "../constants/config";
-import * as R from "../constants/messages";
-import UserRepository from "../db/repositories/UserRepository";
-import StandManager from "../managers/StandManager";
-import { BaseCronTask } from "./BaseCronTask";
+import config from "../../constants/config";
+import * as R from "../../constants/messages";
+import UserRepository from "../../db/repositories/UserRepository";
+import StandManager from "../../managers/StandManager";
+import { BaseCronTask } from "../BaseCronTask";
 
 export default class ManagerJob extends BaseCronTask {
   public cronTime = "0 0 19 * * *"; // every day at 19:00

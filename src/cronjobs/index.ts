@@ -1,13 +1,14 @@
 import { CronJob } from "cron";
 import * as http from "http";
+import path from "path";
 import requireAll from "require-all";
 
 requireAll({
-  dirname: __dirname,
-  filter: /(.+Job)\.ts$/,
-  resolve: (jobModule: any) => {
+  dirname: path.resolve(__dirname, "jobs"),
+  filter: /(.+Job)\.(ts|js)$/,
+  resolve: ({ default: Job }: any) => {
     // get instance of BaseCronTask and convert to CronJob
-    const job = new jobModule.default().toCronJob();
+    const job = new Job().toCronJob();
 
     if (!(job instanceof CronJob)) {
       throw new Error("Cron jobs should be instances of cron`s CronJob");
