@@ -8,13 +8,11 @@ export default class GetServicesAction extends BaseTeamupAction {
   protected async execute() {
     const manager = new StandManager(this.userProfile);
 
-    return this.longRunningOperation(async () => {
-      if (!await this.checkTeamupKey()) {
+    if (!await this.checkTeamupKey()) {
         return;
       }
 
-      const when = this.arg(0).trim();
-      this.sendMessage(await manager.getServices(when));
-    });
+    const when = this.arg(0).trim();
+    this.sendMessage(await manager.getServices(when));
   }
 }

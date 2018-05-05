@@ -16,15 +16,15 @@ export default class StandBot {
         return true;
       }
     } else {
-      for (const action of allActions) {
-        const inst = new action();
+      for (const Action of allActions) {
+        const inst = new Action();
         if (await this.executeAction(context, inst)) {
           return true;
         }
       }
     }
 
-    return (new Unknown()).testAndExecute(context);
+    return new Unknown().testAndExecute(context);
   }
 
   private static async executeAction(context: ProcessMessageContext, action: BaseAction): Promise<boolean> {

@@ -13,12 +13,16 @@ export default abstract class BaseAction {
     this.finished = false;
     this._context = context;
 
-    if (this.test() === false) {
+    if (!this.test()) {
       return false;
     }
 
+    if (!this.execute || !this.executeAsync) {
+      throw new Error("Methods execute or execute async should be implemented");
+    }
+
     await this.preExecute();
-    await this.execute();
+    await this.execute ? this.execute() : this.executeLongRunning();
     await this.postExecute();
 
     return !this.notHandled;
@@ -40,14 +44,6 @@ export default abstract class BaseAction {
     this.finished = true;
   }
 
-  protected test(): boolean | undefined {
-    return undefined;
-  }
-
-  protected async preExecute(): Promise<void> { /* nothing yet */ }
-  protected abstract execute(): Promise<void>;
-  protected async postExecute(): Promise<void> { /* nothing yet */ }
-
   get context() {
     return this._context;
   }
@@ -56,18 +52,25 @@ export default abstract class BaseAction {
     return this.context.userProfile;
   }
 
-  protected async longRunningOperation(action: () => Promise<void>) {
+  protected async executeLongRunning() {
+    const _delay = delay(600);
+    _delay.then(() => this.sendMessage(R.PROCESSING)).catch();
+
+    await this.executeAsync!();
+
     try {
-      const _delay = delay(600);
-      _delay.then(() => this.sendMessage(R.PROCESSING)).catch();
-
-      await action();
-
       _delay.cancel();
     } catch (e) {
-      e.toString();
+      console.log(e);
     }
   }
+
+  protected abstract test(): boolean | undefined;
+
+  protected async preExecute(): Promise<void> { /* nothing yet */ }
+  protected execute?(): void;
+  protected async executeAsync?(): Promise<void>;
+  protected async postExecute(): Promise<void> { /* nothing yet */ }
 }
 
 export class MessageRegexp {

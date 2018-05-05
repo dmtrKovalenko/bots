@@ -5,7 +5,7 @@ import SimpleAction from "../SimpleAction";
 export default class ContactsAction extends SimpleAction {
   public regexp = new MessageRegexp(/^Контакты/i);
 
-  protected async execute() {
+  protected execute() {
     this.sendMessage(R.CONTACTS);
   }
 }

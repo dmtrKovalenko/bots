@@ -2,7 +2,7 @@ import {MessageRegexp} from "../BaseAction";
 import CompositeAction from "../CompositeAction";
 
 export default class SmartServiceAction extends CompositeAction<State> {
-  protected async execute() {
+  protected async executeAsync() {
     if (this.state == null) {
       this.state = new DefaultState();
     }
