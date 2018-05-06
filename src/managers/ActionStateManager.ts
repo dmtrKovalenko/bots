@@ -1,5 +1,5 @@
 import BaseAction from "../bots/actions/BaseAction";
-import {ProcessMessageContext} from "../bots/events/ProcessMessage";
+import { ProcessMessageContext } from "../bots/events/ProcessMessage";
 
 export default class ActionStateManager {
   public static getCurrentAction(context: ProcessMessageContext): BaseAction | null {
