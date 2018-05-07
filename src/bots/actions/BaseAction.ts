@@ -4,45 +4,7 @@ import Message from "../../models/Message";
 import { ProcessMessageContext } from "../events/ProcessMessage";
 
 export default abstract class BaseAction {
-  private _context: ProcessMessageContext;
-  private notHandled: boolean = false;
-  private finished: boolean = false;
-
-  public async testAndExecute(context: ProcessMessageContext): Promise<boolean> {
-    this.notHandled = false;
-    this.finished = false;
-    this._context = context;
-
-    if (!this.test()) {
-      return false;
-    }
-
-    if (!this.execute || !this.executeAsync) {
-      throw new Error("Methods execute or execute async should be implemented");
-    }
-
-    await this.preExecute();
-    await this.execute ? this.execute() : this.executeLongRunning();
-    await this.postExecute();
-
-    return !this.notHandled;
-  }
-
-  public isFinished() {
-    return this.finished;
-  }
-
-  public sendMessage(message: string) {
-    this.context.sendMessage(message);
-  }
-
-  public markNotHandled() {
-    this.notHandled = true;
-  }
-
-  public markFinished() {
-    this.finished = true;
-  }
+  constructor(private _context: ProcessMessageContext) {}
 
   get context() {
     return this._context;
@@ -52,11 +14,35 @@ export default abstract class BaseAction {
     return this.context.userProfile;
   }
 
-  protected async executeLongRunning() {
+  public async testAndExecute(): Promise<boolean> {
+    if (!this.test()) {
+      return false;
+    }
+
+    if (!this.execute && !this.executeAsync) {
+      throw new ReferenceError("Methods execute or execute async should be implemented");
+    }
+
+    await this.execute
+      ? this.execute!()
+      : this.longRunning(this.executeAsync!);
+
+    return true;
+  }
+
+  public sendMessage(message: string) {
+    this.context.sendMessage(message);
+  }
+
+  protected abstract test(): boolean | undefined;
+  protected execute?(): void;
+  protected async executeAsync?(): Promise<void>;
+
+  protected async longRunning(action: () => Promise<void>) {
     const _delay = delay(600);
     _delay.then(() => this.sendMessage(R.PROCESSING)).catch();
 
-    await this.executeAsync!();
+    await action();
 
     try {
       _delay.cancel();
@@ -64,20 +50,13 @@ export default abstract class BaseAction {
       console.log(e);
     }
   }
-
-  protected abstract test(): boolean | undefined;
-
-  protected async preExecute(): Promise<void> { /* nothing yet */ }
-  protected execute?(): void;
-  protected async executeAsync?(): Promise<void>;
-  protected async postExecute(): Promise<void> { /* nothing yet */ }
 }
 
 export class MessageRegexp {
   public constructor(private regexp: RegExp) { }
 
-  public test(message: Message): boolean {
-    return this.getRegexpResults(message.text) != null;
+  public test(message: Message) {
+    return this.getRegexpResults(message.text);
   }
 
   public execute(message: Message): RegExpExecArray {

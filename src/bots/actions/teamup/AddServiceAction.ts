@@ -1,4 +1,5 @@
 import StandManager from "../../../managers/StandManager";
+import Parser from "../../../services/Parser";
 import { MessageRegexp } from "../BaseAction";
 import BaseTeamupAction from "./BaseTeamupAction";
 
@@ -12,10 +13,10 @@ export default class AddServiceAction extends BaseTeamupAction {
       return;
     }
 
-    const date = this.arg(0).trim();
-    const startTime = this.arg(1).trim();
-    const endTime = this.arg(2).trim();
+    const date = Parser.parseDate(this.arg(0).trim());
+    const start = Parser.parseTime(this.arg(1).trim(), date);
+    const end = Parser.parseTime(this.arg(2).trim(), date);
 
-    this.sendMessage(await manager.addService(date, startTime, endTime));
+    this.sendMessage(await manager.addService(start, end));
   }
 }

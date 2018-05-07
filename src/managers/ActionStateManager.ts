@@ -1,24 +1,41 @@
-import BaseAction from "../bots/actions/BaseAction";
-import { ProcessMessageContext } from "../bots/events/ProcessMessage";
+import SmartServiceAction from "../bots/actions/composite/SmartServiceAction";
+import UserProfile from "../models/UserProfile";
+import Redis from "../services/Redis";
+
+const actionsMap = new Map<string, any>();
+actionsMap.set(SmartServiceAction.name, SmartServiceAction);
+
+interface IActionState {
+  Action: any;
+  step: number;
+  meta: object;
+}
 
 export default class ActionStateManager {
-  public static getCurrentAction(context: ProcessMessageContext): BaseAction | null {
-    const action = this.actions.get(this.getKey(context));
-    return action !== undefined ? action : null;
+  public static setActionState(userProfile: UserProfile, action: string, step: number, meta: object) {
+    return Redis.set(userProfile.id.toString(), { step, action, meta: JSON.stringify(meta) });
   }
 
-  public static setCurrentAction(context: ProcessMessageContext, action: BaseAction | null) {
-    const key = this.getKey(context);
-    if (action != null) {
-      this.actions.set(key, action);
-    } else {
-      this.actions.delete(key);
+  public static removeActionState(userProfile: UserProfile) {
+    return Redis.delete(userProfile.id.toString());
+  }
+
+  public static async getExecutingSession(userProfile: UserProfile): Promise<IActionState | null> {
+    const session = await Redis.get(userProfile.id.toString());
+
+    if (!session) {
+      return null;
     }
-  }
 
-  private static actions: Map<string, BaseAction> = new Map<string, BaseAction>();
+    const Action = actionsMap.get(session.action as string);
+    if (!Action) {
+      throw new ReferenceError("Action not found");
+    }
 
-  private static getKey(context: ProcessMessageContext) {
-    return `${context.userProfile.viber_id}/${context.userProfile.telegram_id}`;
+    return {
+      Action,
+      meta: JSON.parse(session.meta as string),
+      step: Number(session.step),
+    };
   }
 }

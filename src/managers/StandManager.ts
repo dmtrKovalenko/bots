@@ -20,18 +20,14 @@ export default class StandManager {
     return this.getServicesOnDate(date!);
   }
 
-  public addService(date: string, startTime: string, endTime: string) {
-    const baseDate = Parser.parseDate(date);
-
-    const start = Parser.parseTime(startTime, baseDate);
-    const end = Parser.parseTime(endTime, baseDate);
-
+  public addService(start: DateTime, end: DateTime) {
     const event = new TeamUpEvent(this.userProfile.name, start, end);
+
     return this.teamUpService.createEvent(event)
-      .then(() => messages.ADDED_SUCCESSFULLY(localizedFormat(start, "dd MMMM в HH:mm")))
+      .then(() => messages.ADDED_SUCCESSFULLY(localizedFormat(event.startDate, "dd MMMM в HH:mm")))
       .catch((e) => {
         if (e.error && e.error.id === "event_overlapping") {
-          return this.getServicesOnDate(start)
+          return this.getServicesOnDate(event.startDate)
             .then((schedule) => messages.CONFLICT + schedule);
         }
 
@@ -53,7 +49,7 @@ export default class StandManager {
     return messages.KEY_AUTHORIZED;
   }
 
-  private async getServicesOnDate(date: DateTime) {
+  public async getServicesOnDate(date: DateTime) {
     const todayEvents = await this.teamUpService.getEventsCollection(date.startOf("day"), date.startOf("day"));
 
     if (todayEvents.length === 0) {

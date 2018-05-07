@@ -1,7 +1,8 @@
+import * as R from "../constants/messages";
 import ActionStateManager from "../managers/ActionStateManager";
 import Logger from "../services/Logger";
-import allActions, { Unknown } from "./actions";
-import BaseAction from "./actions/BaseAction";
+import allActions from "./actions";
+import CompositeAction from "./actions/composite/CompositeAction";
 import { ProcessMessageContext } from "./events/ProcessMessage";
 
 export default class StandBot {
@@ -9,36 +10,23 @@ export default class StandBot {
     const { message, userProfile } = context;
     Logger.trackMessageReceived(message, userProfile);
 
-    const currentAction = ActionStateManager.getCurrentAction(context);
+    const executingSession = await ActionStateManager.getExecutingSession(userProfile);
+    if (executingSession) {
+      const { Action, step, meta } = executingSession;
+      const compositeAction: CompositeAction<any, any> = new Action(context);
 
-    if (currentAction != null) {
-      if (await this.executeAction(context, currentAction)) {
+      await compositeAction.executeStep(step, meta);
+      return true;
+    }
+
+    for (const Action of allActions) {
+      const action = new Action(context);
+      if (await action.testAndExecute()) {
         return true;
       }
-    } else {
-      for (const Action of allActions) {
-        const inst = new Action();
-        if (await this.executeAction(context, inst)) {
-          return true;
-        }
-      }
     }
 
-    return new Unknown().testAndExecute(context);
-  }
-
-  private static async executeAction(context: ProcessMessageContext, action: BaseAction): Promise<boolean> {
-    const result = await action.testAndExecute(context);
-    if (!result) {
-      return false;
-    }
-
-    if (!action.isFinished()) {
-      ActionStateManager.setCurrentAction(context, action);
-    } else {
-      ActionStateManager.setCurrentAction(context, null);
-    }
-
-    return result;
+    context.sendMessage(R.UNKNOWN);
+    return true;
   }
 }
