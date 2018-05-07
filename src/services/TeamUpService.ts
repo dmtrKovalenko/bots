@@ -7,6 +7,7 @@ import TeamUpEvent from "../models/TeamUpEvent";
 import UserProfile from "../models/UserProfile";
 
 const token = process.env.TEAMUP_TOKEN;
+const subcalendarId = process.env.TEAMUP_SUBCALENDAR_ID;
 
 const FORMAT_DATE = "yyyy-MM-dd";
 const API_URL = "https://api.teamup.com";
@@ -18,12 +19,12 @@ export default class TeamUpService {
     const endDate = end.toFormat(FORMAT_DATE);
     const startDate = start.toFormat(FORMAT_DATE);
 
-    return this.teamUpFetch(`/events?startDate=${startDate}&endDate=${endDate}&`)
+    return this.teamUpFetch(`/events?startDate=${startDate}&endDate=${endDate}&subcalendarId[]=${subcalendarId}&`)
       .then((res) => res.events as TeamUpEvent[]);
   }
 
   public createEvent(event: TeamUpEvent) {
-    return this.teamUpFetch("/events?", { method: "POST", body: JSON.stringify(event) })
+    return this.teamUpFetch(`/events?`, { method: "POST", body: JSON.stringify(event) })
       .then((res) => res.event as TeamUpEvent);
   }
 
