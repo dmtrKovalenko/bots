@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import fetch, { RequestInit } from "node-fetch";
+import URLSearchParams from "url-search-params";
 import * as messages from "../constants/messages";
 import AuthManager from "../managers/AuthManager";
 import { CustomError } from "../models/Errors";
@@ -19,12 +20,12 @@ export default class TeamUpService {
     const endDate = end.toFormat(FORMAT_DATE);
     const startDate = start.toFormat(FORMAT_DATE);
 
-    return this.teamUpFetch(`/events?startDate=${startDate}&endDate=${endDate}&subcalendarId[]=${subcalendarId}&`)
+    return this.teamUpFetch(`/events`, { startDate, endDate, "subcalendarId[]": subcalendarId! })
       .then((res) => res.events as TeamUpEvent[]);
   }
 
   public createEvent(event: TeamUpEvent) {
-    return this.teamUpFetch(`/events?`, { method: "POST", body: JSON.stringify(event) })
+    return this.teamUpFetch(`/events`, {}, { method: "POST", body: JSON.stringify(event) })
       .then((res) => res.event as TeamUpEvent);
   }
 
@@ -35,7 +36,7 @@ export default class TeamUpService {
       .then(({ error }) => !Boolean(error));
   }
 
-  private async teamUpFetch(url: string, options?: RequestInit) {
+  private async teamUpFetch(url: string, search: { [key: string]: string }, options?: RequestInit) {
     let calendarKey = this.userProfile.teamup_key;
 
     if (!calendarKey) { // if we get there without key for some reason
@@ -53,7 +54,10 @@ export default class TeamUpService {
       };
     }
 
-    return fetch(`${API_URL}/${calendarKey}${url}_teamup_token=${token}`, options)
+    const params = new URLSearchParams(`_teamup_token=${token}`);
+    Object.keys(search).forEach((key) => params.append(key, search[key]));
+
+    return fetch(`${API_URL}/${calendarKey}${url}?${params.toString()}`, options)
       .then(async (res) => {
         if (res.ok) { return res.json();  }
 
