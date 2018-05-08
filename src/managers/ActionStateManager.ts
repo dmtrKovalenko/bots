@@ -5,7 +5,7 @@ import Redis from "../services/Redis";
 const actionsMap = new Map<string, any>();
 actionsMap.set(SmartServiceAction.name, SmartServiceAction);
 
-interface IActionState {
+export interface IActionState {
   Action: any;
   step: number;
   meta: object;
@@ -13,15 +13,16 @@ interface IActionState {
 
 export default class ActionStateManager {
   public static setActionState(userProfile: UserProfile, action: string, step: number, meta: object) {
-    return Redis.set(userProfile.id.toString(), { step, action, meta: JSON.stringify(meta) });
+    const key = this.getSessionKey(userProfile);
+    return Redis.set(key, { step, action, meta: JSON.stringify(meta) });
   }
 
   public static removeActionState(userProfile: UserProfile) {
-    return Redis.delete(userProfile.id.toString());
+    return Redis.delete(this.getSessionKey(userProfile));
   }
 
   public static async getExecutingSession(userProfile: UserProfile): Promise<IActionState | null> {
-    const session = await Redis.get(userProfile.id.toString());
+    const session = await Redis.get(this.getSessionKey(userProfile));
 
     if (!session) {
       return null;
@@ -37,5 +38,9 @@ export default class ActionStateManager {
       meta: JSON.parse(session.meta as string),
       step: Number(session.step),
     };
+  }
+
+  private static getSessionKey(userProfile: UserProfile) {
+    return `${userProfile.id.toString()}_session`;
   }
 }

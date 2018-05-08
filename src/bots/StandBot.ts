@@ -2,7 +2,6 @@ import * as R from "../constants/messages";
 import ActionStateManager from "../managers/ActionStateManager";
 import Logger from "../services/Logger";
 import allActions from "./actions";
-import CompositeAction from "./actions/composite/CompositeAction";
 import { ProcessMessageContext } from "./events/ProcessMessage";
 
 export default class StandBot {
@@ -10,12 +9,7 @@ export default class StandBot {
     const { message, userProfile } = context;
     Logger.trackMessageReceived(message, userProfile);
 
-    const executingSession = await ActionStateManager.getExecutingSession(userProfile);
-    if (executingSession) {
-      const { Action, step, meta } = executingSession;
-      const compositeAction: CompositeAction<any, any> = new Action(context);
-
-      await compositeAction.executeStep(step, meta);
+    if (await this.executeCompositeAction(context)) {
       return true;
     }
 
@@ -28,5 +22,27 @@ export default class StandBot {
 
     context.sendMessage(R.UNKNOWN);
     return true;
+  }
+
+  private static async executeCompositeAction(context: ProcessMessageContext) {
+    const executingSession = await ActionStateManager.getExecutingSession(context.userProfile);
+    if (!executingSession) {
+      return false;
+    }
+
+    const { Action, step, meta } = executingSession;
+
+    if (this.testDiscardMessage(context.message.text)) {
+      ActionStateManager.removeActionState(context.userProfile);
+      return true;
+    }
+
+    const compositeAction = new Action(context);
+    await compositeAction.executeStep(step, meta);
+    return true;
+  }
+
+  private static testDiscardMessage(message: string) {
+    return /^(Все|\/Отмена)/i.test(message);
   }
 }
