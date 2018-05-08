@@ -28,13 +28,13 @@ export default class SmartServiceAction extends CompositeAction<ServiceStep, ISm
   public async executeStep(step: ServiceStep, meta: ISmartServiceMeta) {
     switch (step) {
       case ServiceStep.DATE:
-        return this.executeDay(meta);
+        return this.longRunning(() => this.executeDay(meta));
 
       case ServiceStep.START_TIME:
         return this.executeStartTime(meta);
 
       case ServiceStep.END_TIME:
-        return this.executeEndTime(meta);
+        return this.longRunning(() => this.executeEndTime(meta));
     }
   }
 
@@ -69,8 +69,8 @@ export default class SmartServiceAction extends CompositeAction<ServiceStep, ISm
     const start = DateTime.fromISO(meta.startTime!);
 
     const manager = new StandManager(this.userProfile);
-
     this.context.sendMessage(await manager.addService(start, end));
+
     await this.finishAction();
   }
 }

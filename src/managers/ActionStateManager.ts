@@ -1,9 +1,14 @@
-import SmartServiceAction from "../bots/actions/composite/SmartServiceAction";
+import path from "path";
+import requireAll from "require-all";
 import UserProfile from "../models/UserProfile";
 import Redis from "../services/Redis";
 
 const actionsMap = new Map<string, any>();
-actionsMap.set(SmartServiceAction.name, SmartServiceAction);
+requireAll({
+  dirname: path.resolve(__dirname, "..", "bots", "actions", "composite"),
+  filter: /(.+Action)\.(js|ts)$/,
+  resolve: ({ default: Action }: any) => actionsMap.set(Action.name, Action),
+});
 
 export interface IActionState {
   Action: any;
