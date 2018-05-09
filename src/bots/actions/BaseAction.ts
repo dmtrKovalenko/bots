@@ -23,9 +23,9 @@ export default abstract class BaseAction {
       throw new ReferenceError("Methods execute or execute async should be implemented");
     }
 
-    await this.execute
-      ? this.execute!()
-      : this.longRunning(this.executeAsync!);
+    this.execute
+      ? await this.execute!()
+      : await this.longRunning(this.executeAsync!);
 
     return true;
   }
