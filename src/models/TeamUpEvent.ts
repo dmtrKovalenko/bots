@@ -10,8 +10,8 @@ export default class TeamUpEvent {
 
   constructor(
     title: string,
-    startDate: DateTime,
-    endDate: DateTime,
+    public startDate: DateTime,
+    public endDate: DateTime,
     who: string = "",
   ) {
     this.who = who;

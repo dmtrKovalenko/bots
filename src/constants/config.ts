@@ -15,5 +15,10 @@ export default {
     },
     url: dbConfig.url,
   },
+  redis: {
+    host: process.env.REDIS_HOST || "localhost",
+    password: process.env.REDIS_PASSWORD,
+    port: Number(process.env.REDIS_PORT) || 6379,
+  },
   serviceUserProfile: new UserProfile("Service", undefined, undefined, "ksmu2qfoi4ixezwys3"),
 };

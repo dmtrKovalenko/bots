@@ -1,4 +1,4 @@
-
+import SmartServiceAction from "./composite/SmartServiceAction";
 import ContactsAction from "./help/ContactsAction";
 import ConversationStatedAction from "./help/ConversationStartedAction";
 import HelloAction from "./help/HelloAction";
@@ -7,19 +7,15 @@ import WhoAreYouAction from "./help/WhoAreYouAction";
 import AddServiceAction from "./teamup/AddServiceAction";
 import GetServicesAction from "./teamup/GetServicesAction";
 import SetKeyAction from "./teamup/SetKeyAction";
-import SmartServiceAction from "./teamup/SmartServiceAction";
-import UnknownAction from "./UnknownAction";
 
 export default [
-  new WhoAreYouAction(),
-  new HelpAction(),
-  new ContactsAction(),
-  new SetKeyAction(),
-  new GetServicesAction(),
-  new AddServiceAction(),
-  new HelloAction(),
-  new ConversationStatedAction(),
-  new SmartServiceAction(),
+  WhoAreYouAction,
+  HelpAction,
+  ContactsAction,
+  SetKeyAction,
+  GetServicesAction,
+  AddServiceAction,
+  HelloAction,
+  ConversationStatedAction,
+  SmartServiceAction,
 ];
-
-export const Unknown = new UnknownAction();

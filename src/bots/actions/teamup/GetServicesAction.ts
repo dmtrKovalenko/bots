@@ -1,5 +1,5 @@
 import StandManager from "../../../managers/StandManager";
-import {MessageRegexp} from "../BaseAction";
+import { MessageRegexp } from "../BaseAction";
 import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class GetServicesAction extends BaseTeamupAction {
@@ -8,13 +8,11 @@ export default class GetServicesAction extends BaseTeamupAction {
   protected async execute() {
     const manager = new StandManager(this.userProfile);
 
-    return this.longRunningOperation(async () => {
-      if (!await this.checkTeamupKey()) {
-        return;
-      }
+    if (!await this.checkTeamupKey()) {
+      return;
+    }
 
-      const when = this.arg(0).trim();
-      this.sendMessage(await manager.getServices(when));
-    });
+    const when = this.arg(0).trim();
+    this.sendMessage(await manager.getServices(when));
   }
 }

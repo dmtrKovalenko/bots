@@ -7,7 +7,7 @@ import SimpleAction from "../SimpleAction";
 export default class ConversationStatedAction extends SimpleAction {
   public regexp = new MessageRegexp(/^(\/start)/i);
 
-  protected async execute() {
+  protected execute() {
     Logger.logConversationStarted(this.userProfile);
     this.sendMessage(R.HELP(this.context.botName, this.userProfile.name));
   }

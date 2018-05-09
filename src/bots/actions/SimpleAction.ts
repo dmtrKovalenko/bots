@@ -6,12 +6,9 @@ export default abstract class SimpleAction extends BaseAction {
 
   public test() {
     const regexp = this.regexp;
-    return regexp != null ? regexp.test(this.context.message) : undefined;
-  }
+    this.regexpResults = regexp ? regexp.test(this.context.message) : null;
 
-  protected async preExecute(): Promise<void> {
-    const regexp = this.regexp;
-    this.regexpResults = regexp != null ? regexp.execute(this.context.message) : null;
+    return Boolean(this.regexpResults);
   }
 
   protected arg(index: number) {

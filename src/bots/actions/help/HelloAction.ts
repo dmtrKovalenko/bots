@@ -4,7 +4,7 @@ import SimpleAction from "../SimpleAction";
 export default class HelloAction extends SimpleAction {
   public regexp = new MessageRegexp(/^Привет/i);
 
-  protected async execute() {
+  protected execute() {
     this.sendMessage(`Привет, ${this.userProfile.name} 😉`);
   }
 }
