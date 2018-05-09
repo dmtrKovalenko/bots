@@ -4,7 +4,8 @@ import redisStore from "cache-manager-redis-store";
 import config from "../constants/config";
 
 const redisCache = cacheManager.caching({
-  db: 1, // 0 is for action sessions
+  auth_pass: config.redis.password,
+  db: 0,
   host: config.redis.host,
   port: config.redis.port,
   store: redisStore,
