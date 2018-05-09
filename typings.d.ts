@@ -11,5 +11,10 @@ declare module "mixpanel" {
 
 declare module "require-all" {
   export const value: any;
-  export default Mixpanel;
+  export default value;
+}
+
+declare module "cache-manager-redis-store" {
+  export const value: any;
+  export default value;
 }

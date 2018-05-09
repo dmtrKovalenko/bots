@@ -47,8 +47,8 @@ export default class SmartServiceAction extends CompositeAction<ServiceStep, ISm
 
     await this.setActionStep(ServiceStep.START_TIME, meta);
 
-    this.context.sendMessage(SMART_ADD_SERVICE.HERE_IS_SCHEDULE + await manager.getServicesOnDate(date));
-    this.context.sendMessage(SMART_ADD_SERVICE.START_TIME);
+    this.sendMessage(SMART_ADD_SERVICE.HERE_IS_SCHEDULE + await manager.getServicesOnDate(date));
+    this.sendMessage(SMART_ADD_SERVICE.START_TIME);
   }
 
   private async executeStartTime(meta: ISmartServiceMeta) {
@@ -58,7 +58,7 @@ export default class SmartServiceAction extends CompositeAction<ServiceStep, ISm
     meta.startTime = Parser.parseTime(text, baseDate).toISO();
 
     await this.setActionStep(ServiceStep.END_TIME, meta);
-    this.context.sendMessage(SMART_ADD_SERVICE.END_TIME);
+    this.sendMessage(SMART_ADD_SERVICE.END_TIME);
   }
 
   private async executeEndTime(meta: ISmartServiceMeta) {
@@ -69,7 +69,7 @@ export default class SmartServiceAction extends CompositeAction<ServiceStep, ISm
     const start = DateTime.fromISO(meta.startTime!);
 
     const manager = new StandManager(this.userProfile);
-    this.context.sendMessage(await manager.addService(start, end));
+    this.sendMessage(await manager.addService(start, end));
 
     await this.finishAction();
   }

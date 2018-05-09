@@ -1,7 +1,7 @@
 import path from "path";
 import requireAll from "require-all";
 import UserProfile from "../models/UserProfile";
-import Redis from "../services/Redis";
+import cache from "../services/cache";
 
 const actionsMap = new Map<string, any>();
 requireAll({
@@ -19,15 +19,15 @@ export interface IActionState {
 export default class ActionStateManager {
   public static setActionState(userProfile: UserProfile, action: string, step: number, meta: object) {
     const key = this.getSessionKey(userProfile);
-    return Redis.set(key, { step, action, meta: JSON.stringify(meta) });
+    return cache.set(key, { step, action, meta }, { ttl: 3600 });
   }
 
   public static removeActionState(userProfile: UserProfile) {
-    return Redis.delete(this.getSessionKey(userProfile));
+    return cache.del(this.getSessionKey(userProfile));
   }
 
   public static async getExecutingSession(userProfile: UserProfile): Promise<IActionState | null> {
-    const session = await Redis.get(this.getSessionKey(userProfile));
+    const session = await cache.get(this.getSessionKey(userProfile));
 
     if (!session) {
       return null;
@@ -40,8 +40,8 @@ export default class ActionStateManager {
 
     return {
       Action,
-      meta: JSON.parse(session.meta as string),
-      step: Number(session.step),
+      meta: session.meta,
+      step: session.step,
     };
   }
 
