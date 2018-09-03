@@ -43,7 +43,7 @@ export default class StandManager {
 
     try {
       const { key, name } = await this.teamUpService.verifyKey(keyToCheck);
-      console.log(key, name);
+
       await AuthManager.addCalendarKey(this.userProfile, key, name);
       return messages.KEY_AUTHORIZED;
     } catch (e) {

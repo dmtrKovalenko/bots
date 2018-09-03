@@ -29,6 +29,10 @@ export default class TeamUpService {
       .then((res) => res.event as TeamUpEvent);
   }
 
+  public getAuxiliaryInfo(eventId: string): Promise<any> {
+    return this.teamUpFetch(`events/${eventId}/aux`, {});
+  }
+
   public verifyKey(key: string): Promise<{ key: string, name: string }> {
     // use global fetch here to make request with passed key
     return fetch(`${config.teamUpApiUrl}/${key}/configuration?_teamup_token=${token}`)

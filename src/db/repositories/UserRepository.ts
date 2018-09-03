@@ -22,6 +22,10 @@ class UserRepository extends GenericRepository<User> {
     return this.find({ where: { teamup_key } });
   }
 
+  public findByTeamupName(teamup_user_name: string) {
+    return this.find({ where: { teamup_user_name }});
+  }
+
   public findByKeyOrProfile(teamup_key: string, profile: UserProfile) {
     return this.find({ where: {
       [Op.or]: [
