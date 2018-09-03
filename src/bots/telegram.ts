@@ -1,10 +1,7 @@
 import TelegramBot, { ConstructorOptions, WebHookOptions } from "node-telegram-bot-api";
 import { env } from "../constants/config";
-import * as messages from "../constants/messages";
-import { CustomError } from "../models/Errors";
 import Message from "../models/Message";
 import UserProfile from "../models/UserProfile";
-import Logger from "../services/Logger";
 import publicUrl from "../services/PublicUrl";
 import { ProcessMessageContext } from "./events/ProcessMessage";
 import StandBot from "./StandBot";
@@ -12,7 +9,7 @@ import StandBot from "./StandBot";
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
 if (!token) {
-  throw new Error("Telegram token should be provided");
+  throw new Error("TELEGRAM_BOT_TOKEN token should be provided");
 }
 
 const options: ConstructorOptions = {
@@ -45,23 +42,11 @@ class TelegramProcessMessageContext extends ProcessMessageContext {
   public sendMessage = (message: string) => {
     bot.sendMessage(this.chat.id, message);
   }
-
-  public handleError = (e: any) => {
-    if (e instanceof CustomError) {
-      this.sendMessage(e.message);
-      return;
-    }
-
-    console.log(e);
-    Logger.trackError(this.userProfile, e);
-    this.sendMessage(messages.SOMETHING_BROKE);
-  }
 }
 
 if (env === "production" && process.env.START_TELEGRAM === "true") {
   // Start the bot 🚀
-  publicUrl()
-    .then((url) => {
+  publicUrl().then((url) => {
       console.log("Set telegram webhook to", url);
       bot.setWebHook(`${url}/bot${token}`);
     });

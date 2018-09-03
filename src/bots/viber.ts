@@ -1,7 +1,6 @@
 import * as http from "http";
 import { Bot as ViberBot, Events as ViberEvents, Message as ViberMessage } from "viber-bot";
 import * as R from "../constants/messages";
-import { CustomError } from "../models/Errors";
 import Message from "../models/Message";
 import UserProfile from "../models/UserProfile";
 import { default as Logger, default as logger } from "../services/Logger";
@@ -43,31 +42,18 @@ class ViberProcessMessageContext extends ProcessMessageContext {
   public sendMessage = (message: string) => {
     this.response.send(new ViberMessage.Text(message));
   }
-
-  public handleError = (e: any) => {
-    if (e instanceof CustomError) {
-      this.sendMessage(e.message);
-      return;
-    }
-
-    console.log(e);
-    logger.trackError(this.userProfile, e);
-
-    this.sendMessage(R.SOMETHING_BROKE);
-  }
 }
 
 // Start the bot 🚀
 if (process.env.START_VIBER === "true") {
-  publicUrl()
-    .then((url) => {
-      console.log("Set the new webhook to", url);
+  publicUrl().then((url) => {
+    console.log("Set the new webhook to", url);
 
-      http.createServer(bot.middleware())
-        .listen(process.env.VIBER_PORT || 8080, () => {
-          bot.setWebhook(url)
-            .then(() => console.log("Viber bot has been started"))
-            .catch((e: any) => console.log("Viber bot triggered unhandled rejection", e));
-        });
-    });
+    http.createServer(bot.middleware())
+      .listen(process.env.VIBER_PORT || 8080, () => {
+        bot.setWebhook(url)
+          .then(() => console.log("Viber bot has been started"))
+          .catch((e: any) => console.log("Viber bot triggered unhandled rejection", e));
+      });
+  });
 }

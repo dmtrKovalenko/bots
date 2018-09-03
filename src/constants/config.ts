@@ -21,4 +21,5 @@ export default {
     port: Number(process.env.REDIS_PORT) || 6379,
   },
   serviceUserProfile: new UserProfile("Service", undefined, undefined, "ksmu2qfoi4ixezwys3"),
+  teamUpApiUrl: "https://api.teamup.com",
 };

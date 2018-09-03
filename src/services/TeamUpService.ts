@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 import fetch, { RequestInit } from "node-fetch";
 import URLSearchParams from "url-search-params";
+import config from "../constants/config";
 import * as messages from "../constants/messages";
 import AuthManager from "../managers/AuthManager";
 import { CustomError } from "../models/Errors";
@@ -11,7 +12,6 @@ const token = process.env.TEAMUP_TOKEN;
 const subcalendarId = process.env.TEAMUP_SUBCALENDAR_ID;
 
 const FORMAT_DATE = "yyyy-MM-dd";
-const API_URL = "https://api.teamup.com";
 
 export default class TeamUpService {
   constructor(private userProfile: UserProfile) { }
@@ -20,18 +20,18 @@ export default class TeamUpService {
     const endDate = end.toFormat(FORMAT_DATE);
     const startDate = start.toFormat(FORMAT_DATE);
 
-    return this.teamUpFetch(`/events`, { startDate, endDate, "subcalendarId[]": subcalendarId! })
+    return this.teamUpFetch(`events`, { startDate, endDate, "subcalendarId[]": subcalendarId! })
       .then((res) => res.events as TeamUpEvent[]);
   }
 
   public createEvent(event: TeamUpEvent) {
-    return this.teamUpFetch(`/events`, {}, { method: "POST", body: JSON.stringify(event) })
+    return this.teamUpFetch(`events`, {}, { method: "POST", body: JSON.stringify(event) })
       .then((res) => res.event as TeamUpEvent);
   }
 
   public verifyKey(key: string) {
     // use global fetch here to make request with passed key
-    return fetch(`${API_URL}/${key}/configuration?_teamup_token=${token}`)
+    return fetch(`${config.teamUpApiUrl}/${key}/configuration?_teamup_token=${token}`)
       .then((res) => res.json())
       .then(({ error }) => !Boolean(error));
   }
@@ -57,7 +57,7 @@ export default class TeamUpService {
     const params = new URLSearchParams(`_teamup_token=${token}`);
     Object.keys(search).forEach((key) => params.append(key, search[key]));
 
-    return fetch(`${API_URL}/${calendarKey}${url}?${params.toString()}`, options)
+    return fetch(`${config.teamUpApiUrl}/${calendarKey}/${url}?${params.toString()}`, options)
       .then(async (res) => {
         if (res.ok) { return res.json();  }
 

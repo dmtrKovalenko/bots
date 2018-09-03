@@ -1,4 +1,4 @@
-     export default class User {
+export default class User {
   public created_at: Date;
   public updated_at: Date;
 
