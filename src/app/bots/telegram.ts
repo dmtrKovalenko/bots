@@ -1,10 +1,10 @@
-import { env } from "constants/config";
-import { TelegramStandBot } from "models/Bots";
-import Message from "models/Message";
-import { ProcessMessageContext } from "models/ProcessMessageContext";
-import UserProfile from "models/UserProfile";
 import TelegramBot, { ConstructorOptions, WebHookOptions } from "node-telegram-bot-api";
-import publicUrl from "services/PublicUrl";
+import { env } from "../../constants/config";
+import { TelegramStandBot } from "../../models/Bots";
+import Message from "../../models/Message";
+import { ProcessMessageContext } from "../../models/ProcessMessageContext";
+import UserProfile from "../../models/UserProfile";
+import publicUrl from "../../services/PublicUrl";
 import StandBot from "./StandBot";
 
 const token = process.env.TELEGRAM_BOT_TOKEN;

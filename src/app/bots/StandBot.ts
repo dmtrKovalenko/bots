@@ -1,7 +1,7 @@
-import * as R from "constants/messages";
-import ActionStateManager from "managers/ActionStateManager";
-import { ProcessMessageContext } from "models/ProcessMessageContext";
-import Logger from "services/Logger";
+import * as R from "../../constants/messages";
+import ActionStateManager from "../../managers/ActionStateManager";
+import { ProcessMessageContext } from "../../models/ProcessMessageContext";
+import Logger from "../../services/Logger";
 import allActions from "./actions";
 
 export default class StandBot {

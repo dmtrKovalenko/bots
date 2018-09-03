@@ -1,4 +1,4 @@
-import UserProfile from "models/UserProfile";
+import UserProfile from "../models/UserProfile";
 import sequelizeConfig from "./sequelize.js";
 export const env = process.env.NODE_ENV || "development";
 

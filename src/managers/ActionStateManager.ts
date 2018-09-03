@@ -5,7 +5,7 @@ import cache from "../services/cache";
 
 const actionsMap = new Map<string, any>();
 requireAll({
-  dirname: path.resolve(__dirname, "..", "bots", "actions", "composite"),
+  dirname: path.resolve(__dirname, "..", "app", "bots", "actions", "composite"),
   filter: /(.+Action)\.(js|ts)$/,
   resolve: ({ default: Action }: any) => actionsMap.set(Action.name, Action),
 });

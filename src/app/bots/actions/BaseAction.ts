@@ -1,7 +1,7 @@
-import * as R from "constants/messages";
 import delay from "delay";
-import Message from "models/Message";
-import { ProcessMessageContext } from "models/ProcessMessageContext";
+import * as R from "../../../constants/messages";
+import Message from "../../../models/Message";
+import { ProcessMessageContext } from "../../../models/ProcessMessageContext";
 
 export default abstract class BaseAction {
   constructor(private _context: ProcessMessageContext) {}

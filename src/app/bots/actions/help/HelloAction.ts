@@ -1,4 +1,4 @@
-import {MessageRegexp} from "../BaseAction";
+import { MessageRegexp } from "../BaseAction";
 import SimpleAction from "../SimpleAction";
 
 export default class HelloAction extends SimpleAction {

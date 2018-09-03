@@ -18,10 +18,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-    "baseUrl": "./src"
   },
   "include": [
     "src/**/*",
     "./typings.d.ts"
-  ]
+  ],
 }

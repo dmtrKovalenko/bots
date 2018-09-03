@@ -1,6 +1,7 @@
 require('dotenv').load();
 
 const dbConfig = {
+  aliases: false,
   url: process.env.DATABASE_URL,
   define: {
     underscored: true,

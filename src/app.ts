@@ -12,5 +12,5 @@ if (process.env.START_VIBER === "true") {
 }
 
 if (process.env.START_CRON === "true") {
-  require("./app/cronjobs");
+  require("./app/cron");
 }

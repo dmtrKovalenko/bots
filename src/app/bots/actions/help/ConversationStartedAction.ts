@@ -1,6 +1,6 @@
-import * as R from "constants/messages";
+import * as R from "../../../../constants/messages";
 
-import Logger from "services/Logger";
+import Logger from "../../../../services/Logger";
 import {MessageRegexp} from "../BaseAction";
 import SimpleAction from "../SimpleAction";
 

@@ -1,12 +1,12 @@
 import * as http from "http";
 import { Bot as ViberBot, Events as ViberEvents, Message as ViberMessage } from "viber-bot";
-import * as R from "../constants/messages";
-import { ViberStandBot } from "../models/Bots";
-import Message from "../models/Message";
-import { ProcessMessageContext } from "../models/ProcessMessageContext";
-import UserProfile from "../models/UserProfile";
-import { default as Logger } from "../services/Logger";
-import publicUrl from "../services/PublicUrl";
+import * as R from "../../constants/messages";
+import { ViberStandBot } from "../../models/Bots";
+import Message from "../../models/Message";
+import { ProcessMessageContext } from "../../models/ProcessMessageContext";
+import UserProfile from "../../models/UserProfile";
+import { default as Logger } from "../../services/Logger";
+import publicUrl from "../../services/PublicUrl";
 import StandBot from "./StandBot";
 
 const bot = new ViberBot({
