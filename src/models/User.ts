@@ -4,6 +4,7 @@ export default class User {
 
   constructor(
     public teamup_key: string,
+    public teamup_user_name: string,
     public telegram_id?: number,
     public viber_id?: string,
   ) {

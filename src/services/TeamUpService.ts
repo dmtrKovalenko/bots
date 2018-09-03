@@ -33,11 +33,11 @@ export default class TeamUpService {
     // use global fetch here to make request with passed key
     return fetch(`${config.teamUpApiUrl}/${key}/configuration?_teamup_token=${token}`)
       .then((res) => res.json())
-      .then(({ error }) => !Boolean(error));
+      .then((res) => console.log(res) || !Boolean(res.error));
   }
 
   private async teamUpFetch(url: string, search: { [key: string]: string }, options?: RequestInit) {
-    let calendarKey = this.userProfile.teamup_key;
+    let calendarKey = this.userProfgile.teamup_key;
 
     if (!calendarKey) { // if we get there without key for some reason
       const key = await AuthManager.getCalendarKey(this.userProfile);

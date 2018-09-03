@@ -1,10 +1,12 @@
+import { DateTime } from "luxon";
 import { BaseCronTask } from "../BaseCronTask";
 
 export default class ReminderJob extends BaseCronTask {
-  public cronTime = "* 0 18 * * *"; // every day at 18:00
+  public cronTime = "*/10 * * * * *"; // every day at 18:00
 
   public async onTick() {
-    const tomorrowServices = await this.standManager.getServices("завтра");
+    const tomorrow = DateTime.local().setZone("Europe/Kiev").plus({ days: 1 });
+    const tomorrowServices = await this.standManager.getServicesOnDate(tomorrow);
     console.log(tomorrowServices);
   }
 }

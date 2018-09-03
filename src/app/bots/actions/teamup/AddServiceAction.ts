@@ -6,7 +6,7 @@ import BaseTeamupAction from "./BaseTeamupAction";
 export default class AddServiceAction extends BaseTeamupAction {
   public regexp = new MessageRegexp(/^Запиши меня(?: на)? (.{1,20}) с (\d{1,2}(?::\d{2})?) до (\d{1,2}(?::\d{2})?)/i);
 
-  protected async executeAsync() {
+  protected executeAsync = async () => {
     const manager = new StandManager(this.userProfile);
 
     if (!await this.checkTeamupKey()) {

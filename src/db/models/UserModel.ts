@@ -15,6 +15,10 @@ export default class UserModel extends Model<UserModel> {
   @Column(DataType.STRING(64))
   public teamup_key: string;
 
+  @AllowNull(false)
+  @Column(DataType.STRING(64))
+  public teamup_user_name: string;
+
   @Column(DataType.STRING(64))
   public viber_id: string;
 

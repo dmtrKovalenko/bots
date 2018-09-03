@@ -51,7 +51,7 @@ export default class StandManager {
 
   public async getServicesOnDate(date: DateTime) {
     const todayEvents = await this.teamUpService.getEventsCollection(date.startOf("day"), date.startOf("day"));
-
+    console.log(todayEvents);
     if (todayEvents.length === 0) {
       return messages.DAY_IS_FREE;
     }
