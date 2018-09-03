@@ -3,7 +3,7 @@ import { Bot as ViberBot, Events as ViberEvents, Message as ViberMessage } from 
 import * as R from "../constants/messages";
 import Message from "../models/Message";
 import UserProfile from "../models/UserProfile";
-import { default as Logger, default as logger } from "../services/Logger";
+import { default as Logger } from "../services/Logger";
 import publicUrl from "../services/PublicUrl";
 import { ProcessMessageContext } from "./events/ProcessMessage";
 import StandBot from "./StandBot";

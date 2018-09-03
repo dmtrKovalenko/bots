@@ -16,7 +16,7 @@ export default class Logger {
   }
 
   public static identify({ name, telegram_id, viber_id }: UserProfile) {
-    mixpanel.people.set(telegram_id || viber_id, {
+    mixpanel.people.set((telegram_id || viber_id) as string, {
       $first_name: name,
     });
   }
