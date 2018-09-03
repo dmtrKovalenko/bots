@@ -37,7 +37,7 @@ export const HELP = (botName: string, userName: string) =>
 
 export const CONTACTS =
 `Стенд "Саржин Яр"
-+380 63 357 01 6
++380 63 357 01 68
 Коваленко Дмитрий
 
 Стенд "Тобольская"

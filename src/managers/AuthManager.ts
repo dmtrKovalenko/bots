@@ -23,18 +23,21 @@ export default class AuthManager {
     return UserRepository.findByKey(key);
   }
 
-  public static async addCalendarKey(userProfile: UserProfile, key: string): Promise<void> {
+  public static async addCalendarKey(userProfile: UserProfile, key: string, userName: string): Promise<unknown> {
     const user = await UserRepository.findByKeyOrProfile(key, userProfile);
 
     if (!user) {
-      await UserRepository.create(new User(key, userProfile.telegram_id, userProfile.viber_id));
-    } else {
-      user.teamup_key = key;
-      // update one of field that used now
-      user.telegram_id = userProfile.telegram_id || user.telegram_id;
-      user.viber_id = userProfile.viber_id || user.viber_id;
-
-      await UserRepository.update(user);
+      const userToCreate = new User(key, userName, userProfile.telegram_id, userProfile.viber_id);
+      return UserRepository.create(userToCreate);
     }
+
+    user.teamup_key = key;
+    user.teamup_user_name = userName;
+
+    // update one of field that used now
+    user.telegram_id = userProfile.telegram_id || user.telegram_id;
+    user.viber_id = userProfile.viber_id || user.viber_id;
+
+    await UserRepository.update(user);
   }
 }

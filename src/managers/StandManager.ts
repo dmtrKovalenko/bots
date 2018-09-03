@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import * as messages from "../constants/messages";
+import { CustomError } from "../models/Errors";
 import TeamUpEvent from "../models/TeamUpEvent";
 import UserProfile from "../models/UserProfile";
 import Parser from "../services/Parser";
@@ -35,23 +36,24 @@ export default class StandManager {
       });
   }
 
-  public async authorizeKey(key: string) {
-    if (key.startsWith("https://teamup.com/")) {
-      key = key.replace("https://teamup.com/", "");
+  public async authorizeKey(keyToCheck: string) {
+    if (keyToCheck.startsWith("https://teamup.com/")) {
+      keyToCheck = keyToCheck.replace("https://teamup.com/", "");
     }
 
-    const isAuthorized = await this.teamUpService.verifyKey(key);
-    if (!isAuthorized) {
-      return messages.KEY_INVALID;
+    try {
+      const { key, name } = await this.teamUpService.verifyKey(keyToCheck);
+      console.log(key, name);
+      await AuthManager.addCalendarKey(this.userProfile, key, name);
+      return messages.KEY_AUTHORIZED;
+    } catch (e) {
+      throw new CustomError(messages.KEY_INVALID, e);
     }
-
-    await AuthManager.addCalendarKey(this.userProfile, key);
-    return messages.KEY_AUTHORIZED;
   }
 
   public async getServicesOnDate(date: DateTime) {
     const todayEvents = await this.teamUpService.getEventsCollection(date.startOf("day"), date.startOf("day"));
-    console.log(todayEvents);
+
     if (todayEvents.length === 0) {
       return messages.DAY_IS_FREE;
     }

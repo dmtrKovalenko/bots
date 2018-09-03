@@ -17,14 +17,13 @@ export class ProcessMessageContext extends IBaseContext {
   }
 
   public handleError = (e: any) => {
+    console.log(e);
     if (e instanceof CustomError) {
       this.sendMessage(e.message);
       return;
     }
 
-    console.log(e);
     Logger.trackError(this.userProfile, e);
-
     this.sendMessage(R.SOMETHING_BROKE);
   }
 }
