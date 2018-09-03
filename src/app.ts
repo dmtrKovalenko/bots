@@ -4,13 +4,13 @@ require("./db");
 
 // make sure that env variables can only be strings
 if (process.env.START_TELEGRAM === "true") {
-  require("./bots/telegram");
+  require("./app/bots/telegram");
 }
 
 if (process.env.START_VIBER === "true") {
-  require("./bots/viber");
+  require("./app/bots/viber");
 }
 
 if (process.env.START_CRON === "true") {
-  require("./cronjobs");
+  require("./app/cronjobs");
 }

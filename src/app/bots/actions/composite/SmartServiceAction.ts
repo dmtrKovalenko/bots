@@ -3,7 +3,7 @@ import { DateTime } from "luxon";
 import StandManager from "managers/StandManager";
 import Parser from "services/Parser";
 import { MessageRegexp } from "../BaseAction";
-import CompositeAction from "./CompositeAction";
+import BaseCompositeAction from "./BaseCompositeAction";
 
 enum ServiceStep {
   DATE,
@@ -17,7 +17,7 @@ interface ISmartServiceMeta {
   endTime?: string;
 }
 
-export default class SmartServiceAction extends CompositeAction<ServiceStep, ISmartServiceMeta> {
+export default class SmartServiceAction extends BaseCompositeAction<ServiceStep, ISmartServiceMeta> {
   public regexp = new MessageRegexp(/^Записаться/i);
 
   public async execute() {
