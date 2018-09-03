@@ -1,11 +1,10 @@
-import { Message } from "viber-bot";
-import { bot as TelegramBot } from "../../bots/telegram";
-import { bot as ViberBot } from "../../bots/viber";
+import { telegramBot } from "bots/telegram";
+import { viberBot } from "bots/viber";
 
-import config from "../../constants/config";
-import * as R from "../../constants/messages";
-import UserRepository from "../../db/repositories/UserRepository";
-import StandManager from "../../managers/StandManager";
+import config from "constants/config";
+import * as R from "constants/messages";
+import UserRepository from "db/repositories/UserRepository";
+import StandManager from "managers/StandManager";
 import { BaseCronTask } from "../BaseCronTask";
 
 export default class ManagerJob extends BaseCronTask {
@@ -20,11 +19,11 @@ export default class ManagerJob extends BaseCronTask {
 
     for (const manager of managers) {
       if (manager.telegram_id) {
-        await TelegramBot.sendMessage(manager.telegram_id, message);
+        await telegramBot.sendMessageToChat(message, manager.telegram_id);
       }
 
       if (manager.viber_id) {
-        await ViberBot.sendMessage({ id: manager.viber_id }, new Message.Text(message));
+        await viberBot.sendMessageToChat(message, manager.viber_id);
       }
     }
   }

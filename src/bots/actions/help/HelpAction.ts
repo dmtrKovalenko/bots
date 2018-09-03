@@ -1,5 +1,5 @@
-import * as R from "../../../constants/messages";
-import {MessageRegexp} from "../BaseAction";
+import * as R from "constants/messages";
+import { MessageRegexp } from "../BaseAction";
 import SimpleAction from "../SimpleAction";
 
 export default class HelpAction extends SimpleAction {

@@ -1,8 +1,8 @@
 import * as R from "../constants/messages";
 import ActionStateManager from "../managers/ActionStateManager";
+import { ProcessMessageContext } from "../models/ProcessMessageContext";
 import Logger from "../services/Logger";
 import allActions from "./actions";
-import { ProcessMessageContext } from "./events/ProcessMessage";
 
 export default class StandBot {
   public static async processMessage(context: ProcessMessageContext) {

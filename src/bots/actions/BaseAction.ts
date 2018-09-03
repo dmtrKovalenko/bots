@@ -1,7 +1,7 @@
+import * as R from "constants/messages";
 import delay from "delay";
-import * as R from "../../constants/messages";
-import Message from "../../models/Message";
-import { ProcessMessageContext } from "../events/ProcessMessage";
+import Message from "models/Message";
+import { ProcessMessageContext } from "models/ProcessMessageContext";
 
 export default abstract class BaseAction {
   constructor(private _context: ProcessMessageContext) {}
@@ -45,7 +45,7 @@ export default abstract class BaseAction {
     await action();
 
     try {
-      _delay.cancel();
+      _delay.clear();
     } catch (e) {
       console.log(e);
     }

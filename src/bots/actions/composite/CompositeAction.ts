@@ -1,4 +1,4 @@
-import ActionStateManager from "../../../managers/ActionStateManager";
+import ActionStateManager from "managers/ActionStateManager";
 import BaseAction from "../SimpleAction";
 
 export default abstract class CompositeAction<T, K extends object> extends BaseAction {

@@ -1,18 +1,21 @@
 import * as http from "http";
 import { Bot as ViberBot, Events as ViberEvents, Message as ViberMessage } from "viber-bot";
 import * as R from "../constants/messages";
+import { ViberStandBot } from "../models/Bots";
 import Message from "../models/Message";
+import { ProcessMessageContext } from "../models/ProcessMessageContext";
 import UserProfile from "../models/UserProfile";
 import { default as Logger } from "../services/Logger";
 import publicUrl from "../services/PublicUrl";
-import { ProcessMessageContext } from "./events/ProcessMessage";
 import StandBot from "./StandBot";
 
-export const bot = new ViberBot({
+const bot = new ViberBot({
   authToken: process.env.VIBER_BOT_TOKEN,
   avatar: null,
   name: "StandBot",
 });
+
+export const viberBot = new ViberStandBot(bot);
 
 bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
   Logger.logConversationStarted(new UserProfile(userProfile.name, undefined, userProfile.id));
@@ -23,26 +26,17 @@ bot.on(ViberEvents.MESSAGE_RECEIVED, (message: any, response: any) => {
   const { userProfile } = response;
 
   const profile = new UserProfile(userProfile.name, undefined, userProfile.id);
-  const context = new ViberProcessMessageContext(bot.name, new Message(message.text), profile, response);
+  const context = new ProcessMessageContext(
+    bot,
+    profile,
+    new Message(message.text),
+    (text: string) => response.send(new ViberMessage.Text(text)),
+  );
 
   StandBot
     .processMessage(context)
     .catch(context.handleError);
 });
-
-class ViberProcessMessageContext extends ProcessMessageContext {
-  private readonly response: any;
-
-  public constructor(botName: string, message: Message, userProfile: UserProfile, response: any) {
-    super(botName, message, userProfile);
-
-    this.response = response;
-  }
-
-  public sendMessage = (message: string) => {
-    this.response.send(new ViberMessage.Text(message));
-  }
-}
 
 // Start the bot 🚀
 if (process.env.START_VIBER === "true") {

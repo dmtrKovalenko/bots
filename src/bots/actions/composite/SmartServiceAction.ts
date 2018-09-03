@@ -1,7 +1,7 @@
+import { SMART_ADD_SERVICE } from "constants/messages";
 import { DateTime } from "luxon";
-import { SMART_ADD_SERVICE } from "../../../constants/messages";
-import StandManager from "../../../managers/StandManager";
-import Parser from "../../../services/Parser";
+import StandManager from "managers/StandManager";
+import Parser from "services/Parser";
 import { MessageRegexp } from "../BaseAction";
 import CompositeAction from "./CompositeAction";
 

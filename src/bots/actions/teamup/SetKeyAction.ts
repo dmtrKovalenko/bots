@@ -1,5 +1,5 @@
-import StandManager from "../../../managers/StandManager";
-import {MessageRegexp} from "../BaseAction";
+import StandManager from "managers/StandManager";
+import { MessageRegexp } from "../BaseAction";
 import BaseTeamupAction from "./BaseTeamupAction";
 
 export default class SetKeyAction extends BaseTeamupAction {

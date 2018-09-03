@@ -1,9 +1,10 @@
 import TelegramBot, { ConstructorOptions, WebHookOptions } from "node-telegram-bot-api";
 import { env } from "../constants/config";
+import { TelegramStandBot } from "../models/Bots";
 import Message from "../models/Message";
+import { ProcessMessageContext } from "../models/ProcessMessageContext";
 import UserProfile from "../models/UserProfile";
 import publicUrl from "../services/PublicUrl";
-import { ProcessMessageContext } from "./events/ProcessMessage";
 import StandBot from "./StandBot";
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -19,30 +20,22 @@ const options: ConstructorOptions = {
     : false,
 };
 
-export const bot = new TelegramBot(token, options);
+const bot = new TelegramBot(token, options);
+export const telegramBot = new TelegramStandBot("StandBot", bot);
 
 bot.on("message", ({ chat, from, text }) => {
   const userProfile = new UserProfile(`${from.first_name} ${from.last_name}`, from.id, undefined);
-  const context = new TelegramProcessMessageContext("StandBot", new Message(text), userProfile, chat);
+  const context = new ProcessMessageContext(
+    telegramBot,
+    userProfile,
+    new Message(text),
+    (message: string) => telegramBot.sendMessageToChat(message, chat.id),
+  );
 
   StandBot
     .processMessage(context)
     .catch(context.handleError);
 });
-
-class TelegramProcessMessageContext extends ProcessMessageContext {
-  private readonly chat: any;
-
-  public constructor(botName: string, message: Message, userProfile: UserProfile, chat: any) {
-    super(botName, message, userProfile);
-
-    this.chat = chat;
-  }
-
-  public sendMessage = (message: string) => {
-    bot.sendMessage(this.chat.id, message);
-  }
-}
 
 if (env === "production" && process.env.START_TELEGRAM === "true") {
   // Start the bot 🚀

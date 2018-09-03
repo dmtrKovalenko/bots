@@ -1,4 +1,4 @@
-import StandManager from "../../../managers/StandManager";
+import StandManager from "managers/StandManager";
 import { MessageRegexp } from "../BaseAction";
 import BaseTeamupAction from "./BaseTeamupAction";
 

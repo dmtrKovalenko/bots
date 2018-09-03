@@ -1,5 +1,5 @@
-import StandManager from "../../../managers/StandManager";
-import Parser from "../../../services/Parser";
+import StandManager from "managers/StandManager";
+import Parser from "services/Parser";
 import { MessageRegexp } from "../BaseAction";
 import BaseTeamupAction from "./BaseTeamupAction";
 

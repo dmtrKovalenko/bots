@@ -1,5 +1,5 @@
-import * as R from "../../../constants/messages";
-import AuthManager from "../../../managers/AuthManager";
+import * as R from "constants/messages";
+import AuthManager from "managers/AuthManager";
 import SimpleAction from "../SimpleAction";
 
 export default abstract class BaseTeamupAction extends SimpleAction {
