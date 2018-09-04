@@ -13,10 +13,9 @@
     "build:typescript": "tsc",
     "tslint": "npx tslint 'src/**/*.ts'",
     "db:migrate": "sequelize db:migrate",
-    "dev": "TS_NODE_FILES=true onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=9229 src/app.ts",
     "build": "npm run build:typescript",
     "start": "node --icu-data-dir=./node_modules/full-icu build/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "TS_NODE_FILES=true onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=9229 src/app.ts"
   },
   "author": "",
   "license": "ISC",
