@@ -20,7 +20,7 @@ export const MANAGER_TOMORROW_SCHEDULE = (schedule: string) => "Добрый в�
 
 export const ADDED_SUCCESSFULLY = (date: string) => `Вы успешно записаны на ${date}`;
 
-export const REMINDER = (start: string, end: string) => `Напоминаю: Вы стоите на стенде завтра с ${start} до ${end}`;
+export const REMINDER = (start: string, end: string) => `Напоминаю: Вы стоите на стенде завтра с ${start} до ${end} 😎`;
 
 export const HELP = (botName: string, userName: string) =>
 `Привет ${userName}, я бот и меня зовут ${botName} 😀 Я помогаю в работе с календарем и даже могу записывать на стенд!

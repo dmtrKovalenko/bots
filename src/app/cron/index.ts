@@ -7,7 +7,6 @@ requireAll({
   dirname: path.resolve(__dirname, "jobs"),
   filter: /(.+Job)\.(ts|js)$/,
   resolve: ({ default: Job }: any) => {
-    console.log(Job);
     // get instance of BaseCronTask and convert to CronJob
     const job = new Job().toCronJob();
 

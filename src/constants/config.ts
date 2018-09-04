@@ -1,9 +1,10 @@
 import UserProfile from "../models/UserProfile";
 import sequelizeConfig from "./sequelize.js";
-export const env = process.env.NODE_ENV || "development";
 
+const env = process.env.NODE_ENV || "development";
 const dbConfig = sequelizeConfig[env];
 
+export { env };
 export default {
   availableDateFormats: ["dd MM", "dd.mm"],
   availableTimeFormats: ["HH:mm", "H:mm", "H"],

@@ -6,7 +6,7 @@ import { localizedFormat } from "../../../utils/helpers";
 import { BaseCronTask } from "../BaseCronTask";
 
 export default class ReminderJob extends BaseCronTask {
-  public cronTime = "*/30 * * * * *"; // every day at 18:00
+  public cronTime = "0 0 18 * * *"; // every day at 18:00
   private teamUpService = new TeamUpService(this.serviceUserProfile);
 
   public async onTick() {
