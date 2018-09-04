@@ -40,7 +40,7 @@ bot.on("message", ({ chat, from, text }) => {
 if (env === "production" && process.env.START_TELEGRAM === "true") {
   // Start the bot 🚀
   publicUrl().then((url) => {
-      console.log("Set telegram webhook to", url);
-      bot.setWebHook(`${url}/bot${token}`);
-    });
+    console.log("Set telegram webhook to", url);
+    bot.setWebHook(`${url}/bot${token}`);
+  });
 }
