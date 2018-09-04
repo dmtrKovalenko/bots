@@ -1,7 +1,9 @@
 import UserRepository from "../db/repositories/UserRepository";
+import TeamUpEvent from "../models/TeamUpEvent";
 import User from "../models/User";
 import UserProfile from "../models/UserProfile";
 import cache from "../services/cache";
+import TeamUpService from "../services/TeamUpService";
 
 export default class AuthManager {
   public static async getCalendarKey(userProfile: UserProfile) {
@@ -39,5 +41,14 @@ export default class AuthManager {
     user.viber_id = userProfile.viber_id || user.viber_id;
 
     await UserRepository.update(user);
+  }
+
+  constructor(private teamUpService: TeamUpService) { }
+
+  public async getEventAuthor(event: TeamUpEvent) {
+    const auxInfo = await this.teamUpService.getAuxiliaryInfo(event.id);
+    const author = auxInfo.history.created.by;
+
+    return UserRepository.findByTeamupName(author);
   }
 }

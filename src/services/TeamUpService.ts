@@ -16,12 +16,13 @@ const FORMAT_DATE = "yyyy-MM-dd";
 export default class TeamUpService {
   constructor(private userProfile: UserProfile) { }
 
+  /** Pass here the same start & end to fetch events for 24 hours */
   public getEventsCollection(start: DateTime, end: DateTime): Promise<TeamUpEvent[]> {
     const endDate = end.toFormat(FORMAT_DATE);
     const startDate = start.toFormat(FORMAT_DATE);
 
     return this.teamUpFetch(`events`, { startDate, endDate, "subcalendarId[]": subcalendarId! })
-      .then((res) => res.events as TeamUpEvent[]);
+      .then((res) => res.events.map((event: object) => TeamUpEvent.fromTeamUpEvent(event)));
   }
 
   public createEvent(event: TeamUpEvent) {

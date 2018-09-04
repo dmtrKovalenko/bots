@@ -2,14 +2,16 @@ import { CronJob } from "cron";
 import { telegramBot } from "../../app/bots/telegram";
 import { viberBot } from "../../app/bots/viber";
 import config from "../../constants/config";
+import StandManager from "../../managers/StandManager";
 import User from "../../models/User";
+import TeamUpService from "../../services/TeamUpService";
 
 export abstract class BaseCronTask {
-  public abstract cronTime: string;
-
   public timeZone = "Europe/Kiev";
-  protected serviceUserProfile = config.serviceUserProfile;
+  public teamUpService = new TeamUpService(config.serviceUserProfile);
+  public standManager = new StandManager(config.serviceUserProfile);
 
+  public abstract cronTime: string;
   public abstract async onTick(): Promise<void>;
 
   public toCronJob(): CronJob {
