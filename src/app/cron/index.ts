@@ -1,7 +1,8 @@
 import { CronJob } from "cron";
-import * as http from "http";
+
 import path from "path";
 import requireAll from "require-all";
+import { mockWebServer } from "../../utils/helpers";
 
 requireAll({
   dirname: path.resolve(__dirname, "jobs"),
@@ -18,7 +19,4 @@ requireAll({
   },
 });
 
-if (process.env.NOW_URL) {
-  // Mock web server for cloud provider
-  http.createServer(() => { /* fake */ }).listen(8080);
-}
+mockWebServer();
