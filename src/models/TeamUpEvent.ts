@@ -1,6 +1,14 @@
 import { DateTime } from "luxon";
 
 export default class TeamUpEvent {
+  public static fromTeamUpEvent(event: any) {
+    return {
+      ...event,
+      endDate: DateTime.fromISO(event.end_dt),
+      startDate: DateTime.fromISO(event.start_dt),
+    };
+  }
+
   public id: string;
   public start_dt: string;
   public end_dt: string;
