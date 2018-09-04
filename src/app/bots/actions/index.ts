@@ -4,6 +4,7 @@ import ConversationStatedAction from "./help/ConversationStartedAction";
 import HelloAction from "./help/HelloAction";
 import HelpAction from "./help/HelpAction";
 import WhoAreYouAction from "./help/WhoAreYouAction";
+import SaveReportUrlAction from "./manager/SaveReportUrlAction";
 import AddServiceAction from "./teamup/AddServiceAction";
 import GetServicesAction from "./teamup/GetServicesAction";
 import SetKeyAction from "./teamup/SetKeyAction";
@@ -18,4 +19,5 @@ export default [
   HelloAction,
   ConversationStatedAction,
   SmartServiceAction,
+  SaveReportUrlAction,
 ];

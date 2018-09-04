@@ -43,6 +43,12 @@ export default class AuthManager {
     await UserRepository.update(user);
   }
 
+  public static async isManager(userProfile: UserProfile) {
+    const user = await UserRepository.findByProfile(userProfile);
+
+    return user && user.is_manager;
+  }
+
   constructor(private teamUpService: TeamUpService) { }
 
   public async getEventAuthor(event: TeamUpEvent) {

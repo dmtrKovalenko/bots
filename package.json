@@ -15,7 +15,7 @@
     "db:migrate": "sequelize db:migrate",
     "build": "npm run build:typescript",
     "start": "node --icu-data-dir=./node_modules/full-icu build/app.js",
-    "dev": "TS_NODE_FILES=true onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=9229 src/app.ts"
+    "dev": "TS_NODE_FILES=true onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=9229 --icu-data-dir=./node_modules/full-icu src/app.ts"
   },
   "author": "",
   "license": "ISC",

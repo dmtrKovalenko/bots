@@ -1,8 +1,9 @@
 
 import { AllowNull, Column, CreatedAt, DataType, Model, PrimaryKey, Table, UpdatedAt } from "sequelize-typescript";
+import MonthMeta from "../../models/MonthMeta";
 
 @Table({ tableName: "monthly_meta" })
-export default class MonthMeta extends Model<MonthMeta> {
+export default class MonthMetaModel extends Model<MonthMetaModel> {
   @CreatedAt
   public created_at: Date;
 
@@ -11,6 +12,7 @@ export default class MonthMeta extends Model<MonthMeta> {
 
   @PrimaryKey
   @AllowNull(false)
+  @Column
   public month: Date;
 
   @Column(DataType.STRING(254))
