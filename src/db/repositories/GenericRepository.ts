@@ -1,8 +1,9 @@
 import { UpdateOptions } from "sequelize";
-import UserModel from "../models/UserModel";
+import { Model } from "sequelize";
 
+type BaseModelType = typeof Model;
 export default abstract class GenericRepository<T> {
-  protected abstract relation: typeof UserModel;
+  protected abstract relation: BaseModelType;
 
   public async findAll(options?: object): Promise<T[]> {
     return this.relation.findAll(options)

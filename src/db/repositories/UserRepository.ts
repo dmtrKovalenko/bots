@@ -8,7 +8,7 @@ import GenericRepository from "./GenericRepository";
 const { Op } = sequelize;
 
 class UserRepository extends GenericRepository<User> {
-  protected relation = UserModel;
+  protected relation = UserModel as any;
 
   public getAllManagers() {
     return this.findAll({ where: { is_manager: true }});
