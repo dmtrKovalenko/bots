@@ -3,7 +3,7 @@
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-cp .env-$1 .env
+cp .env.$1 .env
 
 git checkout $2
 git pull -v
