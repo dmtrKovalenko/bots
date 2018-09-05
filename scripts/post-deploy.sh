@@ -3,7 +3,7 @@
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-git checkout $2
+git checkout $1
 git pull -v
 
 git fetch --tags

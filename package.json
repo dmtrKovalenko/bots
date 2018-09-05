@@ -16,7 +16,7 @@
     "build": "npm run build:typescript",
     "start": "node --icu-data-dir=./node_modules/full-icu build/app.js",
     "dev": "TS_NODE_FILES=true onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=9229 --icu-data-dir=./node_modules/full-icu src/app.ts",
-    "prod": "pm2 reload ecosystem.config.js --no-daemon -a"
+    "prod": "pm2 reload ecosystem.config.js -a"
   },
   "author": "",
   "license": "ISC",
