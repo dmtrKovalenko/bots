@@ -8,7 +8,6 @@ git pull -v
 
 git fetch --tags
 
-rm -rf node_modules
 npm install --no-save --production
 npm run build
 npm run db:migrate
