@@ -35,8 +35,7 @@ module.exports = {
       ref: 'origin/feature/monthly-meta',
       repo: 'https://github.com/dmtrKovalenko/stand-bots.git',
       path: '/home/admin/stand-bots',
-      'post-setup': "ls -la",
-      'post-deploy': "echo 'YRRRA'"
+      'post-deploy': "./scripts/post-deploy.sh"
     }
   }
 }
