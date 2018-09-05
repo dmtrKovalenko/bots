@@ -10,7 +10,7 @@ program
   .parse(process.argv)
 
 const { env, app } = program
-const name = `stand-bots-${env}-${app}`
+const name = `stand-bot-${env}-${app}`
 
 const config = {
   name,

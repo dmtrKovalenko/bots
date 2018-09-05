@@ -16,5 +16,16 @@ module.exports = {
       },
       watch: false
     },
-  ]
+  ],
+  deploy: {
+    prod: {
+      user: 'admin',
+      host: ['ec2-18-185-112-145.eu-central-1.compute.amazonaws.com'],
+      key: '/Users/dmitrijkovalenko/dmitriy-kovalenko-aws-bots.pem',
+      ref: 'origin/develop',
+      repo: 'git@github.com:dmtrKovalenko/stand-bots.git',
+      path: '/home/admin/stand-bots',
+      'post-setup': "ls -la",
+    }
+  }
 }

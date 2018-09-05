@@ -5,7 +5,7 @@ import MetaManager from "../../../managers/MetaManager";
 import { BaseCronTask } from "../BaseCronTask";
 
 export default class ReminderJob extends BaseCronTask {
-  public cronTime = "0 59 * * * *"; // every 15`s minute of hour
+  public cronTime = "0 15 * * * *"; // every 15`s minute of hour
   private authManager = new AuthManager(this.teamUpService);
 
   public async onTick() {
