@@ -32,7 +32,7 @@ module.exports = {
       ref: 'origin/feature/monthly-meta',
       repo: 'https://github.com/dmtrKovalenko/stand-bots.git',
       path: '/home/admin/stand-bots',
-      'post-deploy': "bash ./scripts/post-deploy.sh origin/feature/monthly-meta"
+      'post-deploy': "bash ./scripts/post-deploy.sh feature/monthly-meta"
     }
   }
 }
