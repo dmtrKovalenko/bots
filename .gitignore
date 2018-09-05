@@ -5,4 +5,3 @@ ngrok*
 .env*
 .idea
 now.json
-ecosystem.config.js
