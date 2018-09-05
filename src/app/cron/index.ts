@@ -2,7 +2,6 @@ import { CronJob } from "cron";
 
 import path from "path";
 import requireAll from "require-all";
-import { mockWebServer } from "../../utils/helpers";
 
 requireAll({
   dirname: path.resolve(__dirname, "jobs"),
@@ -18,5 +17,3 @@ requireAll({
     job.start();
   },
 });
-
-mockWebServer();

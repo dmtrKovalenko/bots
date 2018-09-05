@@ -19,6 +19,7 @@ export const viberBot = new ViberStandBot(bot);
 
 bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
   Logger.logConversationStarted(new UserProfile(userProfile.name, undefined, userProfile.id));
+
   onFinish(new ViberMessage.Text(R.HELP(bot.name, userProfile.name)));
 });
 
@@ -27,7 +28,7 @@ bot.on(ViberEvents.MESSAGE_RECEIVED, (message: any, response: any) => {
 
   const profile = new UserProfile(userProfile.name, undefined, userProfile.id);
   const context = new ProcessMessageContext(
-    bot,
+    viberBot,
     profile,
     new Message(message.text),
     (text: string) => response.send(new ViberMessage.Text(text)),

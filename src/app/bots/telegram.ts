@@ -15,7 +15,7 @@ if (!token) {
 
 const options: ConstructorOptions = {
   polling: env === "development" && process.env.START_TELEGRAM === "true",
-  webHook: env === "production"
+  webHook: env === "production" && process.env.START_TELEGRAM === "true"
     ? { port: process.env.TELEGRAM_PORT || 8443 } as WebHookOptions
     : false,
 };
