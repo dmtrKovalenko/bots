@@ -8,7 +8,7 @@ git pull -v
 
 git fetch --tags
 
-source ~/.bashrc
+source /home/admin/.bashrc
 
 npm install --no-save --production
 npm run build
