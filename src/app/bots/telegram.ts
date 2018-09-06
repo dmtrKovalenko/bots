@@ -40,9 +40,10 @@ bot.on("message", ({ chat, from, text }) => {
 if (env === "production" && process.env.START_TELEGRAM === "true") {
   // Start the bot 🚀
   publicUrl().then((url) => {
-    console.log("Set telegram webhook to", url);
+    const webhookUrl = url + "/telegram";
+    console.log("Set telegram webhook to", webhookUrl);
 
-    bot.setWebHook(`${url}/bot${token}`)
+    bot.setWebHook(`${webhookUrl}/bot${token}`)
       .then(() => console.log(`Telegram bot has been started on port ${config.ports.telegram}`))
       .catch((e: any) => console.log("Telegram bot triggered unhandled rejection", e));
   });
