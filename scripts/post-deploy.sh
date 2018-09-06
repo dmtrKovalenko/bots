@@ -8,6 +8,8 @@ git pull -v
 
 git fetch --tags
 
+source ~/.bashrc
+
 npm install --no-save --production
 npm run build
 npm run db:migrate
