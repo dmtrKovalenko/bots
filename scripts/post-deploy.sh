@@ -12,5 +12,5 @@ source /home/admin/.bashrc
 
 npm install --no-save --production
 npm run build
-npm run db:migrate
+sudo -E npm run db:migrate
 npm run prod
