@@ -16,6 +16,10 @@ export default {
     },
     url: dbConfig.url,
   },
+  ports: {
+    telegram: process.env.TELEGRAM_PORT || 8443,
+    viber: process.env.VIBER_PORT || 8080,
+  },
   redis: {
     host: process.env.REDIS_HOST || "localhost",
     password: process.env.REDIS_PASSWORD,

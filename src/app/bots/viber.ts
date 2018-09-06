@@ -1,5 +1,6 @@
 import * as http from "http";
 import { Bot as ViberBot, Events as ViberEvents, Message as ViberMessage } from "viber-bot";
+import config from "../../constants/config";
 import * as R from "../../constants/messages";
 import { ViberStandBot } from "../../models/Bots";
 import Message from "../../models/Message";
@@ -45,8 +46,8 @@ if (process.env.START_VIBER === "true") {
     console.log("Set the new webhook to", url);
 
     http.createServer(bot.middleware())
-      .listen(process.env.VIBER_PORT || 8080, () => {
-        bot.setWebhook(url + ":" + process.env.VIBER_PORT)
+      .listen(config.ports.viber, () => {
+        bot.setWebhook(url + ":" + config.ports.viber)
           .then(() => console.log("Viber bot has been started"))
           .catch((e: any) => console.log("Viber bot triggered unhandled rejection", e));
       });
