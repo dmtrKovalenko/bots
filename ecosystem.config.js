@@ -4,6 +4,7 @@ module.exports = {
       name: 'viber',
       script: 'build/app.js',
       env: {
+        NODE_ENV: 'production',
         START_VIBER: 'true',
       },
       watch: false
@@ -12,6 +13,7 @@ module.exports = {
       name: 'telegram',
       script: 'build/app.js',
       env: {
+        NODE_ENV: 'production',
         START_TELEGRAM: 'true',
       },
       watch: false
@@ -20,6 +22,7 @@ module.exports = {
       name: 'cron',
       script: 'build/app.js',
       env: {
+        NODE_ENV: 'production',
         START_CRON: 'true',
       },
       watch: false

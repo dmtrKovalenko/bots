@@ -47,7 +47,7 @@ if (process.env.START_VIBER === "true") {
 
     http.createServer(bot.middleware())
       .listen(config.ports.viber, () => {
-        bot.setWebhook(url + ":" + config.ports.viber)
+        bot.setWebhook(url)
           .then(() => console.log("Viber bot has been started"))
           .catch((e: any) => console.log("Viber bot triggered unhandled rejection", e));
       });
