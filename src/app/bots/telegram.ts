@@ -43,7 +43,7 @@ if (env === "production" && process.env.START_TELEGRAM === "true") {
     console.log("Set telegram webhook to", url);
 
     bot.setWebHook(`${url}/bot${token}`)
-      .then(() => console.log("Telegram bot has been started"))
+      .then(() => console.log(`Telegram bot has been started on port ${config.ports.telegram}`))
       .catch((e: any) => console.log("Telegram bot triggered unhandled rejection", e));
   });
 }
