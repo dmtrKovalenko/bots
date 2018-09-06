@@ -43,12 +43,11 @@ bot.on(ViberEvents.MESSAGE_RECEIVED, (message: any, response: any) => {
 // Start the bot 🚀
 if (process.env.START_VIBER === "true") {
   publicUrl().then((url) => {
-    const webhookUrl = url + "/viber";
-    console.log("Set the new webhook to", webhookUrl);
+    console.log("Set the new webhook to", url);
 
     http.createServer(bot.middleware())
       .listen(config.ports.viber, () => {
-        bot.setWebhook(webhookUrl)
+        bot.setWebhook(url)
           .then(() => console.log("Viber bot has been started"))
           .catch((e: any) => console.log("Viber bot triggered unhandled rejection", e));
       });
