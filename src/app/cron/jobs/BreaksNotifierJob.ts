@@ -34,7 +34,7 @@ export default class BreaksNotifierJob extends BaseCronTask {
       const managers = await UserRepository.getAllManagers();
       const message = NOTIFY_BREAKS(this.buildBreaksListText(breaksMap));
 
-      this.sendMessageToUserChats(message, managers[0]);
+      managers.forEach((manager) => this.sendMessageToUserChats(message, managers[0]));
     }
   }
 
