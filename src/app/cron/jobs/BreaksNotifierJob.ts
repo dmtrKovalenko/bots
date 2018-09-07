@@ -16,7 +16,7 @@ interface IBreakMap {
 }
 
 export default class BreaksNotifierJob extends BaseCronTask {
-  public cronTime = "0 0 20 * * 2"; // every Tuesday at 20:00
+  public cronTime = "0 0 10 * * 3"; // every Tuesday at 10:00
 
   public async onTick() {
     const breaksMap: IBreakMap = {};
