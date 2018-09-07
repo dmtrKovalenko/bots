@@ -27,7 +27,7 @@ export const MANAGER_TOMORROW_SCHEDULE = (schedule: string) => "Добрый в�
 
 export const ADDED_SUCCESSFULLY = (date: string) => `Вы успешно записаны на ${date}`;
 
-export const REMINDER = (start: string, end: string) => `Напоминаю: Вы стоите на стенде завтра с ${start} до ${end} 😎`;
+export const REMINDER = (start: string, end: string, tomorrowSchedule: string) => `Напоминаю: Вы стоите на стенде завтра с ${start} до ${end} 😎 \nКстати вот расписание на завтра: \n ${tomorrowSchedule}`;
 
 export const PLEASE_SEND_REPORT = (formUrl?: string | null) => `Пожалуйста, отправьте отчет о распространненой литературе. ${formUrl ? `Вот ссылка на форму - ${formUrl}` : "" }`;
 

@@ -12,14 +12,18 @@ export default class ReminderJob extends BaseCronTask {
     const tomorrow = DateTime.local().setZone("Europe/Kiev").plus({ days: 1 });
     const events = await this.teamUpService.getEventsCollection(tomorrow, tomorrow);
 
-    for (const event of events) {
-      const user = await this.authManager.getEventAuthor(event);
+    if (events.length > 0) {
+      const tomorrowSchedule = await this.standManager.getServicesOnDate(tomorrow);
 
-      if (user) {
-        const end = localizedFormat(event.endDate, "HH:mm");
-        const start = localizedFormat(event.startDate, "HH:mm");
+      for (const event of events) {
+        const user = await this.authManager.getEventAuthor(event);
 
-        this.sendMessageToUserChats(R.REMINDER(start, end), user);
+        if (user) {
+          const end = localizedFormat(event.endDate, "HH:mm");
+          const start = localizedFormat(event.startDate, "HH:mm");
+
+          this.sendMessageToUserChats(R.REMINDER(start, end, tomorrowSchedule), user);
+        }
       }
     }
   }
