@@ -32,10 +32,10 @@ module.exports = {
     prod: {
       user: 'admin',
       host: ["ec2-18-185-112-145.eu-central-1.compute.amazonaws.com"],
-      ref: 'origin/feature/monthly-meta',
+      ref: 'origin/master',
       repo: 'https://github.com/dmtrKovalenko/stand-bots.git',
       path: '/home/admin/stand-bots',
-      'post-deploy': "bash ./scripts/post-deploy.sh feature/monthly-meta"
+      'post-deploy': "bash ./scripts/post-deploy.sh master"
     }
   }
 }
