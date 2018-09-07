@@ -1,5 +1,6 @@
 import delay from "delay";
 import * as R from "../../../constants/messages";
+import AuthManager from "../../../managers/AuthManager";
 import Message from "../../../models/Message";
 import { ProcessMessageContext } from "../../../models/ProcessMessageContext";
 
@@ -49,6 +50,19 @@ export default abstract class BaseAction {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  protected async checkTeamupKey() {
+    const key = await AuthManager.getCalendarKey(this.userProfile);
+
+    if (key == null) {
+      this.sendMessage(R.NEED_SET_KEY);
+      return false;
+    }
+
+    // set teamup key to use after
+    this.userProfile.teamup_key = key;
+    return true;
   }
 }
 

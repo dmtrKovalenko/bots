@@ -21,6 +21,10 @@ export default class SmartServiceAction extends BaseCompositeAction<ServiceStep,
   public regexp = new MessageRegexp(/^Записаться/i);
 
   public async execute() {
+    if (!await this.checkTeamupKey()) {
+      return;
+    }
+
     await this.setActionStep(ServiceStep.DATE, {});
     this.context.sendMessage(SMART_ADD_SERVICE.WHEN);
   }

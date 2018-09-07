@@ -1,5 +1,4 @@
 require('dotenv').config();
-console.log(process.env)
 
 const dbConfig = {
   aliases: false,
