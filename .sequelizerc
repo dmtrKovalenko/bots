@@ -1,0 +1,6 @@
+var path = require('path')
+
+module.exports = {
+  'config': path.resolve('src', 'constants', 'sequelize.js'),
+  'models-path': path.resolve('src', 'db', 'models')
+}

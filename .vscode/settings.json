@@ -1,8 +1,10 @@
 {
   "cSpell.words": [
+    "Mixpanel",
     "subcalendar",
     "teamup",
     "viber",
     "webhook"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

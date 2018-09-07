@@ -2,26 +2,25 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "sourceMap": true,
+    "sourceMap": false,
     "esModuleInterop": true,
     "outDir": "build",
     "rootDir": "src",
     "moduleResolution": "node",
-    "typeRoots": ["./node_modules/@types", "./typings"],
+    "typeRoots": ["./node_modules/@types"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "noUnusedLocals": true,
-  },
-  "paths": {
-    "*": [
-      "./typings/*"
-    ]
+    "noUnusedLocals": false,
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
   },
   "include": [
     "src/**/*",
     "./typings.d.ts"
-  ]
+  ],
 }

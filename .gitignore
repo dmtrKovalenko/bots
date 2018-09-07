@@ -1,6 +1,7 @@
 node_modules/
 build/
 logs/
-ngrok
+ngrok*
 .env*
-db/
+.idea
+now.json

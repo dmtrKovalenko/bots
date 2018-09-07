@@ -1,48 +1,58 @@
-import { addDays, isValid } from "date-fns";
+import { DateTime } from "luxon";
 import config from "../constants/config";
+import * as messages from "../constants/messages";
+import { CustomError } from "../models/Errors";
 import { localizedParse } from "../utils/helpers";
-import * as messages from '../constants/messages'
 
 export default class Parser  {
-  static parseDate(string: string) {
+  public static parseDate(string: string) {
+    const now = DateTime.local().setZone("Europe/Kiev");
+
     switch (string) {
-      case 'позавчера':
-        return addDays(new Date(), -2)
-      case 'вчера':
-        return addDays(new Date(), -1)
-      case 'сегодня':
-        return new Date()
-      case 'завтра':
-        return addDays(new Date(), 1)
-      case 'послезавтра':
-        return addDays(new Date(), 2)
+      case "позавчера":
+        return now.minus({ days: 2 });
+      case "вчера":
+        return now.minus({ days: 1 });
+      case "сегодня":
+        return now;
+      case "завтра":
+        return now.plus({ days: 1 });
+      case "послезавтра":
+        return now.plus({ days: 2 });
       default:
-        return this.parseFormattedDate(string)
+        return this.parseFormattedDate(string);
     }
   }
 
-  static parseTime(string: string, baseDate?: Date) {
-    const time = localizedParse(string, 'HH:mm', baseDate)
+  public static parseTime(dateString: string, baseDate?: DateTime) {
+    const time = this.parseMultipleFormats(dateString, config.availableTimeFormats);
 
-    if (!isValid(time)) {
-      throw new Error(messages.DATE_CANNOT_BE_PARSED)
+    if (baseDate) {
+      return baseDate.set({
+        hour: time.get("hour"),
+        minute: time.get("minute"),
+      });
     }
 
-    return time
+    return time;
   }
 
-  private static parseFormattedDate(dateString: string) {
-    let parsedDate;
-    config.availableDateFormats.find(format => {
-      parsedDate = localizedParse(dateString, format)
-      return isValid(parsedDate)
-    })
+  public static parseFormattedDate(dateString: string) {
+    return this.parseMultipleFormats(dateString, config.availableDateFormats);
+  }
 
-    // if we not found any format that parsing string as date properly
-    if (!isValid(parsedDate)) {
-      throw new Error(messages.DATE_CANNOT_BE_PARSED)
+  private static parseMultipleFormats(value: string, formats: string[]) {
+    let parsedDate: DateTime;
+
+    formats.find((format) => {
+      parsedDate = localizedParse(value, format);
+      return parsedDate.isValid;
+    });
+
+    if (!parsedDate!.isValid) {
+      throw new CustomError(messages.DATE_CANNOT_BE_PARSED);
     }
 
-    return parsedDate
+    return parsedDate!;
   }
 }

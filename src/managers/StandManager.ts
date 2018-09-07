@@ -1,86 +1,74 @@
-import { endOfDay, format, startOfDay } from 'date-fns';
-import * as messages from '../constants/messages';
-import Meta from '../models/Meta';
-import TeamUpEvent from '../models/TeamUpEvent';
-import Parser from '../services/Parser';
-import TeamUpService from '../services/TeamUpService';
-import { localizedFormat } from '../utils/helpers';
-import AuthManager from './AuthManager';
+import { DateTime } from "luxon";
+import * as messages from "../constants/messages";
+import { CustomError } from "../models/Errors";
+import TeamUpEvent from "../models/TeamUpEvent";
+import UserProfile from "../models/UserProfile";
+import Parser from "../services/Parser";
+import TeamUpService from "../services/TeamUpService";
+import { localizedFormat } from "../utils/helpers";
+import AuthManager from "./AuthManager";
 
 export default class StandManager {
-  teamUpService: TeamUpService;
+  public teamUpService: TeamUpService;
 
-  constructor(meta: Meta) {
-    this.teamUpService = new TeamUpService(meta)
+  constructor(private userProfile: UserProfile) {
+    this.teamUpService = new TeamUpService(userProfile);
   }
 
-  getServices(when: string) {
-    try {
-      const date = Parser.parseDate(when)
-      return this.getServicesOnDate(date!)
-    } catch (e) {
-      return Promise.resolve(e.message)
-    }
+  public getServices(when: string) {
+    const date = Parser.parseDate(when);
+
+    return this.getServicesOnDate(date!);
   }
 
-  addService(userName: string, date: string, startTime: string, endTime: string) {
-    let start: Date, end: Date;
-    try {
-      const baseDate = Parser.parseDate(date)
+  public addService(start: DateTime, end: DateTime) {
+    const event = new TeamUpEvent(this.userProfile.name, start, end);
 
-      start = Parser.parseTime(startTime, baseDate)
-      end = Parser.parseTime(endTime, baseDate)
-    } catch (e) {
-      return Promise.resolve(e.message)
-    }
-
-    const event = new TeamUpEvent(userName, start, end)
     return this.teamUpService.createEvent(event)
-      .then(event => messages.ADDED_SUCCESSFULLY(localizedFormat(start, 'DD MMMM в HH:mm')))
-      .catch(e => {
-        if (e.error.id === 'event_overlapping') {
-          return this.getServicesOnDate(start)
-            .then(schedule => messages.CONFLICT + schedule)
+      .then(() => messages.ADDED_SUCCESSFULLY(localizedFormat(event.startDate, "dd MMMM в HH:mm")))
+      .catch((e) => {
+        if (e.error && e.error.id === "event_overlapping") {
+          return this.getServicesOnDate(event.startDate)
+            .then((schedule) => messages.CONFLICT + schedule);
         }
 
-        return Promise.reject(e)
-      })
+        return Promise.reject(e);
+      });
   }
 
-  public authorizeKey(userId: string, key: string) {
-    if (key.startsWith('https://teamup.com/')) {
-      key = key.replace('https://teamup.com/', '')
+  public async authorizeKey(keyToCheck: string) {
+    if (keyToCheck.startsWith("https://teamup.com/")) {
+      keyToCheck = keyToCheck.replace("https://teamup.com/", "");
     }
 
-    return this.teamUpService.verifyKey(key)
-      .then(isAuthorized => {
-        if (isAuthorized) {
-          AuthManager.addCalendarKey(userId, key)
-          return messages.KEY_AUTHORIZED
-        }
+    try {
+      const { key, name } = await this.teamUpService.verifyKey(keyToCheck);
 
-        return messages.KEY_INVALID
-      })
+      await AuthManager.addCalendarKey(this.userProfile, key, name);
+      return messages.KEY_AUTHORIZED;
+    } catch (e) {
+      throw new CustomError(messages.KEY_INVALID, e);
+    }
   }
 
-  private async getServicesOnDate(date: Date) {
-    const todayEvents = await this.teamUpService.getEventsCollection(startOfDay(date), endOfDay(date))
+  public async getServicesOnDate(date: DateTime) {
+    const todayEvents = await this.teamUpService.getEventsCollection(date.startOf("day"), date.startOf("day"));
 
     if (todayEvents.length === 0) {
-      return messages.DAY_IS_FREE
+      return messages.DAY_IS_FREE;
     }
 
-    let response = ''
+    let response = "";
     todayEvents.forEach((event, index) => {
-      const start = format(event.start_dt, 'HH:mm')
-      const end = format(event.end_dt, 'HH:mm')
+      const start = localizedFormat(event.startDate, "HH:mm");
+      const end = localizedFormat(event.endDate, "HH:mm");
 
-      response += `${start}-${end} ${event.title}`
+      response += `${start}-${end} ${event.title}`;
       if (index !== todayEvents.length - 1) {
-        response += '\n' // add linebreak
+        response += "\n"; // add linebreak
       }
-    })
+    });
 
-    return response
+    return response;
   }
 }
