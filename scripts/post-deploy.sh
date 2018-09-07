@@ -8,9 +8,10 @@ git pull -v
 
 git fetch --tags
 
-source /home/admin/.bashrc
+. ~/.profile
+. ~/.bashrc
 
 npm install --no-save --production
 npm run build
-sudo -E npm run db:migrate
+npm run db:migrate
 npm run prod
