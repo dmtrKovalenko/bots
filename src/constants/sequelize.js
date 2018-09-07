@@ -1,4 +1,4 @@
-require('dotenv').load();
+require('dotenv').config();
 
 const dbConfig = {
   aliases: false,
