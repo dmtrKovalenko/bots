@@ -3,7 +3,7 @@ import MonthMeta from "../../models/MonthMeta";
 import MonthMetaModel from "../models/MonthMetaModel";
 import GenericRepository from "./GenericRepository";
 
-class UserRepository extends GenericRepository<MonthMeta> {
+class MonthMetaRepository extends GenericRepository<MonthMeta> {
   public getCurrentMonthMeta() {
     const startOfMonth = DateTime.local().setZone("utc").startOf("month").toJSDate();
 
@@ -11,4 +11,4 @@ class UserRepository extends GenericRepository<MonthMeta> {
   }
 }
 
-export default new UserRepository(MonthMetaModel);
+export default new MonthMetaRepository(MonthMetaModel);

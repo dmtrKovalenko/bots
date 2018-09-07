@@ -10,7 +10,8 @@ export default class ReminderJob extends BaseCronTask {
 
   public async onTick() {
     const today = DateTime.local().setZone("Europe/Kiev").startOf("day");
-    const events = await this.teamUpService.getEventsCollection(today, today);
+
+    const events = await this.standManager.getServicesOnDate(today);
     const reportUrl = await MetaManager.getReportUrl();
 
     const eventsToRemind = events.filter((event) => {

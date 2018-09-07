@@ -1,8 +1,9 @@
 import StandManager from "../../../../managers/StandManager";
+import Parser from "../../../../services/Parser";
 import { MessageRegexp } from "../BaseAction";
-import BaseTeamupAction from "./BaseTeamupAction";
+import SimpleAction from "../SimpleAction";
 
-export default class GetServicesAction extends BaseTeamupAction {
+export default class GetServicesAction extends SimpleAction {
   public regexp = new MessageRegexp(/^Кто (?:записан|стоит|служит) (.+)$/i);
 
   protected async execute() {
@@ -13,6 +14,8 @@ export default class GetServicesAction extends BaseTeamupAction {
     }
 
     const when = this.arg(0).trim();
-    this.sendMessage(await manager.getServices(when));
+    const date = Parser.parseDate(when);
+
+    this.sendMessage(await manager.getServicesOnDateText(date));
   }
 }

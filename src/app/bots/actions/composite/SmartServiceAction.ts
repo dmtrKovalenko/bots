@@ -1,7 +1,8 @@
 import { DateTime } from "luxon";
-import { SMART_ADD_SERVICE } from "../../../../constants/messages";
+import * as R from "../../../../constants/messages";
 import StandManager from "../../../../managers/StandManager";
 import Parser from "../../../../services/Parser";
+import { localizedFormat } from "../../../../utils/helpers";
 import { MessageRegexp } from "../BaseAction";
 import BaseCompositeAction from "./BaseCompositeAction";
 
@@ -26,7 +27,7 @@ export default class SmartServiceAction extends BaseCompositeAction<ServiceStep,
     }
 
     await this.setActionStep(ServiceStep.DATE, {});
-    this.context.sendMessage(SMART_ADD_SERVICE.WHEN);
+    this.context.sendMessage(R.SMART_ADD_SERVICE.WHEN);
   }
 
   public async executeStep(step: ServiceStep, meta: ISmartServiceMeta) {
@@ -51,8 +52,8 @@ export default class SmartServiceAction extends BaseCompositeAction<ServiceStep,
 
     await this.setActionStep(ServiceStep.START_TIME, meta);
 
-    this.sendMessage(SMART_ADD_SERVICE.HERE_IS_SCHEDULE + await manager.getServicesOnDate(date));
-    this.sendMessage(SMART_ADD_SERVICE.START_TIME);
+    this.sendMessage(R.SMART_ADD_SERVICE.HERE_IS_SCHEDULE + await manager.getServicesOnDateText(date));
+    this.sendMessage(R.SMART_ADD_SERVICE.START_TIME);
   }
 
   private async executeStartTime(meta: ISmartServiceMeta) {
@@ -62,7 +63,7 @@ export default class SmartServiceAction extends BaseCompositeAction<ServiceStep,
     meta.startTime = Parser.parseTime(text, baseDate).toISO();
 
     await this.setActionStep(ServiceStep.END_TIME, meta);
-    this.sendMessage(SMART_ADD_SERVICE.END_TIME);
+    this.sendMessage(R.SMART_ADD_SERVICE.END_TIME);
   }
 
   private async executeEndTime(meta: ISmartServiceMeta) {
@@ -73,7 +74,8 @@ export default class SmartServiceAction extends BaseCompositeAction<ServiceStep,
     const start = DateTime.fromISO(meta.startTime!);
 
     const manager = new StandManager(this.userProfile);
-    this.sendMessage(await manager.addService(start, end));
+    await manager.addService(start, end);
+    this.sendMessage(R.ADDED_SUCCESSFULLY(localizedFormat(start, "dd MMMM в HH:mm")));
 
     await this.finishAction();
   }

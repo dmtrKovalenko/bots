@@ -3,7 +3,6 @@ import * as messages from "../constants/messages";
 import { CustomError } from "../models/Errors";
 import TeamUpEvent from "../models/TeamUpEvent";
 import UserProfile from "../models/UserProfile";
-import Parser from "../services/Parser";
 import TeamUpService from "../services/TeamUpService";
 import { localizedFormat } from "../utils/helpers";
 import AuthManager from "./AuthManager";
@@ -15,25 +14,20 @@ export default class StandManager {
     this.teamUpService = new TeamUpService(userProfile);
   }
 
-  public getServices(when: string) {
-    const date = Parser.parseDate(when);
-
-    return this.getServicesOnDate(date!);
-  }
-
-  public addService(start: DateTime, end: DateTime) {
+  public async addService(start: DateTime, end: DateTime) {
     const event = new TeamUpEvent(this.userProfile.name, start, end);
 
-    return this.teamUpService.createEvent(event)
-      .then(() => messages.ADDED_SUCCESSFULLY(localizedFormat(event.startDate, "dd MMMM в HH:mm")))
-      .catch((e) => {
-        if (e.error && e.error.id === "event_overlapping") {
-          return this.getServicesOnDate(event.startDate)
-            .then((schedule) => messages.CONFLICT + schedule);
-        }
+    try {
+      return await this.teamUpService.createEvent(event);
+    } catch (e) {
+      if (e.error && e.error.id === "event_overlapping") {
+        const schedule = await this.getServicesOnDateText(event.startDate);
 
-        return Promise.reject(e);
-      });
+        throw new CustomError(messages.CONFLICT + schedule);
+      }
+
+      throw e;
+    }
   }
 
   public async authorizeKey(keyToCheck: string) {
@@ -45,14 +39,17 @@ export default class StandManager {
       const { key, name } = await this.teamUpService.verifyKey(keyToCheck);
 
       await AuthManager.addCalendarKey(this.userProfile, key, name);
-      return messages.KEY_AUTHORIZED;
     } catch (e) {
       throw new CustomError(messages.KEY_INVALID, e);
     }
   }
 
   public async getServicesOnDate(date: DateTime) {
-    const todayEvents = await this.teamUpService.getEventsCollection(date.startOf("day"), date.startOf("day"));
+    return this.teamUpService.getEventsCollection(date.startOf("day"), date.startOf("day"));
+  }
+
+  public async getServicesOnDateText(date: DateTime) {
+    const todayEvents = await this.getServicesOnDate(date);
 
     if (todayEvents.length === 0) {
       return messages.DAY_IS_FREE;

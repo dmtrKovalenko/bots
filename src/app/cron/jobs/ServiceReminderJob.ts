@@ -13,7 +13,7 @@ export default class ReminderJob extends BaseCronTask {
     const events = await this.teamUpService.getEventsCollection(tomorrow, tomorrow);
 
     if (events.length > 0) {
-      const tomorrowSchedule = await this.standManager.getServicesOnDate(tomorrow);
+      const tomorrowSchedule = await this.standManager.getServicesOnDateText(tomorrow);
 
       for (const event of events) {
         const user = await this.authManager.getEventAuthor(event);
