@@ -33,4 +33,8 @@ export class ViberStandBot extends Bot {
   public sendMessageToChat = (message: string, chatId: string) => {
     this.bot.sendMessage({ id: chatId }, new Message.Text(message));
   }
+
+  public sendMessageToPublicChat = (message: string, chatId: string) => {
+    this.bot.postToPublicChat({ id: chatId }, new Message.Text(message));
+  }
 }

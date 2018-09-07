@@ -1,5 +1,6 @@
 import { UpdateOptions, WhereOptions } from "sequelize";
 import { Model } from "sequelize-typescript/lib/models/Model";
+import sequelize from "..";
 
 // create an empty class extended of model because typescript will think
 // that every model is equal to empty model with the same inheritance
@@ -35,5 +36,10 @@ export default abstract class GenericRepository<T> {
     } else {
       return this.relation.create(value);
     }
+  }
+
+  // For Tatiana's sake:)
+  protected query(sql: string) {
+    return sequelize.query(sql);
   }
 }

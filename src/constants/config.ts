@@ -6,7 +6,7 @@ const dbConfig = sequelizeConfig[env];
 
 export { env };
 export default {
-  availableDateFormats: ["dd MM", "dd.mm"],
+  availableDateFormats: ["dd MM", "dd.MM"],
   availableTimeFormats: ["HH:mm", "H:mm", "H"],
   db: {
     options: {
@@ -27,4 +27,5 @@ export default {
   },
   serviceUserProfile: new UserProfile("Service", undefined, undefined, "ksmu2qfoi4ixezwys3"),
   teamUpApiUrl: "https://api.teamup.com",
+  weekDaysWorking: [5, 6],
 };
