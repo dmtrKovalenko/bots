@@ -1,5 +1,6 @@
 import * as http from "http";
 import { Bot as ViberBot, Events as ViberEvents, Message as ViberMessage } from "viber-bot";
+import config from "../../constants/config";
 import * as R from "../../constants/messages";
 import { ViberStandBot } from "../../models/Bots";
 import Message from "../../models/Message";
@@ -19,6 +20,7 @@ export const viberBot = new ViberStandBot(bot);
 
 bot.onConversationStarted((userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
   Logger.logConversationStarted(new UserProfile(userProfile.name, undefined, userProfile.id));
+
   onFinish(new ViberMessage.Text(R.HELP(bot.name, userProfile.name)));
 });
 
@@ -27,7 +29,7 @@ bot.on(ViberEvents.MESSAGE_RECEIVED, (message: any, response: any) => {
 
   const profile = new UserProfile(userProfile.name, undefined, userProfile.id);
   const context = new ProcessMessageContext(
-    bot,
+    viberBot,
     profile,
     new Message(message.text),
     (text: string) => response.send(new ViberMessage.Text(text)),
@@ -44,7 +46,7 @@ if (process.env.START_VIBER === "true") {
     console.log("Set the new webhook to", url);
 
     http.createServer(bot.middleware())
-      .listen(process.env.VIBER_PORT || 8080, () => {
+      .listen(config.ports.viber, () => {
         bot.setWebhook(url)
           .then(() => console.log("Viber bot has been started"))
           .catch((e: any) => console.log("Viber bot triggered unhandled rejection", e));

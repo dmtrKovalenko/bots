@@ -1,21 +1,21 @@
 {
-  "name": "stand-bots",
+  "name": "stand-bot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "deploy": "node deploy-now.js",
+    "deploy": "node scripts/deploy-now.js",
     "now-local": "now --local-config=now.json",
     "deploy:stage:telegram": "npm run deploy -- --env stage --app telegram && npm run now-local",
-    "deploy:stage:viber": "npm run deploy -- --env stage --app viber && npm run now-local",
     "deploy:stage:cron": "npm run deploy -- --env stage --app cron && npm run now-local",
-    "deploy:stage": "npm run deploy:stage:telegram && npm run deploy:stage:viber && npm run deploy:stage:cron",
+    "deploy:stage": "npm run deploy:stage:telegram && npm run deploy:stage:cron",
     "build:typescript": "tsc",
     "tslint": "npx tslint 'src/**/*.ts'",
     "db:migrate": "sequelize db:migrate",
     "build": "npm run build:typescript",
     "start": "node --icu-data-dir=./node_modules/full-icu build/app.js",
-    "dev": "TS_NODE_FILES=true onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=9229 src/app.ts"
+    "dev": "TS_NODE_FILES=true onchange \"src/**/*.ts\" -v -i -p -- node -r ts-node/register --inspect=9229 --icu-data-dir=./node_modules/full-icu src/app.ts",
+    "prod": "pm2 reload ecosystem.config.js -a"
   },
   "author": "",
   "license": "ISC",

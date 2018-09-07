@@ -1,5 +1,5 @@
 import TelegramBot, { ConstructorOptions, WebHookOptions } from "node-telegram-bot-api";
-import { env } from "../../constants/config";
+import config, { env } from "../../constants/config";
 import { TelegramStandBot } from "../../models/Bots";
 import Message from "../../models/Message";
 import { ProcessMessageContext } from "../../models/ProcessMessageContext";
@@ -15,8 +15,8 @@ if (!token) {
 
 const options: ConstructorOptions = {
   polling: env === "development" && process.env.START_TELEGRAM === "true",
-  webHook: env === "production"
-    ? { port: process.env.TELEGRAM_PORT || 8443 } as WebHookOptions
+  webHook: env === "production" && process.env.START_TELEGRAM === "true"
+    ? { port: config.ports.telegram } as WebHookOptions
     : false,
 };
 
@@ -40,7 +40,11 @@ bot.on("message", ({ chat, from, text }) => {
 if (env === "production" && process.env.START_TELEGRAM === "true") {
   // Start the bot 🚀
   publicUrl().then((url) => {
-    console.log("Set telegram webhook to", url);
-    bot.setWebHook(`${url}/bot${token}`);
+    const webhookUrl = url + "/telegram";
+    console.log("Set telegram webhook to", webhookUrl);
+
+    bot.setWebHook(`${webhookUrl}/bot${token}`)
+      .then(() => console.log(`Telegram bot has been started on port ${config.ports.telegram}`))
+      .catch((e: any) => console.log("Telegram bot triggered unhandled rejection", e));
   });
 }

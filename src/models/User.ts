@@ -7,6 +7,7 @@ export default class User {
     public teamup_user_name: string,
     public telegram_id?: number,
     public viber_id?: string,
+    public is_manager: boolean = false,
   ) {
     this.created_at = new Date();
     this.updated_at = new Date();
