@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
+    "tslint": "tslint 'src/**/*.ts'",
     "dev": "tsc --project tsconfig.json --watch"
   },
   "author": "",
@@ -17,6 +18,7 @@
     "delay": "^4.0.1",
     "node-fetch": "^2.2.0",
     "node-telegram-bot-api": "^0.30.0",
+    "tslint": "^5.11.0",
     "typescript": "^3.0.3",
     "viber-bot": "^1.0.13"
   }

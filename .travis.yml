@@ -1,6 +1,10 @@
 language: node_js
 node_js:
   - "8"
+env:
+  matrix:
+    - PACKAGE=bot-core
+      #- PACKAGE=stand-bot
 
 script:
-  - npm run tslint && npm run build:typescript
+  - lerna run tslint --scope $PACKAGE && lerna run build --scope $PACKAGE
