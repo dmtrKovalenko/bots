@@ -2,5 +2,13 @@ language: node_js
 node_js:
   - "8"
 
+env:
+  - PACKAGE=bot-core
+  - PACKAGE=stand-bot
+
+install:
+  - npm i && lerna bootstrap
+before_script:
+  - lerna run build --scope bot-core
 script:
-  - npm run tslint && npm run build:typescript
+  - lerna run tslint --scope $PACKAGE && lerna run build --scope $PACKAGE

@@ -1,0 +1,25 @@
+{
+  "name": "bot-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "tslint": "tslint 'src/**/*.ts'",
+    "dev": "tsc --project tsconfig.json --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cache-manager": "^1.2.6",
+    "@types/delay": "^3.1.0",
+    "@types/node-fetch": "^2.1.2",
+    "@types/node-telegram-bot-api": "^0.30.3",
+    "delay": "^4.0.1",
+    "node-fetch": "^2.2.0",
+    "node-telegram-bot-api": "^0.30.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3",
+    "viber-bot": "^1.0.13"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "compilerOptions": {
+    "outDir": "build",
+    "rootDir": "./src",
+    "declaration": true,
+    "inlineSourceMap": true,
+    "inlineSources": true
+  },
+  "include": [
+    "src/**/*",
+    "../../typings.d.ts"
+  ]
+}
