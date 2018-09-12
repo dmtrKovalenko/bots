@@ -4,7 +4,7 @@ node_js:
 env:
   matrix:
     - PACKAGE=bot-core
-      #- PACKAGE=stand-bot
+    - PACKAGE=stand-bot
 
 install:
   - npm i && lerna bootstrap
