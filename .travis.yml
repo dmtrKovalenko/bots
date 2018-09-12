@@ -7,6 +7,8 @@ env:
   - PACKAGE=stand-bot
 
 install:
-  - npm i && lerna run build --scope bot-core && lerna bootstrap
+  - npm i && lerna bootstrap
+post_install:
+  -  lerna run build --scope bot-core 
 script:
   - lerna run tslint --scope $PACKAGE && lerna run build --scope $PACKAGE
