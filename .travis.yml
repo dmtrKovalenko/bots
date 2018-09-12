@@ -1,10 +1,10 @@
 language: node_js
 node_js:
   - "8"
+
 env:
-  matrix:
-    - PACKAGE=bot-core
-    - PACKAGE=stand-bot
+  - PACKAGE=bot-core
+  - PACKAGE=stand-bot
 
 install:
   - npm i && lerna bootstrap
