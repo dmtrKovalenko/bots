@@ -11,7 +11,11 @@ git fetch --tags
 . ~/.profile
 . ~/.bashrc
 
-npm install --no-save --production
-npm run build
+npm install
+npx lerna bootstrap
+npx lerna run build
+
+cd packages/stand-bot
+
 npm run db:migrate
 npm run prod

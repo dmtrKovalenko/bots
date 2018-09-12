@@ -15,7 +15,7 @@ export interface IActionState {
 export default class ActionStateService {
   private readonly actionsMap = new Map<string, any>();
 
-  constructor(private cache: Cache, private actions: CompositeActionType[]) {
+  constructor(private cache: Cache, actions: CompositeActionType[]) {
     actions.forEach((action) => this.actionsMap.set(action.name, action));
   }
 
@@ -35,7 +35,7 @@ export default class ActionStateService {
       return null;
     }
 
-    const Action = this.actionsMap.get(session.action as string);
+    const Action = this.actionsMap.get(session.action);
     if (!Action) {
       throw new ReferenceError("Action not found");
     }
