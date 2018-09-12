@@ -6,4 +6,3 @@ export interface ILogger {
   trackError(userProfile: UserProfile, e: Error): void;
   logConversationStarted(userProfile: UserProfile): void;
 }
-

@@ -1,30 +1,30 @@
-import R from "./messages";
-import { ProcessMessageContext } from "./contexts/ProcessMessageContext";
-import { ILogger } from './models/ILogger';
-import ActionStateService, { Cache } from "./services/ActionStateService";
 import { BaseBot } from "./bots/BaseBot";
-import UserProfile from "./models/UserProfile";
-import Message from "./models/Message";
+import { ProcessMessageContext } from "./contexts/ProcessMessageContext";
 import BaseAction from "./core/BaseAction";
+import R from "./messages";
+import { ILogger } from "./models/ILogger";
+import Message from "./models/Message";
+import UserProfile from "./models/UserProfile";
+import ActionStateService, { Cache } from "./services/ActionStateService";
 
-export type InstantiableAction<T = any> = {
-  new (context: ProcessMessageContext, actionStateService: ActionStateService): T
-};
+export interface InstantiableAction<T = any> {
+  new (context: ProcessMessageContext, actionStateService: ActionStateService): T;
+}
 
 export default class ActionExecutor {
   private actionStateService: ActionStateService;
 
   constructor(
-    private allActions: InstantiableAction<BaseAction>[],
+    private allActions: Array<InstantiableAction<BaseAction>>,
     private logger: ILogger,
-    cache: Cache
+    cache: Cache,
   ) {
-    const compositeActions = allActions.filter(action => (action as any).isComposite)
-    this.actionStateService = new ActionStateService(cache, compositeActions as any)
+    const compositeActions = allActions.filter((action) => (action as any).isComposite);
+    this.actionStateService = new ActionStateService(cache, compositeActions as any);
   }
 
   public async processMessage(bot: BaseBot, userProfile: UserProfile, message: Message) {
-    const context = new ProcessMessageContext(bot, userProfile, message, this.logger)
+    const context = new ProcessMessageContext(bot, userProfile, message, this.logger);
     this.logger.trackMessageReceived(message, userProfile);
 
     if (await this.executeCompositeAction(context)) {

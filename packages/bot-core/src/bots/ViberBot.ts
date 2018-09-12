@@ -1,12 +1,12 @@
 import * as http from "http";
 import { Bot as ViberBotApi, Events as ViberEvents, Message as ViberMessage } from "viber-bot";
-import { BaseBot } from "./BaseBot";
-import { ILogger } from "../models/ILogger";
 import ActionExecutor from "../ActionExecutor";
-import UserProfile from "../models/UserProfile";
-import * as R from '../messages'
+import * as R from "../messages";
+import { ILogger } from "../models/ILogger";
 import Message from "../models/Message";
+import UserProfile from "../models/UserProfile";
 import PublicUrl from "../services/PublicUrl";
+import { BaseBot } from "./BaseBot";
 
 class ViberBot extends BaseBot {
   private bot: any;
@@ -26,27 +26,7 @@ class ViberBot extends BaseBot {
       name: "StandBot",
     });
 
-    this.subscribeListeners()
-  }
-
-  private subscribeListeners() {
-    this.bot.onConversationStarted(this.handleConversationStarted)
-    this.bot.on(ViberEvents.MESSAGE_RECEIVED, this.handleMessageReceived)
-  }
-
-  private handleConversationStarted = (userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
-    const profile = new UserProfile(userProfile.name, undefined, userProfile.id);
-    this.logger.logConversationStarted(new UserProfile(userProfile.name));
-
-    this.executor.processMessage(this, profile, new Message('/start')) // little hack here :)
-  };
-
-  private handleMessageReceived = (message: any, response: any) => {
-    const { userProfile } = response;
-    const profile = new UserProfile(userProfile.name, undefined, userProfile.id);
-
-    this.executor.processMessage(this, profile, new Message(message.text))
-      .catch(e => this.handleError(e, userProfile));
+    this.subscribeListeners();
   }
 
   public sendMessageToChat = (message: string, chatId: string) => {
@@ -64,6 +44,26 @@ class ViberBot extends BaseBot {
             .catch((e: any) => console.log("Viber bot triggered unhandled rejection", e));
         });
     });
+  }
+
+  private subscribeListeners() {
+    this.bot.onConversationStarted(this.handleConversationStarted);
+    this.bot.on(ViberEvents.MESSAGE_RECEIVED, this.handleMessageReceived);
+  }
+
+  private handleConversationStarted = (userProfile: any, isSubscribed: any, context: any, onFinish: any) => {
+    const profile = new UserProfile(userProfile.name, undefined, userProfile.id);
+    this.logger.logConversationStarted(new UserProfile(userProfile.name));
+
+    this.executor.processMessage(this, profile, new Message("/start")); // little hack here :)
+  }
+
+  private handleMessageReceived = (message: any, response: any) => {
+    const { userProfile } = response;
+    const profile = new UserProfile(userProfile.name, undefined, userProfile.id);
+
+    this.executor.processMessage(this, profile, new Message(message.text))
+      .catch((e) => this.handleError(e, userProfile));
   }
 }
 

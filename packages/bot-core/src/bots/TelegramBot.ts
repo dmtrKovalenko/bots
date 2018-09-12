@@ -1,10 +1,10 @@
-import { BaseBot } from "./BaseBot";
-import TelegramBotApi, { ConstructorOptions } from 'node-telegram-bot-api'
-import UserProfile from "../models/UserProfile";
-import Message from "../models/Message";
+import TelegramBotApi, { ConstructorOptions } from "node-telegram-bot-api";
 import ActionExecutor from "../ActionExecutor";
 import { ILogger } from "../models/ILogger";
+import Message from "../models/Message";
+import UserProfile from "../models/UserProfile";
 import PublicUrl from "../services/PublicUrl";
+import { BaseBot } from "./BaseBot";
 
 class TelegramBot extends BaseBot {
   private bot: TelegramBotApi;
@@ -27,17 +27,8 @@ class TelegramBot extends BaseBot {
     this.bot = new TelegramBotApi(token, {
       polling,
       webHook: webhook ? { port } : false,
-    } as ConstructorOptions)
-    this.subscribeListeners()
-  }
-
-  private subscribeListeners() {
-    this.bot.on("message", ({ chat, from, text }) => {
-      const userProfile = new UserProfile(`${from.first_name} ${from.last_name}`, from.id, undefined);
-
-      this.executor.processMessage(this, userProfile, new Message(text))
-        .catch(e => this.handleError(e, userProfile));
-    });
+    } as ConstructorOptions);
+    this.subscribeListeners();
   }
 
   public sendMessageToChat = (message: string, chatId: number) => {
@@ -46,7 +37,7 @@ class TelegramBot extends BaseBot {
 
   public listen = (createWebhook?: (url: string) => string) => {
     PublicUrl().then((url) => {
-      const webhookUrl = createWebhook ? createWebhook(url) : url
+      const webhookUrl = createWebhook ? createWebhook(url) : url;
       console.log("Set telegram webhook to", webhookUrl);
 
       this.bot.setWebHook(`${webhookUrl}/bot${this.token}`)
@@ -54,6 +45,15 @@ class TelegramBot extends BaseBot {
         .catch((e: any) => console.log("Telegram bot triggered unhandled rejection", e));
     });
   }
+
+  private subscribeListeners() {
+    this.bot.on("message", ({ chat, from, text }) => {
+      const userProfile = new UserProfile(`${from.first_name} ${from.last_name}`, from.id, undefined);
+
+      this.executor.processMessage(this, userProfile, new Message(text))
+        .catch((e) => this.handleError(e, userProfile));
+    });
+  }
 }
 
-export default TelegramBot
+export default TelegramBot;

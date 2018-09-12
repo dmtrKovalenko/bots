@@ -1,10 +1,10 @@
-import UserProfile from "../models/UserProfile"
+import { caching } from "cache-manager";
 import { InstantiableAction } from "../ActionExecutor";
 import CompositeAction from "../core/CompositeAction";
-import { caching } from "cache-manager";
+import UserProfile from "../models/UserProfile";
 
-type CompositeActionType = InstantiableAction<CompositeAction<any, any>>
-export type Cache = ReturnType<typeof caching>
+type CompositeActionType = InstantiableAction<CompositeAction<any, any>>;
+export type Cache = ReturnType<typeof caching>;
 
 export interface IActionState {
   Action: any;
@@ -16,7 +16,7 @@ export default class ActionStateService {
   private readonly actionsMap = new Map<string, any>();
 
   constructor(private cache: Cache, private actions: CompositeActionType[]) {
-    actions.forEach(action => this.actionsMap.set(action.name, action))
+    actions.forEach((action) => this.actionsMap.set(action.name, action));
   }
 
   public setActionState(userProfile: UserProfile, action: string, step: number, meta: object) {

@@ -1,8 +1,8 @@
 import TelegramBot from "node-telegram-bot-api";
+import R from "../messages";
 import { CustomError } from "../models/Errors";
-import UserProfile from "../models/UserProfile";
 import { ILogger } from "../models/ILogger";
-import R from '../messages'
+import UserProfile from "../models/UserProfile";
 
 export abstract class BaseBot {
   public readonly name: string;
@@ -24,4 +24,3 @@ export abstract class BaseBot {
     this.sendMessageToChat(R.SOMETHING_BROKE, userProfile.id);
   }
 }
-

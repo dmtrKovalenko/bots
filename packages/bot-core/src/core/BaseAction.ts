@@ -1,13 +1,13 @@
 import delay from "delay";
+import { ProcessMessageContext } from "../contexts/ProcessMessageContext";
 import R from "../messages";
 import Message from "../models/Message";
-import { ProcessMessageContext } from "../contexts/ProcessMessageContext";
 import ActionStateService from "../services/ActionStateService";
 
 export default abstract class BaseAction {
   constructor(
     public readonly context: ProcessMessageContext,
-    public readonly actionStateService: ActionStateService
+    public readonly actionStateService: ActionStateService,
   ) {}
 
   protected get userProfile() {

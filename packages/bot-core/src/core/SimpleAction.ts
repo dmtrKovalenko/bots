@@ -1,4 +1,4 @@
-import BaseAction, { MessageRegexp } from "./BaseAction"
+import BaseAction, { MessageRegexp } from "./BaseAction";
 
 export default abstract class SimpleAction extends BaseAction {
   protected abstract regexp: MessageRegexp | null;
@@ -20,4 +20,3 @@ export default abstract class SimpleAction extends BaseAction {
     return regexpResults[index];
   }
 }
-
