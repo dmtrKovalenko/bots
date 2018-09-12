@@ -8,7 +8,7 @@ env:
 
 install:
   - npm i && lerna bootstrap
-post_install:
-  -  lerna run build --scope bot-core 
+before_script:
+  - lerna run build --scope bot-core
 script:
   - lerna run tslint --scope $PACKAGE && lerna run build --scope $PACKAGE
