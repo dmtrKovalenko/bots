@@ -1,4 +1,4 @@
-import { UpdateOptions, WhereOptions } from "sequelize";
+import { WhereOptions } from "sequelize";
 import { Model } from "sequelize-typescript/lib/models/Model";
 import sequelize from "..";
 
@@ -19,7 +19,7 @@ export default abstract class GenericRepository<T> {
       .then((model) => model.get({ plain: true }));
   }
 
-  public updateWhere(entity: T, options: UpdateOptions) {
+  public updateWhere(entity: T, options: any) {
     return this.relation.update(entity, options);
   }
 
