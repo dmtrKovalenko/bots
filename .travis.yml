@@ -2,11 +2,7 @@ language: node_js
 node_js:
   - "8"
 
-env:
-  - PACKAGE=bot-core
-  - PACKAGE=stand-bot
-
 install:
   - npm i && lerna bootstrap
 script:
-  - lerna run tslint --scope $PACKAGE && lerna run build --scope $PACKAGE
+  - lerna run tslint --parallel && lerna run build --parallel
