@@ -1,5 +1,4 @@
-import { UserProfile } from "bot-core";
-import Message from "bot-core/build/models/Message";
+import { Message, UserProfile } from "bot-core";
 import Mixpanel from "mixpanel";
 
 const mixpanelKey = process.env.MIXPANEL_KEY;

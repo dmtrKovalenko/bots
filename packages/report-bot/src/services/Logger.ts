@@ -1,5 +1,4 @@
-import { UserProfile } from "bot-core";
-import Message from "bot-core/build/models/Message";
+import { Message, UserProfile } from "bot-core";
 
 export default class Logger {
   public static logConversationStarted(userProfile: UserProfile) {

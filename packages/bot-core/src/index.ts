@@ -12,4 +12,6 @@ export { default as TelegramBot } from "./bots/TelegramBot";
 
 export { default as ViberBot } from "./bots/ViberBot";
 
+export { default as Message } from "./models/Message";
+
 export { CustomError } from "./models/Errors";
