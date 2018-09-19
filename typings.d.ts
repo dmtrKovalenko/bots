@@ -18,3 +18,8 @@ declare module "cache-manager-redis-store" {
   export const value: any;
   export default value;
 }
+
+declare module "pluralize-ru" {
+  export const value: any;
+  export default value;
+}

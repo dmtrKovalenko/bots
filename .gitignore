@@ -5,3 +5,4 @@ ngrok*
 .env*
 .idea
 now.json
+*.env

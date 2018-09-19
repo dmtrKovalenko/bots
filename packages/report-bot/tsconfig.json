@@ -3,10 +3,11 @@
   "compilerOptions": {
     "outDir": "build",
     "rootDir": "./src",
-    "allowJs": true,
+    "typeRoots": ["./node_modules/@types"],
   },
   "include": [
     "src/**/*",
+    "./node_modules/bot-core/src/**/*",
     "../../typings.d.ts"
   ]
 }
