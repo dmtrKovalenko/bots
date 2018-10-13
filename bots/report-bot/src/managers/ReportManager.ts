@@ -1,5 +1,4 @@
-import { UserProfile } from "bot-core";
-import { CustomError } from "bot-core";
+import { CustomError, UserProfile } from "bot-core";
 import { DateTime } from "luxon";
 import messages from "../constants/messages";
 import { reportRepository } from "../db";
@@ -28,7 +27,6 @@ class ReportManager {
         reportValues[key] += currentReport[key];
       });
 
-    console.log(currentReport, reportValues);
     return await reportRepository.updateById(this.userProfile.telegram_id, reportValues);
   }
 

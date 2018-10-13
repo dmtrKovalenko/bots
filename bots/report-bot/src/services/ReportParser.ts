@@ -8,8 +8,8 @@ export type ReportValues = Omit<IReport, "telegram_id" | "month">;
 export default class ReportParser {
   public static charactersMap = new Map<AvailableCharacter, keyof ReportValues>([
     ["м", "minutes"],
+    ["пп", "visits"], // ! MUST be before publications because of includes in foreach
     ["п", "publications"],
-    ["пп", "visits"],
     ["в", "videos"],
   ]);
 
