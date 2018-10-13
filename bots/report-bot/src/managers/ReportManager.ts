@@ -12,7 +12,6 @@ class ReportManager {
 
   public async incrementReport(reportValues: ReportValues) {
     const currentReport = await reportRepository.findCurrentMonthReport(this.userProfile.telegram_id);
-
     if (!currentReport) {
       const report: IReport = {
         ...reportValues,
@@ -23,12 +22,14 @@ class ReportManager {
       return await reportRepository.create(report);
     }
 
-    Object.entries(reportValues)
-      .forEach(([key, value]) => {
-        currentReport[key as keyof ReportValues] += value;
+    Object.keys(reportValues)
+      .forEach((key) => {
+        // @ts-ignore ignore warnings about index signature.
+        reportValues[key] += currentReport[key];
       });
 
-    return await reportRepository.update(currentReport);
+    console.log(currentReport, reportValues);
+    return await reportRepository.updateById(this.userProfile.telegram_id, reportValues);
   }
 
   public async getReport(month?: DateTime) {

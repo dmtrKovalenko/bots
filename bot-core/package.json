@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/index.ts",
+  "private": true,
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "tslint": "tslint 'src/**/*.ts'",

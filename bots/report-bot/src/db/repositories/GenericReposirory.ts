@@ -1,4 +1,4 @@
-import { FindOneOptions, getConnection, getManager, getRepository, ObjectType, Repository } from "typeorm";
+import { DeepPartial, FindOneOptions, getConnection, getManager, getRepository, ObjectType, Repository } from "typeorm";
 
 export class GenericRepository<K, T extends K> {
   private baseRepo: Repository<T>;
@@ -34,8 +34,8 @@ export class GenericRepository<K, T extends K> {
     return createdRow[0] as K;
   }
 
-  public async update(entity: K): Promise<K> {
-    await this.baseRepo.save(entity);
+  public async updateById(id: any, entity: DeepPartial<K>): Promise<K> {
+    await this.baseRepo.update(id, entity as DeepPartial<T>);
     const updatedRow = await this.findOne(entity);
 
     return updatedRow as K;
