@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "now-build": "lerna bootstrap",
-    "now-start": "lerna run prod --scope report-bot",
+    "now-build": "lerna link && lerna bootstrap",
+    "now-start": "lerna run prod --scope chastener-bot",
+    "deploy:chastener-bot": "now --dotenv=./bots/chastener-bot/.env --name=chastener-bot --public",
     "deploy:report-bot": "now --dotenv=./bots/report-bot/stage.env --name=report-bot --public"
   },
   "now": {
