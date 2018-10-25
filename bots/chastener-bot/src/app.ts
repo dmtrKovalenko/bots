@@ -20,3 +20,6 @@ export const telegramBot = new TelegramBot(
 if (env === "production") {
   telegramBot.listen();
 }
+
+// tslint:disable
+require("./cron");

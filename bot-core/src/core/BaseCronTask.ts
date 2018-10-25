@@ -21,7 +21,7 @@ export abstract class BaseCronTask {
     });
   }
 
-  protected async sendMessageToUserChats(message: string, user: { telegram_id?: number, viber_id?: string}) {
+  protected sendMessageToUserChats = async (message: string, user: { telegram_id?: number, viber_id?: string}) => {
     if (user.telegram_id) {
       await this.telegramBot.sendMessageToChat(message, user.telegram_id);
     }

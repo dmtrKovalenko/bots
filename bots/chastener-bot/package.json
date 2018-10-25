@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "TS_NODE_FILES=true onchange \"src/**/*.ts\" \"../../bot-core/src/**/*.js\" -v -i -k -- node -r ts-node/register --inspect=9229 --icu-data-dir=./node_modules/full-icu src/app.ts",
+    "dev": "TS_NODE_FILES=true onchange \"src/**/*.ts\" \"../../bot-core/src/**/*.js\" -v -i -k -- node -r ts-node/register --inspect=9229 src/app.ts",
     "prod": "NODE_ENV=production ts-node --transpileOnly --files src/app.ts"
   },
   "dependencies": {
@@ -12,8 +12,14 @@
     "@types/cache-manager": "^1.2.6",
     "bluebird": "^3.5.2",
     "bot-core": "1.0.0",
-    "cache-manager": "^2.9.0"
+    "cache-manager": "^2.9.0",
+    "dotenv": "^6.1.0",
+    "require-all": "^3.0.0",
+    "ts-node": "^7.0.1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "onchange": "^5.0.2"
+  }
 }
