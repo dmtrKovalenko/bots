@@ -14,4 +14,8 @@ export { default as ViberBot } from "./bots/ViberBot";
 
 export { default as Message } from "./models/Message";
 
+export { default as BaseLogger } from "./services/BaseLogger";
+
+export { BaseCronTask } from "./core/BaseCronTask";
+
 export { CustomError } from "./models/Errors";

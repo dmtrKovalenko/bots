@@ -50,7 +50,10 @@ export default class SmartServiceAction extends CompositeAction<ServiceStep, ISm
 
     await this.setActionStep(ServiceStep.START_TIME, meta);
 
-    this.sendMessage(R.SMART_ADD_SERVICE.HERE_IS_SCHEDULE + await manager.getServicesOnDateText(date));
+    this.sendMessage(
+      R.SMART_ADD_SERVICE.HERE_IS_SCHEDULE +
+        (await manager.getServicesOnDateText(date)),
+    );
     this.sendMessage(R.SMART_ADD_SERVICE.START_TIME);
   }
 
@@ -73,7 +76,9 @@ export default class SmartServiceAction extends CompositeAction<ServiceStep, ISm
 
     const manager = new StandManager(this.userProfile);
     await manager.addService(start, end);
-    this.sendMessage(R.ADDED_SUCCESSFULLY(localizedFormat(start, "dd MMMM в HH:mm")));
+    this.sendMessage(
+      R.ADDED_SUCCESSFULLY(localizedFormat(start, "dd MMMM в HH:mm")),
+    );
 
     await this.finishAction();
   }

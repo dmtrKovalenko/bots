@@ -8,7 +8,6 @@ class Logger extends BaseLogger {
       ...traits,
     };
 
-    // TODO: Add some logging service here like mixpanel or smth
     console.log(eventName, data);
   }
 }

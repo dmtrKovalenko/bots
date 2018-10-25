@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "compilerOptions": {
+    "outDir": "build",
+    "rootDir": "./src",
+    "typeRoots": ["./node_modules/@types"],
+  },
+  "include": [
+    "src/**/*",
+    "./node_modules/bot-core/src/**/*",
+    "../../typings.d.ts"
+  ]
+}

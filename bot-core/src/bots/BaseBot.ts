@@ -1,4 +1,3 @@
-import TelegramBot from "node-telegram-bot-api";
 import R from "../messages";
 import { CustomError } from "../models/Errors";
 import { ILogger } from "../models/ILogger";
